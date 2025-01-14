@@ -1,5 +1,5 @@
 <template>
-  <div class=" bg-dark-background h-screen">
+  <div class=" bg-blue-background h-screen">
     <Home></Home>
   </div>
 </template>
