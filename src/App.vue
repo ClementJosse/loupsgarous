@@ -1,13 +1,24 @@
-<script setup>
-</script>
-
 <template>
-
-  <h1 class="text-4xl font-bold underline">
-    Hello world!
-  </h1>
+  <div class=" bg-dark-background h-screen">
+    <Home></Home>
+  </div>
 </template>
 
-<style scoped>
+<script setup>
+ import Home from './views/Home.vue';
+ import { getAuth, signInAnonymously } from "firebase/auth";
 
-</style>
+const auth = getAuth();
+signInAnonymously(auth)
+  .then(() => {
+    console.log("authentification anonyme")
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    // ...
+  });
+
+
+
+</script>
