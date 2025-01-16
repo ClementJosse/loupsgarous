@@ -1,17 +1,8 @@
 <template>
-  <div class=" bg-blue-background h-screen justify-items-center">
+  <div class=" bg-blue-background min-h-screen justify-items-center">
     <iRoles></iRoles>
     <Home></Home>
 
-    <ul class="text-white ">
-      <!-- On parcourt le tableau playerList -->
-      <li
-        v-for="(player, index) in playerList"
-        :key="index"
-      >
-        {{ player }}
-      </li>
-    </ul>
   </div>
 </template>
 
@@ -25,24 +16,27 @@ import { getDatabase, ref as dbRef, onValue } from 'firebase/database'
 // Variable réactive pour stocker la liste des joueurs
 const playerList = ref([])
 
-// Lors du montage du composant, on écoute la DB
 onMounted(() => {
-  const database = getDatabase()
-  // Référence vers la clé "140125"
-  const nodeRef = dbRef(database, '140125')
-  
-  onValue(nodeRef, (snapshot) => {
-    const data = snapshot.val()
-    // Si 'playerList' existe et est un tableau, on l’assigne
-    if (data && data.playerList) {
-      playerList.value = data.playerList
-      console.log(playerList[0])
-    } else {
-      // Sinon on met un tableau vide
-      playerList.value = []
+  const database = getDatabase();
+  // Référence à la racine (ou à ton nœud de parties)
+  const partiesRef = dbRef(database, '/');
+
+  onValue(partiesRef, (snapshot) => {
+    const allParties = snapshot.val(); 
+    // allParties est un objet { "140125": { ... }, "157648": { ... } }
+
+    // On filtre juste celles ayant status == "lobby"
+    const lobbies = [];
+    for (let key in allParties) {
+      if (allParties[key].status === "lobby") {
+        lobbies.push(key);
+      }
     }
-  })
-})
+
+    console.log("Codes des parties en lobby :", lobbies);
+    // lobbies = ["140125", "unAutreCode", ...]
+  });
+});
 
 // Authentification anonyme
 const auth = getAuth()
