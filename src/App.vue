@@ -1,16 +1,14 @@
 <template>
   <div class=" bg-blue-background min-h-screen justify-items-center">
     <iRoles></iRoles>
-    <Home></Home>
+    <router-view />
 
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue' // <-- Import ref et onMounted
-import Home from './views/Home.vue'
 import iRoles from './views/iRoles.vue'
-import { getAuth, signInAnonymously } from 'firebase/auth'
 import { getDatabase, ref as dbRef, onValue } from 'firebase/database'
 
 // Variable réactive pour stocker la liste des joueurs
@@ -37,17 +35,4 @@ onMounted(() => {
     // lobbies = ["140125", "unAutreCode", ...]
   });
 });
-
-// Authentification anonyme
-const auth = getAuth()
-let UID = null
-
-signInAnonymously(auth)
-  .then(() => {
-    UID = auth.currentUser.uid
-    console.log("Authentification anonyme :", UID)
-  })
-  .catch((error) => {
-    console.error("Erreur d'auth :", error.code, error.message)
-  })
 </script>
