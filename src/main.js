@@ -9,7 +9,7 @@ initializeApp(firebaseConfig);
 
 const app = createApp(App)
 app.use(VWave, {
-    color: '#61646B',
+    color: '#61646B40',
     initialOpacity: 1,
     easing: 'ease-out'
   })
