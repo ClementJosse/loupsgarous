@@ -26,7 +26,7 @@
       Rejoindre une partie :
     </p>
     <ul class="flex flex-col justify-center justify-items-center">
-      <button v-wave type="button"
+      <button v-wave type="button" @click="joinGame(game.code)"
         class="active:scale-105 bg-dark-background justify-center justify-items-center mb-[clamp(0px,3vw,15px)] py-[clamp(0px,1vw,5px)] w-[clamp(0px,84vw,420px)] rounded-xl"
         v-for="(game, index) in lobbyGames" :key="index">
         <div class="text-purple-important text-base font-light">#{{ game.code }}</div>
@@ -42,6 +42,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
+import router from '../router'
 import { getDatabase, ref as dbRef, onValue } from 'firebase/database'
 
 const lobbyGames = ref([])
@@ -77,4 +78,12 @@ onMounted(() => {
     lobbyGames.value = filteredGames
   })
 })
+
+function joinGame(gameCode) {
+  setTimeout(function () {
+    router.push(gameCode);
+  }, 200);
+  
+}
+
 </script>

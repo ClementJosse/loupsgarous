@@ -1,6 +1,6 @@
 <template>
   <!-- Si l'utilisateur est dans le jeu, on affiche la liste des joueurs -->
-  <div v-if="isUsernameInGame" class="flex flex-col items-center">
+  <div v-if="isUsernameInGame" class="flex flex-col items-center w-full">
 
     <div
       class="flex flex-col items-center bg-dark-background w-full pb-[clamp(0px,6vw,30px)] pt-[clamp(0px,16vw,80px)]">
@@ -28,7 +28,7 @@
       <h1 class="text-2xl text-white font-light">Quel est ton prénom ?</h1>
       <input v-model="username" type="text" placeholder="... " class="with" />
       <div v-if="username.length > 0">
-        <button v-wave class="text-2xl text-purple-important font-medium" @click="joinTheGame">
+        <button v-wave class="text-2xl text-purple-important font-medium active:scale-105" @click="joinTheGame">
           Rejoindre la partie
         </button>
       </div>
@@ -49,7 +49,6 @@ import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { getDatabase, ref as dbRef, onValue, set, onDisconnect } from 'firebase/database'
 import { getAuth, signInAnonymously } from 'firebase/auth'
-import { useClipboard } from '@vueuse/core'
 import { Clipboard } from "v-clipboard"
 
 import QRCode from './QRCode.vue'
@@ -103,29 +102,31 @@ onValue(partiesRef, (snapshot) => {
 
 // Fonction pour rejoindre la partie
 function joinTheGame() {
-  console.log("gameJoined!")
-  const user = getAuth().currentUser
-  if (!user) {
-    console.error('Aucun utilisateur connecté !')
-    return
-  }
-  const uid = user.uid
+  setTimeout(function () {
+    console.log("gameJoined!")
+    const user = getAuth().currentUser
+    if (!user) {
+      console.error('Aucun utilisateur connecté !')
+      return
+    }
+    const uid = user.uid
 
-  const uidRef = dbRef(database, `/${gameId}/uid_to_username/${uid}`)
+    const uidRef = dbRef(database, `/${gameId}/uid_to_username/${uid}`)
 
-  // 1. On programme la suppression en cas de déconnexion
-  onDisconnect(uidRef).remove()
-    .then(() => {
-      // 2. Ensuite, on set la valeur "username" à ce nœud
-      return set(uidRef, username.value)
-    })
-    .then(() => {
-      console.log("Utilisateur ajouté + suppression programmée au disconnect")
-      isUsernameInGame.value = true
-    })
-    .catch((err) => {
-      console.error("Erreur :", err)
-    })
+    // 1. On programme la suppression en cas de déconnexion
+    onDisconnect(uidRef).remove()
+      .then(() => {
+        // 2. Ensuite, on set la valeur "username" à ce nœud
+        return set(uidRef, username.value)
+      })
+      .then(() => {
+        console.log("Utilisateur ajouté + suppression programmée au disconnect")
+        isUsernameInGame.value = true
+      })
+      .catch((err) => {
+        console.error("Erreur :", err)
+      })
+  }, 200)
 }
 
 function copyToClipboard() {
