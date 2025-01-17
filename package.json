@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@vueuse/core": "^12.4.0",
     "firebase": "^11.1.0",
     "qrcode.vue": "^3.6.0",
     "tailwindcss-ripple": "^0.7.1",

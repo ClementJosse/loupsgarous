@@ -1,8 +1,25 @@
 <template>
   <!-- Si l'utilisateur est dans le jeu, on affiche la liste des joueurs -->
-  <div v-if="isUsernameInGame" class="bg-dark-background">
-    <QRCode :value="'http://192.168.1.119:5173/' + gameId"></QRCode>
-    <div>{{ gameInfo.uid_to_username }}</div>
+  <div v-if="isUsernameInGame" class="flex flex-col items-center">
+
+    <div
+      class="flex flex-col items-center bg-dark-background w-full pb-[clamp(0px,6vw,30px)] pt-[clamp(0px,16vw,80px)]">
+      <div class="flex flex-col items-center">
+        <h3 class="text-white text-base font-light">Code de la partie</h3>
+        <h2 class="text-purple-important text-2xl font-medium">#{{ gameId }}</h2>
+      </div>
+      <QRCode class="pt-[clamp(0px,1vw,5px)]" :value="'http://192.168.1.119:5173/' + gameId"></QRCode>
+      <button v-wave @click="copyLink"
+        class="flex flex-row bg-blue-background items-center gap-[clamp(0px,2vw,10px)] p-[clamp(0px,2vw,10px)] rounded-xl active:scale-105 m-[clamp(0px,4vw,20px)]">
+        <img src="@/assets/copy.svg" class="w-[clamp(0px,6vw,30px)]" />
+        <h1 class="text-purple-important font-medium text-base">
+          Copier le lien de la partie
+        </h1>
+      </button>
+      <h3 class="text-white text-sm font-light ">Partage le QR code pour inviter tes amis dans la partie</h3>
+    </div>
+
+    <div class="text-sm">{{ gameInfo.uid_to_username }}</div>
   </div>
 
   <!-- Si l'utilisateur n'est pas encore dans la partie, on affiche le formulaire -->
@@ -28,14 +45,29 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { getDatabase, ref as dbRef, onValue, set, onDisconnect } from 'firebase/database'
 import { getAuth, signInAnonymously } from 'firebase/auth'
+import { useClipboard } from '@vueuse/core'
+
 import QRCode from './QRCode.vue'
 
 const route = useRoute()
 const gameId = route.params.gameId
+
+// useClipboard
+const { copy, copied, isSupported } = useClipboard()
+
+// On construit le lien à copier
+const gameLink = computed(() => `http://192.168.1.119:5173/${gameId}`)
+
+// Fonction appelée au clic sur le bouton "Copier"
+function copyLink() {
+  copy(gameLink.value)
+  // Optionnel : vous pouvez ajouter un toast ou un message pour informer l'utilisateur
+  console.log('Lien copié :', gameLink.value)
+}
 
 // Champs réactifs
 const username = ref('')

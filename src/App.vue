@@ -20,7 +20,7 @@ onMounted(() => {
   const partiesRef = dbRef(database, '/');
 
   onValue(partiesRef, (snapshot) => {
-    const allParties = snapshot.val(); 
+    const allParties = snapshot.val();
     // allParties est un objet { "140125": { ... }, "157648": { ... } }
 
     // On filtre juste celles ayant status == "lobby"

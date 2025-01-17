@@ -1,37 +1,42 @@
 <template>
 
-    <div class="flex flex-row gap-[clamp(0px,3vw,15px)] pt-[clamp(0px,20vw,100px)]">
-        <img src="@/assets/logo.svg" class="w-[clamp(0px,35vw,175px)]" />
-        <div class="flex flex-col justify-center">
-            <h1 class="text-5xl font-jockey text-white">
-                Loups-garous
-            </h1> 
-            <h1 class="text-4xl font-jockey text-purple-important">
-                sans cartes
-            </h1>            
-        </div>
+  <div class="flex flex-row gap-[clamp(0px,3vw,15px)] pt-[clamp(0px,20vw,100px)]">
+    <img src="@/assets/logo.svg" class="w-[clamp(0px,35vw,175px)]" />
+    <div class="flex flex-col justify-center">
+      <h1 class="text-5xl font-jockey text-white">
+        Loups-garous
+      </h1>
+      <h1 class="text-4xl font-jockey text-purple-important">
+        sans cartes
+      </h1>
     </div>
-    
-    <p class="text-base font-light text-white mt-[clamp(0px,2vw,10px)]">
-        Jouez ensemble, partout, sans le jeu de carte.
-    </p>
-  
-    <button v-wave class="active:scale-105 text-2xl text-blue-background font-semibold bg-purple-important py-[clamp(0px,1.5vw,7.5px)] px-[clamp(0px,20vw,100px)] rounded-full mt-[clamp(0px,30vw,150px)]">
-        Créer une partie
-    </button>
+  </div>
 
-    <div v-if="lobbyGames.length > 0" >
-        <p class="flex justify-center text-base font-light text-white mt-[clamp(0px,20vw,100px)] mb-[clamp(0px,2vw,10px)]">
-            Rejoindre une partie : 
-        </p>
-        <ul class="flex flex-col justify-center justify-items-center">
-          <button v-wave type="button" class= "active:scale-105 bg-dark-background justify-center justify-items-center mb-[clamp(0px,3vw,15px)] py-[clamp(0px,1vw,5px)] w-[clamp(0px,84vw,420px)] rounded-lg" v-for="(game, index) in lobbyGames" :key="index">
-            <div class="text-purple-important text-base font-light">#{{ game.code }}</div>
-            <div class="text-white text-lg font-light">{{ game.playersCount }} Joueurs</div>
-            <div class="flex flex-row text-white text-lg font-light gap-1">Meneur :<div class="text-purple-important font-normal">{{ game.leader }}</div></div>
-          </button>
-        </ul>
-    </div>
+  <p class="text-base font-light text-white mt-[clamp(0px,2vw,10px)]">
+    Jouez ensemble, partout, sans le jeu de carte.
+  </p>
+
+  <button v-wave
+    class="active:scale-105 text-2xl text-blue-background font-semibold bg-purple-important py-[clamp(0px,1.5vw,7.5px)] px-[clamp(0px,20vw,100px)] rounded-full mt-[clamp(0px,30vw,150px)]">
+    Créer une partie
+  </button>
+
+  <div v-if="lobbyGames.length > 0">
+    <p class="flex justify-center text-base font-light text-white mt-[clamp(0px,20vw,100px)] mb-[clamp(0px,2vw,10px)]">
+      Rejoindre une partie :
+    </p>
+    <ul class="flex flex-col justify-center justify-items-center">
+      <button v-wave type="button"
+        class="active:scale-105 bg-dark-background justify-center justify-items-center mb-[clamp(0px,3vw,15px)] py-[clamp(0px,1vw,5px)] w-[clamp(0px,84vw,420px)] rounded-xl"
+        v-for="(game, index) in lobbyGames" :key="index">
+        <div class="text-purple-important text-base font-light">#{{ game.code }}</div>
+        <div class="text-white text-lg font-light">{{ game.playersCount }} Joueurs</div>
+        <div class="flex flex-row text-white text-lg font-light gap-1">Meneur :<div
+            class="text-purple-important font-normal">{{ game.leader }}</div>
+        </div>
+      </button>
+    </ul>
+  </div>
 
 </template>
 
