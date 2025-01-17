@@ -9,7 +9,7 @@
         <h2 class="text-purple-important text-2xl font-medium">#{{ gameId }}</h2>
       </div>
       <QRCode class="pt-[clamp(0px,1vw,5px)]" :value="'http://192.168.1.119:5173/' + gameId"></QRCode>
-      <button v-wave @click="copyLink"
+      <button v-wave @click="copyToClipboard"
         class="flex flex-row bg-blue-background items-center gap-[clamp(0px,2vw,10px)] p-[clamp(0px,2vw,10px)] rounded-xl active:scale-105 m-[clamp(0px,4vw,20px)]">
         <img src="@/assets/copy.svg" class="w-[clamp(0px,6vw,30px)]" />
         <h1 class="text-purple-important font-medium text-base">
@@ -50,24 +50,15 @@ import { useRoute } from 'vue-router'
 import { getDatabase, ref as dbRef, onValue, set, onDisconnect } from 'firebase/database'
 import { getAuth, signInAnonymously } from 'firebase/auth'
 import { useClipboard } from '@vueuse/core'
+import { Clipboard } from "v-clipboard"
 
 import QRCode from './QRCode.vue'
 
 const route = useRoute()
 const gameId = route.params.gameId
 
-// useClipboard
-const { copy, copied, isSupported } = useClipboard()
-
 // On construit le lien à copier
 const gameLink = computed(() => `http://192.168.1.119:5173/${gameId}`)
-
-// Fonction appelée au clic sur le bouton "Copier"
-function copyLink() {
-  copy(gameLink.value)
-  // Optionnel : vous pouvez ajouter un toast ou un message pour informer l'utilisateur
-  console.log('Lien copié :', gameLink.value)
-}
 
 // Champs réactifs
 const username = ref('')
@@ -135,5 +126,9 @@ function joinTheGame() {
     .catch((err) => {
       console.error("Erreur :", err)
     })
+}
+
+function copyToClipboard() {
+  Clipboard.copy(gameLink.value)
 }
 </script>
