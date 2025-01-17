@@ -1,6 +1,7 @@
 <template>
     <!-- Si l'utilisateur est dans le jeu, on affiche la liste des joueurs -->
     <div v-if="isUsernameInGame" class="bg-green-500">
+      <QRCode></QRCode>
       <div>{{ gameInfo.uid_to_username }}</div>
     </div>
   
@@ -31,6 +32,7 @@
   import { useRoute } from 'vue-router'
   import { getDatabase, ref as dbRef, onValue, set, onDisconnect} from 'firebase/database'
   import { getAuth, signInAnonymously } from 'firebase/auth'
+import QRCode from './QRCode.vue'
   
   const route = useRoute()
   const gameId = route.params.gameId
