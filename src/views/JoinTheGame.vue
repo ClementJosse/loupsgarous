@@ -1,14 +1,14 @@
 <template>
     <div class="flex flex-col h-screen items-center justify-center">
         <h1 class="text-2xl text-white font-light">Quel est ton prénom ?</h1>
-        <input :value="username" @input="onInput" type="text" placeholder="... " class="with" />
+        <input :value="username" @input="onInput" type="text" placeholder=". . ." class="m-[clamp(0px,6vw,30px)] p-[clamp(0px,4vw,20px)] bg-dark-background w-[clamp(0px,70vw,350px)] font-semibold text-3xl text-white rounded-xl" />
         <div v-if="username.length > 0">
-            <button v-wave class="text-2xl text-purple-important font-medium active:scale-105" @click="onJoinClick">
+            <button v-wave class="text-2xl text-purple-important font-medium active:scale-105 p-[clamp(0px,2vw,10px)] rounded-xl" @click="onJoinClick">
                 Rejoindre la partie
             </button>
         </div>
         <div v-else>
-            <h1 class="text-2xl text-disabled font-regular">Rejoindre la partie</h1>
+            <h1 class="text-2xl text-disabled font-regular p-[clamp(0px,2vw,10px)]">Rejoindre la partie</h1>
         </div>
     </div>
 </template>
