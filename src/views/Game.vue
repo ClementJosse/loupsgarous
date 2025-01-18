@@ -2,7 +2,8 @@
   <!-- Si l'utilisateur est déjà dans le jeu, on affiche la liste des joueurs -->
   <div v-if="isUsernameInGame" class="flex flex-col items-center w-full">
     <GameCodeInfo />
-    <div class="text-sm">{{ gameInfo.uid_to_username }}</div>
+    <div class="text-sm">{{ gameInfo.playerList }}</div>
+    <PlayerListLobby :items='gameInfo.playerList'/>
   </div>
 
   <!-- Sinon, on propose d'entrer dans la partie -->
@@ -23,6 +24,7 @@ import GameCodeInfo from './GameCodeInfo.vue'
 import JoinTheGame from './JoinTheGame.vue'
 
 import { useRoute } from 'vue-router'
+import PlayerListLobby from './PlayerListLobby.vue'
 const route = useRoute()
 
 const gameId = route.params.gameId
