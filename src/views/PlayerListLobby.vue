@@ -6,7 +6,7 @@
             {{ firstItem }}
         </div>
         <div v-else
-            class="flex flex-row text-dark-background font-semibold items-center bg-dark-background w-min p-[clamp(0px,1vw,5px)] mt-[clamp(0px,5vw,25px)] rounded-xl">
+            class="flex opacity-0 flex-row text-dark-background font-semibold items-center bg-dark-background w-min p-[clamp(0px,1vw,5px)] mt-[clamp(0px,5vw,25px)] rounded-xl">
             .
         </div>
         <div class="flex flex-row justify-between w-full px-[clamp(0px,5vw,25px)]">
