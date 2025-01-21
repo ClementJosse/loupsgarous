@@ -16,7 +16,7 @@
     Jouez ensemble, partout, sans le jeu de carte.
   </p>
 
-  <button v-wave
+  <button v-wave type="button" @click="createGame()"
     class="active:scale-105 text-2xl text-blue-background font-semibold bg-purple-important py-[clamp(0px,1.5vw,7.5px)] px-[clamp(0px,20vw,100px)] rounded-full mt-[clamp(0px,30vw,150px)]">
     Créer une partie
   </button>
@@ -43,13 +43,26 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import router from '../router'
-import { getDatabase, ref as dbRef, onValue } from 'firebase/database'
+import { getDatabase, ref as dbRef, onValue, set, get, child, onDisconnect } from 'firebase/database'
+import { getAuth, signInAnonymously } from 'firebase/auth'
 
 const lobbyGames = ref([])
+const database = getDatabase()
+const partiesRef = dbRef(database, '/') // Racine ou noeud "parties", selon ta structure
+const auth = getAuth()
+let UID = null
+
+// Authentification anonyme
+signInAnonymously(auth)
+  .then(() => {
+    UID = auth.currentUser.uid
+    console.log("Authentification anonyme :", UID)
+  })
+  .catch((error) => {
+    console.error("Erreur d'auth :", error.code, error.message)
+  })
 
 onMounted(() => {
-  const database = getDatabase()
-  const partiesRef = dbRef(database, '/') // Racine ou noeud "parties", selon ta structure
 
   // Écoute toutes les parties
   onValue(partiesRef, (snapshot) => {
@@ -83,7 +96,40 @@ function joinGame(gameCode) {
   setTimeout(function () {
     router.push(gameCode);
   }, 200);
+}
+
+function generateCode() {
+  return Math.floor(Math.random() * 1000000).toString().padStart(6, '0');
+}
+
+async function createGame() {
   
+
+  const code = generateCode();
+  const gameRef = child(partiesRef, code);
+
+  try {
+    const snapshot = await get(gameRef);
+    if (!snapshot.exists()) {
+      console.log("Création d'une partie unique avec le code :", code);
+      
+      // Définir les données initiales de la partie
+      await set(gameRef, {
+        status: 'creating',
+        leader: UID, 
+        playerList: [],             
+      });
+
+      // Rediriger vers la nouvelle partie
+      router.push(`/${code}`); // Assurez-vous que le chemin est correct
+    } else {
+      console.warn("Le code de partie existe déjà :", code);
+      // Relancer la création avec un nouvel essai
+      createGame();
+    }
+  } catch (error) {
+    console.error('Erreur lors de la création de la partie:', error);
+  }
 }
 
 </script>
