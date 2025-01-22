@@ -102,34 +102,35 @@ function generateCode() {
   return Math.floor(Math.random() * 1000000).toString().padStart(6, '0');
 }
 
-async function createGame() {
-  
+function createGame() {
+  setTimeout(function () {
 
-  const code = generateCode();
-  const gameRef = child(partiesRef, code);
+    const code = generateCode();
+    const gameRef = child(partiesRef, code);
 
-  try {
-    const snapshot = await get(gameRef);
-    if (!snapshot.exists()) {
-      console.log("Création d'une partie unique avec le code :", code);
-      
-      // Définir les données initiales de la partie
-      await set(gameRef, {
-        status: 'creating',
-        leader: UID, 
-        playerList: [],             
-      });
+    try {
+      const snapshot = get(gameRef);
+      if (snapshot != undefined) {
+        console.log("Création d'une partie unique avec le code :", code);
 
-      // Rediriger vers la nouvelle partie
-      router.push(`/${code}`); // Assurez-vous que le chemin est correct
-    } else {
-      console.warn("Le code de partie existe déjà :", code);
-      // Relancer la création avec un nouvel essai
-      createGame();
+        // Définir les données initiales de la partie
+        set(gameRef, {
+          status: 'creating',
+          leader: UID,
+          playerList: [],
+        });
+
+        // Rediriger vers la nouvelle partie
+        router.push(`/${code}`);
+      } else {
+        console.warn("Le code de partie existe déjà :", code);
+        // Relancer la création avec un nouvel essai
+        createGame();
+      }
+    } catch (error) {
+      console.error('Erreur lors de la création de la partie:', error);
     }
-  } catch (error) {
-    console.error('Erreur lors de la création de la partie:', error);
-  }
+  }, 200);
 }
 
 </script>
