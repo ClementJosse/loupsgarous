@@ -117,7 +117,7 @@ function createGame() {
         set(gameRef, {
           status: 'creating',
           leader: UID,
-          playerList: [],
+          playerList: ['0Clément','1Aurora','2Long','3Luca','4Hadrien','5Aslan','6Mahamud']
         });
 
         // Rediriger vers la nouvelle partie

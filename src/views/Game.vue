@@ -1,10 +1,14 @@
 <template>
   <!-- Si l'utilisateur est déjà dans le jeu, on affiche la liste des joueurs -->
   <div v-if="isUsernameInGame" class="flex flex-col items-center w-full">
-    <GameCodeInfo />
-    <div class="text-sm">{{ gameInfo.playerList }}</div>
-    <LeaderListLobby :items='gameInfo.playerList' />
-    <PlayerListLobby :items='gameInfo.playerList' />
+    <div v-if="isLeader" class="flex flex-col items-center w-full">
+      <GameLeader></GameLeader>
+    </div>
+    <div v-else class="flex flex-col items-center w-full">
+      <GameCodeInfo />
+      <div class="text-sm">{{ gameInfo.playerList }}</div>
+      <PlayerListLobby :items='gameInfo.playerList' />
+    </div>
   </div>
 
   <!-- Sinon, on propose d'entrer dans la partie -->
@@ -30,6 +34,7 @@ import { useRoute } from 'vue-router'
 import PlayerListLobby from './PlayerListLobby.vue'
 import LeaderListLobby from './LeaderListLobby.vue'
 import CreateTheGame from './CreateTheGame.vue'
+import GameLeader from './GameLeader.vue'
 
 const route = useRoute()
 const gameId = route.params.gameId
@@ -39,6 +44,7 @@ const username = ref('')
 const gameInfo = ref(null)
 const isPathCorrect = ref(false)
 const isUsernameInGame = ref(false)
+const isLeader = ref(null)
 const isCreating = ref(false)
 
 // Configuration Firebase
@@ -70,6 +76,9 @@ const initialize = async () => {
         // Vérifie si l'utilisateur (UID) est déjà enregistré dans uid_to_username
         const hasUidToUsername = data.uid_to_username || {}
         isUsernameInGame.value = hasUidToUsername.hasOwnProperty(UID)
+
+        isLeader.value = (data.leader === username.value)
+        console.log("isLeader.value"+isLeader.value)
       } else {
         isPathCorrect.value = false
       }
