@@ -1,9 +1,15 @@
 <template>
-  <draggable v-model="playerList" item-key="id" @end="updateFirebase">
-    <!-- Utilisation du slot item -->
+  <draggable
+    v-model="playerList"
+    item-key="id"
+    @end="updateFirebase"
+    animation="200"
+    tag="transition-group"
+    :component-data="{ name: 'flip-list' }"
+  >
+  >
     <template #item="{ element }">
       <div class="player-item">
-        <!-- Assurez-vous qu'il y a un seul conteneur parent -->
         {{ element }}
       </div>
     </template>
