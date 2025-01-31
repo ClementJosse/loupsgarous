@@ -9,6 +9,16 @@ export default {
       colors: theme('colors')
     }),
     extend: {
+      keyframes: {
+        'tilt-shaking': {
+          '0%, 50%, 100%': { transform: 'rotate(0deg)' },
+          '25%': { transform: 'rotate(1deg)' },
+          '75%': { transform: 'rotate(-1deg)' },
+        }
+      },
+      animation: {
+        'tilt-shaking': 'tilt-shaking 0.3s ease-in-out infinite',
+      },
       fontSize: {
         sm: 'clamp(0px, 15px, 3vw)',
         base: 'clamp(0px, 20px, 4vw)',
@@ -28,7 +38,9 @@ export default {
         'purple-important': '#CAB8FF',
         'blue-background': '#193143',
         'dark-background': '#061F31',
-        'disabled': '#61646B'
+        'disabled': '#61646B',
+        'blue-protect': '#5A98DF',
+        'red-kill' : '#E85660'
       }
     },
   },

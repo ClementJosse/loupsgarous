@@ -1,19 +1,31 @@
 <template>
-  <draggable
-    v-model="playerList"
-    item-key="id"
-    @end="updateFirebase"
-    animation="200"
-    tag="transition-group"
-    :component-data="{ name: 'flip-list' }"
-  >
-  >
-    <template #item="{ element }">
-      <div class="player-item">
-        {{ element }}
+  <div class="text-white text-sm">Liste de joueurs:</div>
+  <div
+    class="relative flex z-0 flex-col bg-dark-background w-[clamp(0px,84vw,420px)] items-left rounded-xl py-[clamp(0px,8vw,40px)]">
+    <div>
+      <div
+        class="absolute z-[-1] top-[clamp(0px,5vw,25px)] bottom-[clamp(0px,3vw,15px)] right-[clamp(0px,40vw,200px)] left-[clamp(0px,20vw,100px)] border-dashed border-disabled border-[clamp(0px,0.8vw,4px)] rounded-full">
       </div>
-    </template>
-  </draggable>
+      <draggable v-model="playerList" item-key="id" @end="updateFirebase" animation="200" tag="transition-group"
+        :component-data="{ name: 'flip-list' }">
+        <template #item="{ element }">
+          <div
+            class="flex flex-row justify-center text-lg z-1 text-white font-semibold bg-blue-background w-min ml-[clamp(0px,30vw,150px)] p-[clamp(0px,1vw,5px)] px-[clamp(0px,3vw,15px)] my-[clamp(0px,2vw,10px)] rounded-xl">
+            <div class="text-purple-important font-thin mr-[clamp(0px,1vw,5px)]">⠿</div>{{ element }}
+          </div>
+        </template>
+      </draggable>
+    </div>
+
+    <button v-wave class="text-blue-protect flex flex-row justify-center text-lg ">
+      <img src="@/assets/select.svg" class="blue-protect h-[clamp(0px,6vw,30px)]" />
+      Changer de meneur
+    </button>
+    <button v-wave class="text-red-kill flex flex-row justify-center text-lg">
+      <img src="@/assets/delete.svg" class="red-kill h-[clamp(0px,6vw,30px)]" />
+      Supprimer des joueurs
+    </button>
+  </div>
 </template>
 
 <script setup>
@@ -43,16 +55,20 @@ onValue(partiesRef, (snapshot) => {
 
 // 5) Mise à jour de Firebase quand l'ordre change
 function updateFirebase() {
-  update(partiesRef, {playerList : playerList.value})
+  update(partiesRef, { playerList: playerList.value })
 }
 </script>
 
 <style scoped>
-.player-item {
-  margin: 8px 0;
-  padding: 8px;
-  background: #efefef;
-  border: 1px solid #ccc;
-  cursor: grab;
+.blue-protect {
+  filter: invert(60%) sepia(14%) saturate(2112%) hue-rotate(175deg) brightness(95%) contrast(84%);
+}
+
+.red-kill {
+  filter: brightness(0) saturate(100%) invert(51%) sepia(28%) saturate(2252%) hue-rotate(318deg) brightness(90%) contrast(101%);
+}
+
+.dark-background {
+  filter: invert(10%) sepia(71%) saturate(720%) hue-rotate(166deg) brightness(92%) contrast(100%);
 }
 </style>
