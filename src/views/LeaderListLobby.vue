@@ -1,7 +1,7 @@
 <template>
   <div class="text-white text-sm">Liste de joueurs:</div>
   <div
-    class="relative flex z-0 flex-col bg-dark-background w-[clamp(0px,84vw,420px)] items-left rounded-xl py-[clamp(0px,8vw,40px)]">
+    class="relative flex z-0 flex-col bg-dark-background w-[clamp(0px,84vw,420px)] items-left rounded-xl py-[clamp(0px,8vw,40px)] mb-[clamp(0px,8vw,40px)]">
     <div>
       <div
         class="absolute z-[-1] top-[clamp(0px,5vw,25px)] bottom-[clamp(0px,3vw,15px)] right-[clamp(0px,40vw,200px)] left-[clamp(0px,20vw,100px)] border-dashed border-disabled border-[clamp(0px,0.8vw,4px)] rounded-full">
@@ -17,13 +17,16 @@
       </draggable>
     </div>
 
-    <button v-wave class="text-blue-protect flex flex-row justify-center text-lg ">
+    <hr class="mx-[clamp(0px,12vw,60px)] my-[clamp(0px,5vw,25px)] h-[clamp(0px,0.5vw,2.5px)] border-0 bg-disabled">
+
+    <button v-wave class="text-blue-protect flex flex-row self-center text-lg w-min whitespace-pre gap-[clamp(0px,2vw,10px)] p-[clamp(0px,2vw,10px)] rounded-xl active:scale-105">
       <img src="@/assets/select.svg" class="blue-protect h-[clamp(0px,6vw,30px)]" />
-      Changer de meneur
+      <div class="pr-[clamp(0px,5vw,25px)]">Changer de meneur</div>
     </button>
-    <button v-wave class="text-red-kill flex flex-row justify-center text-lg">
+
+    <button v-wave class="text-red-kill flex flex-row self-center text-lg w-min whitespace-pre gap-[clamp(0px,2vw,10px)] p-[clamp(0px,2vw,10px)] rounded-xl active:scale-105">
       <img src="@/assets/delete.svg" class="red-kill h-[clamp(0px,6vw,30px)]" />
-      Supprimer des joueurs
+      <div class="pr-[clamp(0px,5vw,25px)]">Supprimer des joueurs</div>
     </button>
   </div>
 </template>
