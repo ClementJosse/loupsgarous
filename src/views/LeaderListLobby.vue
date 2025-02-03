@@ -34,7 +34,7 @@
 
     <button v-wave @click.stop="changeLeaderButtonState" :class="[
       leaderButtonState ? 'text-dark-background bg-blue-protect font-semibold' : 'text-blue-protect bg-dark-background',
-      'flex flex-row self-center text-lg w-min whitespace-pre gap-[clamp(0px,2vw,10px)] p-[clamp(0px,2vw,10px)] rounded-xl active:scale-105 mb-[clamp(0px,1vw,5px)]'
+      'flex flex-row items-center self-center text-lg w-min whitespace-pre gap-[clamp(0px,2vw,10px)] p-[clamp(0px,2vw,10px)] rounded-xl active:scale-105 mb-[clamp(0px,1vw,5px)]'
     ]">
       <img src="@/assets/select.svg" :class="[leaderButtonState ? 'dark-background' : 'blue-protect']"
         class="h-[clamp(0px,6vw,30px)]" />
@@ -43,7 +43,7 @@
 
     <button v-wave @click.stop="changeKickButtonState"
       :class="[kickButtonState ? 'text-dark-background bg-red-kill font-semibold' : 'text-red-kill bg-dark-background']"
-      class="flex flex-row self-center text-lg w-min whitespace-pre gap-[clamp(0px,2vw,10px)] p-[clamp(0px,2vw,10px)] rounded-xl active:scale-105">
+      class="flex flex-row items-center self-center text-lg w-min whitespace-pre gap-[clamp(0px,2vw,10px)] p-[clamp(0px,2vw,10px)] rounded-xl active:scale-105">
       <img src="@/assets/delete.svg" :class="[kickButtonState ? 'dark-background' : 'red-kill']"
         class=" h-[clamp(0px,6vw,30px)]" />
       <div class="pr-[clamp(0px,6vw,30px)]">Supprimer des joueurs</div>

@@ -26,13 +26,12 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { getDatabase, ref as dbRef, onValue, set, onDisconnect } from 'firebase/database'
+import { getDatabase, ref as dbRef, onValue, set, get, update, onDisconnect } from 'firebase/database'
 import { getAuth, signInAnonymously } from 'firebase/auth'
 import GameCodeInfo from './GameCodeInfo.vue'
 import JoinTheGame from './JoinTheGame.vue'
 import { useRoute } from 'vue-router'
 import PlayerListLobby from './PlayerListLobby.vue'
-import LeaderListLobby from './LeaderListLobby.vue'
 import CreateTheGame from './CreateTheGame.vue'
 import GameLeader from './GameLeader.vue'
 
@@ -124,7 +123,6 @@ function createTheGame() {
     })
 }
 
-// Méthode pour rejoindre une partie
 function joinTheGame() {
   console.log("Rejoindre la partie en cours...")
   const user = auth.currentUser
@@ -132,24 +130,56 @@ function joinTheGame() {
     console.error('Aucun utilisateur connecté !')
     return
   }
+  
   const uid = user.uid
+  const usernameValue = username.value
 
-  const uidRef = dbRef(database, `/${gameId}/uid_to_username/${uid}`)
+  if (!usernameValue) {
+    console.error('Le pseudo est vide !')
+    return
+  }
 
-  // Programmer la suppression en cas de déconnexion
-  onDisconnect(uidRef).remove()
-    .then(() => {
-      // Définir le nom d'utilisateur
-      return set(uidRef, username.value)
+  const gameRef = dbRef(database, `/${gameId}/`)
+
+  // Récupérer l'état actuel du jeu
+  get(gameRef)
+    .then((snapshot) => {
+      const gameData = snapshot.val() || {}
+      const playerList = Array.isArray(gameData.playerList) ? gameData.playerList : []
+
+      // Ajouter le pseudo s'il n'est pas déjà présent
+      if (!playerList.includes(usernameValue)) {
+        playerList.push(usernameValue)
+      }
+
+      // Mise à jour en un seul appel
+      return update(gameRef, {
+        [`uid_to_username/${uid}`]: usernameValue,
+        playerList: playerList
+      })
     })
     .then(() => {
-      console.log("Utilisateur ajouté + suppression programmée au disconnect")
+      console.log("Utilisateur ajouté avec succès")
+
+      // Programmer la suppression en cas de déconnexion
+      onDisconnect(gameRef).update({
+        [`uid_to_username/${uid}`]: null,
+        playerList: get(gameRef).then(snapshot => {
+          const updatedGameData = snapshot.val() || {}
+          return (updatedGameData.playerList || []).filter(player => player !== usernameValue)
+        })
+      })
+    })
+    .then(() => {
+      console.log("Suppression programmée au disconnect")
       isUsernameInGame.value = true
     })
     .catch((err) => {
       console.error("Erreur lors de la jonction de la partie :", err)
     })
 }
+
+
 </script>
 
 <style scoped>

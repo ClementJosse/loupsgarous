@@ -117,7 +117,8 @@ function createGame() {
         set(gameRef, {
           status: 'creating',
           leader: UID,
-          playerList: ['0Clément','1Aurora','2Long','3Luca','4Hadrien','5Aslan','6Mahamud']
+          playerList: ['0Clément','1Aurora','2Long','3Luca','4Hadrien','5Aslan','6Mahamud'],
+          uid_to_username:{'clemclem':'0Clément','auroro':'1Aurora','longchan':'2Long','lucaca':'3Luca','hadrikun':'4Hadrien','aslansama':'5Aslan','maxmed':'6Mahamud'}
         });
 
         // Rediriger vers la nouvelle partie
