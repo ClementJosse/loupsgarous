@@ -76,8 +76,7 @@ const initialize = async () => {
         const hasUidToUsername = data.uid_to_username || {}
         isUsernameInGame.value = hasUidToUsername.hasOwnProperty(UID)
 
-        isLeader.value = (data.leader === username.value)
-        console.log("isLeader.value"+isLeader.value)
+        isLeader.value = (data.leader === UID)
       } else {
         isPathCorrect.value = false
       }
@@ -105,18 +104,13 @@ function createTheGame() {
 
   // Mise à jour des données de la partie
   set(dbRef(database, `/${gameId}/status`), 'lobby')
-    .then(() => set(dbRef(database, `/${gameId}/leader`), username.value))
     .then(() => {
-      // Programmer la suppression en cas de déconnexion
-      return onDisconnect(uidRef).remove()
-    })
-    .then(() => {
-      // Définir le nom d'utilisateur
-      return set(uidRef, username.value)
+      set(uidRef, username.value)
     })
     .then(() => {
       console.log("Utilisateur ajouté + suppression programmée au disconnect")
       isUsernameInGame.value = true
+      console.log("dbRef(database, `/${gameId}/uid_to_username/`)[0]"+dbRef(database, `/${gameId}/uid_to_username/`)[0])
     })
     .catch((err) => {
       console.error("Erreur lors de la création de la partie :", err)
@@ -158,7 +152,7 @@ function joinTheGame() {
         playerList: playerList
       })
     })
-    .then(() => {
+    /*.then(() => {
       console.log("Utilisateur ajouté avec succès")
 
       // Programmer la suppression en cas de déconnexion
@@ -173,7 +167,7 @@ function joinTheGame() {
     .then(() => {
       console.log("Suppression programmée au disconnect")
       isUsernameInGame.value = true
-    })
+    })*/
     .catch((err) => {
       console.error("Erreur lors de la jonction de la partie :", err)
     })

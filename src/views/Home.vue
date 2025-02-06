@@ -43,7 +43,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import router from '../router'
-import { getDatabase, ref as dbRef, onValue, set, get, child, onDisconnect } from 'firebase/database'
+import { getDatabase, ref as dbRef, onValue, set, get, child } from 'firebase/database'
 import { getAuth, signInAnonymously } from 'firebase/auth'
 
 const lobbyGames = ref([])
@@ -118,7 +118,8 @@ function createGame() {
           status: 'creating',
           leader: UID,
           playerList: ['0Clément','1Aurora','2Long','3Luca','4Hadrien','5Aslan','6Mahamud'],
-          uid_to_username:{'clemclem':'0Clément','auroro':'1Aurora','longchan':'2Long','lucaca':'3Luca','hadrikun':'4Hadrien','aslansama':'5Aslan','maxmed':'6Mahamud'}
+          uid_to_username:{'clemclem':'0Clément','auroro':'1Aurora','longchan':'2Long','lucaca':'3Luca','hadrikun':'4Hadrien','aslansama':'5Aslan','maxmed':'6Mahamud'},
+          cards:{'Villageois': 1, 'Loup': 2, 'Sorcière': 1, 'Voyante': 1, 'Chasseur': 1, 'Cupidon': 0, 'Petite fille': 0, 'Voleur': 0, 'Salvateur': 0, 'Loup blanc': 0, "Montreur d'ours": 0, 'Ange': 0, 'Pyromane': 0, 'Enfant sauvage': 0, 'Infect père des loups': 0, 'Renard': 0}
         });
 
         // Rediriger vers la nouvelle partie

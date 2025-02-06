@@ -1,5 +1,6 @@
 <template>
     <GameCodeInfo />
+    <LeaderRoleSelectionList/>
     <LeaderListLobby v-if="gameInfo" />
 </template>
 
@@ -7,8 +8,9 @@
 import { ref, onMounted } from 'vue'
 import GameCodeInfo from './GameCodeInfo.vue'
 import LeaderListLobby from './LeaderListLobby.vue'
-import { getDatabase, ref as dbRef, onValue, set, onDisconnect } from 'firebase/database'
+import { getDatabase, ref as dbRef, onValue, } from 'firebase/database'
 import { useRoute } from 'vue-router'
+import LeaderRoleSelectionList from './LeaderRoleSelectionList.vue'
 
 const route = useRoute()
 const gameId = route.params.gameId
