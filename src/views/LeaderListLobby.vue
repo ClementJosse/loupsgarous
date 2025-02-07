@@ -1,5 +1,5 @@
 <template>
-  <div class="text-white text-sm tilt-shaking">Liste de joueurs:</div>
+  <div class="text-white text-sm tilt-shaking">Liste des joueurs:</div>
   <div ref="componentRef" @click.stop="resetStates"
     class="relative flex z-0 flex-col bg-dark-background w-[clamp(0px,84vw,420px)] items-left rounded-xl mb-[clamp(0px,8vw,40px)] pb-[clamp(0px,5vw,25px)]">
     <div
