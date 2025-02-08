@@ -31,8 +31,11 @@
         v-for="(game, index) in lobbyGames" :key="index">
         <div class="text-purple-important text-base font-light">#{{ game.code }}</div>
         <div class="text-white text-lg font-light">{{ game.playersCount }} Joueurs</div>
-        <div class="flex flex-row text-white text-lg font-light gap-1">Meneur :<div
-            class="text-purple-important font-normal">{{ game.leader }}</div>
+        <div class="flex flex-row text-white text-lg font-light gap-1">
+          Meneur :
+          <div class="text-purple-important font-normal">
+            {{ game.uid_to_username?.[game.leader] || 'Chargement...' }}
+          </div>
         </div>
       </button>
     </ul>
@@ -84,6 +87,7 @@ onMounted(() => {
           code,                // code de la partie (ex: 140125)
           leader: party.leader, // meneur
           playersCount,         // nombre de joueurs
+          uid_to_username: party.uid_to_username
         })
       }
     }
@@ -117,9 +121,9 @@ function createGame() {
         set(gameRef, {
           status: 'creating',
           leader: UID,
-          playerList: ['0Clément','1Aurora','2Long','3Luca','4Hadrien','5Aslan','6Mahamud'],
-          uid_to_username:{'clemclem':'0Clément','auroro':'1Aurora','longchan':'2Long','lucaca':'3Luca','hadrikun':'4Hadrien','aslansama':'5Aslan','maxmed':'6Mahamud'},
-          cards:{'Villageois': 1, 'Loup': 2, 'Sorcière': 1, 'Voyante': 1, 'Chasseur': 1, 'Cupidon': 0, 'Petite fille': 0, 'Voleur': 0, 'Salvateur': 0, 'Loup blanc': 0, "Montreur d'ours": 0, 'Ange': 0, 'Pyromane': 0, 'Enfant sauvage': 0, 'Infect père des loups': 0, 'Renard': 0}
+          playerList: ['0Clément', '1Aurora', '2Long', '3Luca', '4Hadrien', '5Aslan', '6Mahamud'],
+          uid_to_username: { 'clemclem': '0Clément', 'auroro': '1Aurora', 'longchan': '2Long', 'lucaca': '3Luca', 'hadrikun': '4Hadrien', 'aslansama': '5Aslan', 'maxmed': '6Mahamud' },
+          cards: { 'Villageois': 1, 'Loup': 2, 'Sorcière': 1, 'Voyante': 1, 'Chasseur': 1, 'Cupidon': 0, 'Petite fille': 0, 'Voleur': 0, 'Salvateur': 0, 'Loup blanc': 0, "Montreur d'ours": 0, 'Ange': 0, 'Pyromane': 0, 'Enfant sauvage': 0, 'Infect père des loups': 0, 'Renard': 0 }
         });
 
         // Rediriger vers la nouvelle partie
