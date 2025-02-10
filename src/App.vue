@@ -30,9 +30,6 @@ onMounted(() => {
         lobbies.push(key);
       }
     }
-
-    console.log("Codes des parties en lobby :", lobbies);
-    // lobbies = ["140125", "unAutreCode", ...]
   });
 });
 </script>
