@@ -40,7 +40,8 @@ export default {
         'dark-background': '#061F31',
         'disabled': '#61646B',
         'blue-protect': '#5A98DF',
-        'red-kill' : '#E85660'
+        'red-kill' : '#E85660',
+        'green-save' : '#9BE379'
       }
     },
   },
