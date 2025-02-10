@@ -6,7 +6,7 @@
     </div>
     <div v-else class="flex flex-col items-center w-full">
       <GameCodeInfo />
-      <div class="text-sm">{{ gameInfo.playerList }}</div>
+      <PlayerRoleSelectionList/>
       <PlayerListLobby :items='gameInfo.playerList' />
     </div>
   </div>
@@ -34,6 +34,7 @@ import { useRoute } from 'vue-router'
 import PlayerListLobby from './PlayerListLobby.vue'
 import CreateTheGame from './CreateTheGame.vue'
 import GameLeader from './GameLeader.vue'
+import PlayerRoleSelectionList from './PlayerRoleSelectionList.vue'
 
 const route = useRoute()
 const gameId = route.params.gameId
