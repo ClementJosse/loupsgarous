@@ -1,16 +1,16 @@
 <template>
-  <div class="text-white text-sm tilt-shaking">Liste des joueurs:</div>
+  <div class="text-white text-sm">Liste des joueurs:</div>
   <div ref="componentRef" @click.stop="resetStates"
     class="relative flex z-0 flex-col bg-dark-background w-[clamp(0px,84vw,420px)] items-left rounded-xl mb-[clamp(0px,8vw,40px)] pb-[clamp(0px,5vw,25px)]">
     <div
-        class="absolute z-[-1] top-[clamp(0px,5vw,25px)] bottom-[clamp(0px,35vw,175px)] right-[clamp(0px,40vw,200px)] left-[clamp(0px,20vw,100px)] border-dashed border-disabled border-[clamp(0px,0.8vw,4px)] rounded-full">
-      </div>
+      class="absolute z-[-1] top-[clamp(0px,5vw,25px)] bottom-[clamp(0px,35vw,175px)] right-[clamp(0px,40vw,200px)] left-[clamp(0px,20vw,100px)] border-dashed border-disabled border-[clamp(0px,0.8vw,4px)] rounded-full">
+    </div>
     <div class="py-[clamp(0px,8vw,40px)]">
       <draggable v-model="playerList" item-key="id" @end="updateFirebase" animation="200" tag="transition-group"
         :component-data="{ name: 'flip-list' }" :disabled="kickButtonState || leaderButtonState">
         <template #item="{ element }">
-          <button v-wave @click.stop="kickOrPromote"
-            class="flex flex-row justify-center text-lg z-1 text-white font-semibold bg-blue-background w-min ml-[clamp(0px,30vw,150px)] p-[clamp(0px,1vw,5px)] px-[clamp(0px,3vw,15px)] my-[clamp(0px,2vw,10px)] rounded-xl">
+          <button v-wave @click.stop="kickOrPromote(element)"
+            class="flex flex-row justify-center text-lg z-1 text-white font-semibold bg-blue-background w-min ml-[clamp(0px,30vw,150px)] p-[clamp(0px,1vw,5px)] px-[clamp(0px,3vw,15px)] my-[clamp(0px,2vw,10px)] rounded-xl active:scale-105">
             <div v-if="kickButtonState"
               class="animate-tilt-shaking text-red-kill font-bold mr-[clamp(0px,1.5vw,7.5px)] w-[clamp(0px,3.5vw,17.5px)]">
               ×
@@ -55,7 +55,8 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
 import draggable from 'vuedraggable'
-import { getDatabase, ref as dbRef, onValue, update } from 'firebase/database'
+import { getDatabase, ref as dbRef, onValue, update, get } from 'firebase/database'
+import { getAuth, signInAnonymously } from 'firebase/auth'
 import { useRoute } from 'vue-router'
 
 const leaderButtonState = ref(false)
@@ -69,15 +70,18 @@ const gameId = route.params.gameId
 // Configuration de Firebase
 const database = getDatabase()
 const partiesRef = dbRef(database, `/${gameId}`)
+const uid = getAuth().currentUser.uid
 
 // Variables réactives
 const playerList = ref([])
+const uid_to_username = ref([])
 
 // Écoute en temps réel du nœud correspondant
 onValue(partiesRef, (snapshot) => {
   const data = snapshot.val()
-  if (data && data.playerList) {
+  if (data && data.playerList && data.uid_to_username) {
     playerList.value = data.playerList
+    uid_to_username.value = data.uid_to_username
   }
 })
 
@@ -97,14 +101,34 @@ function changeKickButtonState() {
   leaderButtonState.value = false
 }
 
-function kickOrPromote() {
-  if (leaderButtonState.value) {
-    console.log("Promotion en cours")
-  } else if (kickButtonState.value) {
-    console.log("Suppression en cours")
-  } else {
-    console.log("Mouvement normal")
-  }
+function kickOrPromote(element) {
+  setTimeout(function () {
+    if (leaderButtonState.value) {
+
+      update(partiesRef, { leader: element })
+
+      const newPlayerList = playerList.value
+      newPlayerList[playerList.value.indexOf(element)] = uid;
+      update(partiesRef, {
+          playerList: newPlayerList
+        });
+
+      console.log("Promotion de "+element)
+    } else if (kickButtonState.value) {
+      const newPlayerList = playerList.value
+      newPlayerList.splice(newPlayerList.indexOf(element), 1);
+      const new_uid_to_username = uid_to_username.value
+      delete new_uid_to_username[element]
+      update(partiesRef, {
+          playerList: newPlayerList,
+          uid_to_username: new_uid_to_username
+        });
+      console.log("Suppression de " + element)
+
+    } else {
+      console.log("Mouvement normal " + element)
+    }
+  }, 200);
 }
 
 // Fonction pour réinitialiser les états si on clique ailleurs

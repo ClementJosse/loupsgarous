@@ -121,7 +121,7 @@ function createGame() {
         set(gameRef, {
           status: 'creating',
           leader: UID,
-          playerList: ['0Clément', '1Aurora', '2Long', '3Luca', '4Hadrien', '5Aslan', '6Mahamud'],
+          playerList: ['clemclem', 'auroro', 'longchan', 'lucaca', 'hadrikun', 'aslansama', 'maxmed'],
           uid_to_username: { 'clemclem': '0Clément', 'auroro': '1Aurora', 'longchan': '2Long', 'lucaca': '3Luca', 'hadrikun': '4Hadrien', 'aslansama': '5Aslan', 'maxmed': '6Mahamud' },
           cards: { 'Villageois': 1, 'Loup': 2, 'Sorcière': 1, 'Voyante': 1, 'Chasseur': 1, 'Cupidon': 0, 'Petite fille': 0, 'Voleur': 0, 'Salvateur': 0, 'Loup blanc': 0, "Montreur d'ours": 0, 'Ange': 0, 'Pyromane': 0, 'Enfant sauvage': 0, 'Infect père des loups': 0, 'Renard': 0 }
         });

@@ -1,4 +1,5 @@
 <template>
+  <div class="text-white text-sm">Liste des joueurs:</div>
   <div class="pb-[clamp(0px,10vw,50px)]">
     <!-- Liste "principale" -->
     <ul class="relative flex z-0 flex-col bg-dark-background w-[clamp(0px,84vw,420px)] items-center rounded-xl">

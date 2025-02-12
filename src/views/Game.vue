@@ -143,8 +143,8 @@ function joinTheGame() {
       const playerList = Array.isArray(gameData.playerList) ? gameData.playerList : []
 
       // Ajouter le pseudo s'il n'est pas déjà présent
-      if (!playerList.includes(usernameValue)) {
-        playerList.push(usernameValue)
+      if (!playerList.includes(uid)) {
+        playerList.push(uid)
       }
 
       // Mise à jour en un seul appel
