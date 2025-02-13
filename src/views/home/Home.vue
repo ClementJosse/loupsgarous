@@ -45,7 +45,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import router from '../router'
+import router from '../../router'
 import { getDatabase, ref as dbRef, onValue, set, get, child } from 'firebase/database'
 import { getAuth, signInAnonymously } from 'firebase/auth'
 

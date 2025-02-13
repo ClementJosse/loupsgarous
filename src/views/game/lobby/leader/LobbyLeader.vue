@@ -2,19 +2,19 @@
     <GameCodeInfo />
     <LeaderRoleSelectionList />
     <LeaderListLobby v-if="gameInfo" />
-    <button v-wave v-if="playerCount === totalCardsValue" class="text-green-save active:scale-105 text-2xl mb-[clamp(0px,11vw,60px)] p-[clamp(0px,2vw,10px)] rounded-xl" >
+    <button v-wave v-if="playerCount === totalCardsValue" class="text-green-save active:scale-105 text-2xl mb-[clamp(0px,11vw,60px)] p-[clamp(0px,2vw,10px)] rounded-xl"  @click="startGame" >
         Commencer la partie
     </button>
-    <button v-else class="text-disabled text-2xl mb-[clamp(0px,11vw,60px)] p-[clamp(0px,2vw,10px)] rounded-xl" @click="startGame" disabled>
+    <button v-else class="text-disabled text-2xl mb-[clamp(0px,11vw,60px)] p-[clamp(0px,2vw,10px)] rounded-xl" disabled>
         Commencer la partie
     </button>
 </template>
 
 <script setup>
 import { ref, computed, onMounted } from 'vue';
-import GameCodeInfo from './GameCodeInfo.vue';
+import GameCodeInfo from '../GameCodeInfo.vue';
 import LeaderListLobby from './LeaderListLobby.vue';
-import { getDatabase, ref as dbRef, onValue } from 'firebase/database';
+import { getDatabase, ref as dbRef, onValue, update} from 'firebase/database';
 import { useRoute } from 'vue-router';
 import LeaderRoleSelectionList from './LeaderRoleSelectionList.vue';
 
@@ -55,10 +55,11 @@ const initialize = async () => {
 };
 
 const startGame = () => {
-    // Logique pour démarrer la partie
-    console.log('La partie commence !');
-};
-
+    setTimeout(function () {
+        update(partiesRef, {status : "ingame"})
+        console.log('La partie commence !');
+    }, 200);
+}
 onMounted(() => {
     initialize();
 });

@@ -32,7 +32,7 @@ const playerCount = computed(() => playerList.value.length)
 const totalCardsValue = computed(() => cards.value.reduce((sum, card) => sum + card.value, 0))
 
 const getImageUrl = (name) => {
-    return new URL(`../assets/roles/${name}.png`, import.meta.url).href;
+    return new URL(`../../../../assets/roles/${name}.png`, import.meta.url).href;
 };
 
 const initialize = async () => {

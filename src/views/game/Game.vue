@@ -1,18 +1,26 @@
 <template>
   <!-- Si l'utilisateur est déjà dans le jeu, on affiche la liste des joueurs -->
-  <div v-if="isUsernameInGame" class="flex flex-col items-center w-full">
-    <div v-if="isLeader" class="flex flex-col items-center w-full">
-      <GameLeader></GameLeader>
+  <div v-if="isUsernameInGame" class="w-full">
+    <div v-if="isLeader" class="w-full">
+      <div v-if="isInLobby" class="flex flex-col items-center w-full">
+        <LobbyLeader/>
+      </div>
+      <div v-else-if="isInGame" class="flex flex-col items-center w-full">
+        <InGameLeader/>
+      </div>
     </div>
-    <div v-else class="flex flex-col items-center w-full">
-      <GameCodeInfo />
-      <PlayerRoleSelectionList/>
-      <PlayerListLobby :gameInfo = 'gameInfo' />
+    <div v-else>
+      <div v-if="isInLobby" class="flex flex-col items-center w-full">
+        <LobbyPlayer :gameInfo="gameInfo"/>
+      </div>
+      <div v-else-if="isInGame" class="flex flex-col items-center w-full">
+        <InGamePlayer/>
+      </div>
     </div>
   </div>
 
   <!-- Sinon, on propose d'entrer dans la partie -->
-  <JoinTheGame v-else-if="isPathCorrect" :username="username" @update:username="val => (username = val)"
+  <JoinTheGame v-else-if="isInLobby" :username="username" @update:username="val => (username = val)"
     @joinTheGame="joinTheGame" />
 
   <CreateTheGame v-else-if="isCreating" :username="username" @update:username="val => (username = val)"
@@ -28,13 +36,13 @@
 import { ref, onMounted } from 'vue'
 import { getDatabase, ref as dbRef, onValue, set, get, update, onDisconnect } from 'firebase/database'
 import { getAuth, signInAnonymously } from 'firebase/auth'
-import GameCodeInfo from './GameCodeInfo.vue'
 import JoinTheGame from './JoinTheGame.vue'
 import { useRoute } from 'vue-router'
-import PlayerListLobby from './PlayerListLobby.vue'
 import CreateTheGame from './CreateTheGame.vue'
-import GameLeader from './GameLeader.vue'
-import PlayerRoleSelectionList from './PlayerRoleSelectionList.vue'
+import LobbyLeader from './lobby/leader/LobbyLeader.vue'
+import LobbyPlayer from './lobby/player/LobbyPlayer.vue'
+import InGameLeader from './ingame/leader/InGameLeader.vue'
+import InGamePlayer from './ingame/player/InGamePlayer.vue'
 
 const route = useRoute()
 const gameId = route.params.gameId
@@ -42,7 +50,8 @@ const gameId = route.params.gameId
 // Champs réactifs
 const username = ref('')
 const gameInfo = ref(null)
-const isPathCorrect = ref(false)
+const isInLobby = ref(false)
+const isInGame = ref(false)
 const isUsernameInGame = ref(false)
 const isLeader = ref(null)
 const isCreating = ref(false)
@@ -69,7 +78,7 @@ const initialize = async () => {
       if (data) {
         gameInfo.value = data
         // On vérifie que la partie est en mode 'lobby'
-        isPathCorrect.value = (data.status === 'lobby')
+        isInLobby.value = (data.status === 'lobby')
 
         // Vérifie si l'utilisateur est en train de créer la partie
         isCreating.value = (data.status === 'creating') && (data.leader === UID)
@@ -77,10 +86,13 @@ const initialize = async () => {
         // Vérifie si l'utilisateur (UID) est déjà enregistré dans uid_to_username
         const hasUidToUsername = data.uid_to_username || {}
         isUsernameInGame.value = hasUidToUsername.hasOwnProperty(UID)
+        
+        isInGame.value = (data.status === 'ingame')
+
         leader.value = data.leader
         isLeader.value = (data.leader === UID)
       } else {
-        isPathCorrect.value = false
+        isInLobby.value = false
       }
     })
   } catch (error) {
