@@ -21,7 +21,7 @@
     Créer une partie
   </button>
 
-  <div v-if="lobbyGames.length > 0">
+  <div class="pb-[clamp(0px,6vw,30px)]" v-if="lobbyGames.length > 0">
     <p class="flex justify-center text-base font-light text-white mt-[clamp(0px,20vw,100px)] mb-[clamp(0px,2vw,10px)]">
       Rejoindre une partie :
     </p>

@@ -23,7 +23,7 @@
               ⠿
             </div>
             <div :class="[kickButtonState ? 'animate-tilt-shaking' : leaderButtonState ? 'animate-tilt-shaking' : '']">
-              {{ element }}
+              {{ uid_to_username[element] }}
             </div>
           </button>
         </template>

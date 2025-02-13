@@ -7,7 +7,7 @@
     <div v-else class="flex flex-col items-center w-full">
       <GameCodeInfo />
       <PlayerRoleSelectionList/>
-      <PlayerListLobby :items='gameInfo.playerList' />
+      <PlayerListLobby :gameInfo = 'gameInfo' />
     </div>
   </div>
 
@@ -52,6 +52,7 @@ const database = getDatabase()
 const partiesRef = dbRef(database, `/${gameId}`)
 const auth = getAuth()
 let UID = null
+const leader = ref(null)
 
 // Fonction d'initialisation asynchrone
 const initialize = async () => {
@@ -76,7 +77,7 @@ const initialize = async () => {
         // Vérifie si l'utilisateur (UID) est déjà enregistré dans uid_to_username
         const hasUidToUsername = data.uid_to_username || {}
         isUsernameInGame.value = hasUidToUsername.hasOwnProperty(UID)
-
+        leader.value = data.leader
         isLeader.value = (data.leader === UID)
       } else {
         isPathCorrect.value = false
