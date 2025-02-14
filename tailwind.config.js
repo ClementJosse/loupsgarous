@@ -9,6 +9,12 @@ export default {
       colors: theme('colors')
     }),
     extend: {
+      transformStyle: {
+        'preserve-3d': 'preserve-3d',
+      },
+      rotate: {
+        'y-180': 'rotateY(180deg)',
+      },
       keyframes: {
         'tilt-shaking': {
           '0%, 50%, 100%': { transform: 'rotate(0deg)' },
@@ -40,8 +46,8 @@ export default {
         'dark-background': '#061F31',
         'disabled': '#61646B',
         'blue-protect': '#5A98DF',
-        'red-kill' : '#E85660',
-        'green-save' : '#9BE379'
+        'red-kill': '#E85660',
+        'green-save': '#9BE379'
       }
     },
   },
