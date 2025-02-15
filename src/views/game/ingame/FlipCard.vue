@@ -1,69 +1,72 @@
 <template>
     <!-- Conteneur parent qui gère les événements -->
-    <div 
-      class="flex flex-col items-center"
-      @mousedown="startFlip"
-      @mouseup="endFlip"
-      @mouseleave="endFlip"
-      @touchstart="startFlip"
-      @touchend="endFlip"
-    >
-      <!-- Carte -->
-      <div 
-        class="w-[300px] h-[300px] cursor-pointer select-none"
-        style="perspective: 1000px"
-      >
-        <div 
-          class="w-full h-full transition-transform duration-300"
-          :style="isFlipped ? 'transform: rotateY(180deg)' : ''"
-          style="transform-style: preserve-3d"
-        >
-          <div class="absolute w-full h-full" style="backface-visibility: hidden">
-            <img 
-              src="../../../assets/roles/Back.png" 
-              class="w-full h-full object-cover"
-            >
-          </div>
-          <div class="absolute w-full h-full" style="transform: rotateY(180deg); backface-visibility: hidden">
-            <img 
-              src="../../../assets/roles/Ange.png" 
-              class="w-full h-full object-cover"
-            >
-          </div>
+    <div class="flex flex-col items-center" @mousedown="startFlip" @mouseup="endFlip" @mouseleave="endFlip"
+        @touchstart="startFlip" @touchend="endFlip">
+        <!-- Carte -->
+        <div class="card cursor-pointer select-none" style="perspective: clamp(0px, 1000px, 200vw)">
+            <div class="w-full h-full transition-transform duration-300"
+                :style="isFlipped ? 'transform: rotateY(180deg)' : ''" style="transform-style: preserve-3d">
+                <div class="absolute w-full h-full" style="backface-visibility: hidden">
+                    <img src="../../../assets/roles/Back.png" class="w-full h-full object-cover">
+                </div>
+                <div class="absolute w-full h-full" style="transform: rotateY(180deg); backface-visibility: hidden">
+                    <img :src="getImageUrl(imgname)" class="w-full h-full object-cover">
+                </div>
+            </div>
         </div>
-      </div>
-  
-      <!-- Zone de contrôle en dessous de la carte -->
-      <div class="flex w-[75px] h-[75px] justify-center bg-dark-background">
-        <!-- Affiche l'icône visible ou notvisible en fonction de l'état -->
-        <img 
-          v-if="isFlipped"
-          src="../../../assets/visible.svg" 
-          class="w-10"
-        >
-        <img 
-          v-else
-          src="../../../assets/notvisible.svg" 
-          class="w-10"
-        >
-      </div>
+
+        <!-- Zone de contrôle en dessous de la carte -->
+        <div class="visible-icon-container flex justify-center items-center rounded-full">
+            <!-- Affiche l'icône visible ou notvisible en fonction de l'état -->
+            <img v-if="isFlipped" src="../../../assets/visible.svg" class="visible-icon">
+            <img v-else src="../../../assets/notvisible.svg" class="visible-icon">
+        </div>
     </div>
-  </template>
-  
-  <script>
-  export default {
-    data() {
-      return {
-        isFlipped: false // Gère l'état de la carte (flippée ou non)
-      }
-    },
-    methods: {
-      startFlip() {
-        this.isFlipped = true; // Active le flip et affiche l'icône visible
-      },
-      endFlip() {
-        this.isFlipped = false; // Désactive le flip et affiche l'icône notvisible
-      }
+</template>
+
+<script setup>
+import { ref } from 'vue';
+
+// Fonction pour récupérer l'URL des images
+const getImageUrl = (imgname) => {
+    console.log(`../../../assets/roles/${imgname}.png`)
+    return new URL(`../../../assets/roles/${imgname}.png`, import.meta.url).href;
+};
+
+// Définition des props
+const props = defineProps({
+    imgname: {
+        type: String,
+        default: ''
     }
-  }
-  </script>
+});
+
+// État réactif pour gérer le flip de la carte
+const isFlipped = ref(false);
+
+// Méthodes pour gérer le flip
+const startFlip = () => {
+    isFlipped.value = true; // Active le flip
+};
+
+const endFlip = () => {
+    isFlipped.value = false; // Désactive le flip
+};
+</script>
+
+<style scope>
+.card {
+    width: clamp(0px, 200px, 40vw);
+    height: clamp(0px, 200px, 40vw)
+}
+
+.visible-icon-container {
+    width: clamp(0px, 75px, 15vw);
+    height: clamp(0px, 75px, 15vw)
+}
+
+.visible-icon {
+    width: clamp(0px, 30px, 6vw);
+    height: clamp(0px, 30px, 6vw);
+}
+</style>

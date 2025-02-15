@@ -2,7 +2,9 @@
     <GameCodeInfo />
     <LeaderRoleSelectionList />
     <LeaderListLobby v-if="gameInfo" />
-    <button v-wave v-if="playerCount === totalCardsValue" class="text-green-save active:scale-105 text-2xl mb-[clamp(0px,11vw,60px)] p-[clamp(0px,2vw,10px)] rounded-xl"  @click="startGame" >
+    <button v-wave v-if="playerCount === totalCardsValue"
+        class="text-green-save active:scale-105 text-2xl mb-[clamp(0px,11vw,60px)] p-[clamp(0px,2vw,10px)] rounded-xl"
+        @click="startGame">
         Commencer la partie
     </button>
     <button v-else class="text-disabled text-2xl mb-[clamp(0px,11vw,60px)] p-[clamp(0px,2vw,10px)] rounded-xl" disabled>
@@ -26,6 +28,7 @@ const partiesRef = dbRef(database, `/${gameId}`);
 
 const cards = ref([]);
 const playerList = ref([]);
+const playerCards = ref({})
 
 const playerCount = computed(() => playerList.value.length);
 const totalCardsValue = computed(() =>
@@ -54,9 +57,36 @@ const initialize = async () => {
     }
 };
 
+
+const distributeCards = () => {
+    // Réinitialiser playerCards
+    playerCards.value = {};
+
+    // Créer une liste plate de toutes les cartes disponibles
+    const allCards = [];
+    for (const [name, value] of Object.entries(cards.value)) {
+        for (let i = 0; i < value.value; i++) {
+            allCards.push(value.name);
+        }
+    }
+    // Mélanger les cartes de manière aléatoire
+    allCards.sort(() => Math.random() - 0.5);
+
+    // Distribuer les cartes aux joueurs
+    playerList.value.forEach((player, index) => {
+        if (allCards[index]) {
+            if (!playerCards.value[player]) {
+                playerCards.value[player] = [];
+            }
+            playerCards.value[player] = allCards[index];
+        }
+    });
+};
+
 const startGame = () => {
     setTimeout(function () {
-        update(partiesRef, {status : "ingame"})
+        distributeCards()
+        update(partiesRef, {status : "ingame"},{"playerCards" : playerCards.value})
         console.log('La partie commence !');
     }, 200);
 }
