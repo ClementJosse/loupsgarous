@@ -86,7 +86,9 @@ const distributeCards = () => {
 const startGame = () => {
     setTimeout(function () {
         distributeCards()
-        update(partiesRef, {status : "ingame"},{"playerCards" : playerCards.value})
+        update(partiesRef, {status : "ingame"})
+        update(partiesRef, {playerCards : playerCards.value})
+
         console.log('La partie commence !');
     }, 200);
 }

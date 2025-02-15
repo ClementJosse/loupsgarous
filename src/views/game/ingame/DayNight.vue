@@ -1,5 +1,5 @@
 <template>
-    <div class="pb-[clamp(0px,4vw,20px)] bg-dark-background">
+    <div>
         <div v-if="props.info === 'day'">
             <img src="@/assets/day.svg" class="w-[clamp(0px,100vw,500px)]" />
         </div>

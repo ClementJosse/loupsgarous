@@ -29,7 +29,6 @@ import { ref } from 'vue';
 
 // Fonction pour récupérer l'URL des images
 const getImageUrl = (imgname) => {
-    console.log(`../../../assets/roles/${imgname}.png`)
     return new URL(`../../../assets/roles/${imgname}.png`, import.meta.url).href;
 };
 

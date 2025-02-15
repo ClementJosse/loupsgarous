@@ -1,5 +1,6 @@
 <template>
     <DayNight info="night" />
+    Révéler tous les rôles
 </template>
 
 <script setup>
