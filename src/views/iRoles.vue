@@ -23,13 +23,14 @@
                         </button>
                     </div>
                     <div class="flex flex-col items-center mt-[clamp(0px,15vw,75px)]">
-                        <h1 class="text-white w-full text-4xl text-center">Liste des rôles</h1>
+                        <h1 class="text-white w-full text-4xl mb-[clamp(0px,2vw,10px)] text-center">Liste des rôles</h1>
                         <div
-                            class="z-10 h-[clamp(0px,0.5vw,2.5px)] px-[clamp(0px,20vw,100px)] m-[clamp(0px,3vw,15px)] border-100 bg-disabled">
+                            class="z-10 h-[clamp(0px,0.5vw,2.5px)] px-[clamp(0px,20vw,100px)] mb-[clamp(0px,4vw,20px)] border-100 bg-disabled">
                         </div>
                         <div
-                            class="no-scrollbar overflow-y-auto h-[90vh] pb-[clamp(0px,40vw,200px)] w-[clamp(0px,90vw,450px)]">
-                            <div v-for="role in roles" :key="role" class="flex flex-row mb-[clamp(0px,10vw,50px)] gap-[clamp(0px,2.5vw,12.5px)]">
+                            class="no-scrollbar overflow-y-auto h-[90vh] pt-[clamp(0px,10vw,50px)] pb-[clamp(0px,40vw,200px)] w-[clamp(0px,90vw,450px)]">
+                            <div v-for="role in roles" :key="role"
+                                class="flex flex-row mb-[clamp(0px,10vw,50px)] gap-[clamp(0px,2.5vw,12.5px)]">
                                 <div class="flex flex-col items-center w-[clamp(0px,30vw,150px)] flex-shrink-0">
                                     <img :src="getImagePath(role)" :alt="role" class="w-full" />
                                     <h4 class="text-white text-sm">Camps:</h4>
@@ -51,8 +52,8 @@
                                     </div>
                                 </div>
                                 <div class="flex flex-col">
-                                    <span :style="{ color: cardsGameInfos[role].color }"
-                                        class="text-xl font-bold">{{ role }}</span>
+                                    <span :style="{ color: cardsGameInfos[role].color }" class="text-xl font-bold">{{
+                                        role }}</span>
                                     <p class="text-white text-sm"
                                         v-html="formatDescription(cardsGameInfos[role].description)"></p>
                                 </div>
@@ -66,7 +67,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 import cardsGameInfos from '../cardsGameInfos.json';
 
 const isSidePanelOpen = ref(false);
@@ -74,11 +75,23 @@ const roles = ref(Object.keys(cardsGameInfos));
 
 const toggleSidePanel = () => {
     isSidePanelOpen.value = !isSidePanelOpen.value;
+
+    if (isSidePanelOpen.value) {
+        document.body.classList.add('overflow-hidden');
+    } else {
+        document.body.classList.remove('overflow-hidden');
+    }
 };
+
+// Nettoyage au démontage du composant (utile si le composant est détruit pour éviter les effets persistants)
+onUnmounted(() => {
+    document.body.classList.remove('overflow-hidden');
+});
 
 const getImagePath = (roleName) => {
     return `/src/assets/roles/${roleName}.png`;
 };
+
 
 const formatDescription = (description) => {
     return description
@@ -88,6 +101,12 @@ const formatDescription = (description) => {
         .replace(/\{\{actions\.model\}\}/g, `<img src="/src/assets/actions/model.svg" class="inline h-[clamp(0px,5vw,25px)]" />`)
         .replace(/\{\{actions\.tuer\}\}/g, `<img src="/src/assets/actions/tuer.svg" class="inline h-[clamp(0px,5vw,25px)]" />`)
         .replace(/\{\{actions\.amoureux\}\}/g, `<img src="/src/assets/actions/amoureux.svg" class="inline h-[clamp(0px,5vw,25px)]" />`)
+        .replace(/\{\{actions\.huiler\}\}/g, `<img src="/src/assets/actions/huiler.svg" class="inline h-[clamp(0px,5vw,25px)]" />`)
+        .replace(/\{\{actions\.bruler\}\}/g, `<img src="/src/assets/actions/bruler.svg" class="inline h-[clamp(0px,5vw,25px)]" />`)
+        .replace(/\{\{actions\.proteger\}\}/g, `<img src="/src/assets/actions/proteger.svg" class="inline h-[clamp(0px,5vw,25px)]" />`)
+        .replace(/\{\{actions\.sauver\}\}/g, `<img src="/src/assets/actions/sauver.svg" class="inline h-[clamp(0px,5vw,25px)]" />`)
+        .replace(/\{\{actions\.voler\}\}/g, `<img src="/src/assets/actions/voler.svg" class="inline h-[clamp(0px,5vw,25px)]" />`)
+        .replace(/\{\{actions\.decouvrir\}\}/g, `<img src="/src/assets/actions/decouvrir.svg" class="inline h-[clamp(0px,5vw,25px)]" />`)
         .replace(/\{\{actions\.infecter\}\}/g, `<img src="/src/assets/actions/infecter.svg" class="inline h-[clamp(0px,5vw,25px)]" />`);
 };
 </script>

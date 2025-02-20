@@ -2,7 +2,7 @@
     "Ange": {
         "day": 52,
         "color": "#5A98DF",
-        "description": "Pour gagner {{camps.seul}}, l'Ange doit de se faire éliminer pendant la 1ère nuit ou pendant le 1er vote du village. S'il n'est pas mort, il rejoint le {{camps.village}} a partir de la 2ème nuit. ",
+        "description": "Pour gagner {{camps.seul}}, l'Ange doit de se faire éliminer pendant la 1ère nuit ou pendant le 1er vote du village. S'il n'est pas mort, il rejoint le {{camps.village}} a partir de la 2ème nuit.",
         "winsWith": [
             "seul",
             "village"
@@ -36,7 +36,7 @@
     "Infect père des loups": {
         "night": 11,
         "color": "#E85660",
-        "description": "C'est un membre des {{camps.loups}}. Une unique fois pendant la partie, il peut {{actions.infecter}} la personne éliminée par les {{camps.loups}}, la personne doit maintenant gagner avec le camps des {{camps.loups}} tout en conservant son rôle d'origine",
+        "description": "C'est un membre des {{camps.loups}}. Une unique fois pendant la partie, il peut {{actions.infecter}} la personne éliminée par les {{camps.loups}}, la personne doit maintenant gagner avec le camps des {{camps.loups}} tout en conservant son rôle d'origine.",
         "winsWith": [
             "loups"
         ]
@@ -50,9 +50,9 @@
         ]
     },
     "Loup blanc": {
-        "night": 10,
+        "night": 5,
         "color": "#D6D1C3",
-        "description": "Ce rôle doit gagner {{camps.seul}}. Chaque nuit il se réveille avec les {{camps.loups}} pour {{actions.tuer}} une personne. ",
+        "description": "Ce rôle doit gagner {{camps.seul}}. Chaque nuit il se réveille avec les {{camps.loups}} pour {{actions.tuer}} une personne avec eux (mais il ne fait pas parti de leur camps). Il se réveille {{camps.seul}} une nuit sur deux après le tour des {{camps.loups}} pour {{actions.tuer}} une personnne supplémentaire.",
         "winsWith": [
             "seul"
         ]
@@ -60,14 +60,14 @@
     "Montreur d'ours": {
         "day": 50,
         "color": "#E85660",
-        "description": "..... ........ .... ..... ........ ..... ..... ..... ..... ..... ..... ....... ........ ... ... ... ...",
+        "description": "C'est un membre du {{camps.village}}. Chaque matin, le meneur indiquera que l'ours a grogné si l'une des personnes directement à droite ou à gauche du Montreur d'ours fait parti du camps des {{camps.loups}}. Si une personne à coté du Montreur d'ours est morte, c'est la personne à côté de celle morte sera vérifié. Si le Montreur d'ours est infecté, l'ours grognera jusqu'a la fin de la partie ou la mort du Montreur d'ours.",
         "winsWith": [
             "village"
         ]
     },
     "Petite fille": {
         "color": "#5A98DF",
-        "description": "..... ........ .... ..... ........ ..... ..... ..... ..... ..... ..... ....... ........ ... ... ... ...",
+        "description": "C'est un membre du {{camps.village}}. La Petite fille peut discretement espionner la nuit pendant le tour des {{camps.loups}}.",
         "winsWith": [
             "village"
         ]
@@ -75,7 +75,7 @@
     "Pyromane": {
         "night": 20,
         "color": "#FF823F",
-        "description": "..... ........ .... ..... ........ ..... ..... ..... ..... ..... ..... ....... ........ ... ... ... ...",
+        "description": "Il doit gagner {{camps.seul}}. Chaque nuit, le Pyromane peut {{actions.huiler}} une personne ou {{actions.bruler}} toutes les personnes huilées ce qui va tous les tuer. Il n'y a pas de limite de personne pour sa capacité {{actions.huiler}}, par contre il ne peut utiliser {{actions.bruler}} qu'une seule fois dans la partie.",
         "winsWith": [
             "seul"
         ]
@@ -83,7 +83,7 @@
     "Renard": {
         "night": 21,
         "color": "#FF823F",
-        "description": "..... ........ .... ..... ........ ..... ..... ..... ..... ..... ..... ....... ........ ... ... ... ...",
+        "description": "C'est un membre du {{camps.village}}. Chaque nuit, il peut flairer 3 personnes. Le meneur lui dit un {{camps.loups}} est dans le groupe. Si oui il pourra réutiliser son pouvoir la nuit suivante. Sinon il devient un Simple Villageois.",
         "winsWith": [
             "village"
         ]
@@ -91,22 +91,22 @@
     "Salvateur": {
         "night": 22,
         "color": "#FFCF4A",
-        "description": "..... ........ .... ..... ........ ..... ..... ..... ..... ..... ..... ....... ........ ... ... ... ...",
+        "description": "Chaque nuit, le salvateur peut {{actions.proteger}} une personne qui ne pourra pas mourir durant la nuit. Le Salvateur ne peut pas {{actions.proteger}} la même personne deux nuits de suite, mais il peut se {{actions.proteger}} lui-même.",
         "winsWith": [
             "village"
         ]
     },
     "Sorcière": {
-        "night": 5,
+        "night": 10,
         "color": "#FF823F",
-        "description": "..... ........ .... ..... ........ ..... ..... ..... ..... ..... ..... ....... ........ ... ... ... ...",
+        "description": "C'est un membre du {{camps.village}}. la Sorcière se réveille la nuit et possède alors 3 choix. Utiliser sa potion de vie pour {{actions.sauver}} la personne tué au tour des {{camps.loups}}, utiliser sa potion de mort pour {{actions.tuer}} une personne supplémentaire ou ne rien faire. Elle ne peut utiliser qu'une potion maximum par nuit et ne possède qu'un exemplaire de chaque potion par partie. Si la sorcière se fait {{actions.voler}}, la nouvelle sorcière ne pourra pas réutiliser les potions qui ont déjà été utilisée par la Sorcière précédente.",
         "winsWith": [
             "village"
         ]
     },
     "Villageois": {
         "color": "#FFCF4A",
-        "description": "..... ........ .... ..... ........ ..... ..... ..... ..... ..... ..... ....... ........ ... ... ... ...",
+        "description": "C'est un membre du {{camps.village}}. Il n'a aucun action particulière.",
         "winsWith": [
             "village"
         ]
@@ -114,15 +114,15 @@
     "Voleur": {
         "night": 0,
         "color": "#6CD2B2",
-        "description": "..... ........ .... ..... ........ ..... ..... ..... ..... ..... ..... ....... ........ ... ... ... ...",
+        "description": "C'est un membre du {{camps.village}}. Lors de son tour la nuit, il peut {{actions.voler}} la carte d'une personne ainsi que les capacités restantes du rôle associé. Si l'Enfant sauvage est volé, le nouvel Enfant sauvage hérite du modèle choisi par l'Enfant sauvage précédent. Si une personne infectée est volée, cette personne restera infectée et deviendra le nouveau Voleur.",
         "winsWith": [
-            "seul"
+            "village"
         ]
     },
     "Voyante": {
         "night": 23,
         "color": "#A767C5",
-        "description": "..... ........ .... ..... ........ ..... ..... ..... ..... ..... ..... ....... ........ ... ... ... ...",
+        "description": "C'est un membre du {{camps.village}}. Lors de son tour la nuit, elle peut {{actions.decouvrir}} le rôle d'une personne. Le meneur lui montrera la carte actuelle de la personne choisi mais elle n'aura pas plus d'informations",
         "winsWith": [
             "village"
         ]
