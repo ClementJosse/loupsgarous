@@ -1,0 +1,130 @@
+{
+    "Ange": {
+        "day": 52,
+        "color": "#5A98DF",
+        "description": "Pour gagner {{camps.seul}}, l'Ange doit de se faire éliminer pendant la 1ère nuit ou pendant le 1er vote du village. S'il n'est pas mort, il rejoint le {{camps.village}} a partir de la 2ème nuit. ",
+        "winsWith": [
+            "seul",
+            "village"
+        ]
+    },
+    "Chasseur": {
+        "day": 51,
+        "color": "#6CD2B2",
+        "description": "C'est un membre du {{camps.village}}, Il n'a pas de pouvoir de son vivant. Une fois mort, il peut choisir de {{actions.tuer}} une personne supplémentaire qui mourra avec lui.",
+        "winsWith": [
+            "village"
+        ]
+    },
+    "Cupidon": {
+        "night": 51,
+        "color": "#F18EAC",
+        "description": "Pendant la première nuit, le Cupidon va {{actions.amoureux}} 2 personnes. Les 2 amoureux doivent ensuite gagner ensemble s'il ne font pas partie du meme camps (ex: {{camps.loups}}/{{camps.seul}}), ou avec leur camps s'il sont dans le même. Quand l'un des deux meurt, le deuxième meurt aussi.",
+        "winsWith": [
+            "village"
+        ]
+    },
+    "Enfant sauvage": {
+        "night": 50,
+        "color": "#E85660",
+        "description": "Pendant la première nuit, l’Enfant sauvage doit {{actions.model}} parmis les joueurs. Tant que son modèle est en vie, l'enfant sauvage fait parti du {{camps.village}} et n'a pas de pouvoir. Quand son modèle meurt, l’enfant sauvage rejoint le camps des {{camps.loups}} jusqu’a la fin de la partie et participe à l'élimination d'un villageois pendant leur tour.",
+        "winsWith": [
+            "village",
+            "loups"
+        ]
+    },
+    "Infect père des loups": {
+        "night": 11,
+        "color": "#E85660",
+        "description": "C'est un membre des {{camps.loups}}. Une unique fois pendant la partie, il peut {{actions.infecter}} la personne éliminée par les {{camps.loups}}, la personne doit maintenant gagner avec le camps des {{camps.loups}} tout en conservant son rôle d'origine",
+        "winsWith": [
+            "loups"
+        ]
+    },
+    "Loup": {
+        "night": 12,
+        "color": "#E85660",
+        "description": "C'est un membre des {{camps.loups}}. Chaque nuit, toutes les personnes de ce camps se réunissent pendant le tour des {{camps.loups}} pour {{actions.tuer}} une nouvelle personne. ",
+        "winsWith": [
+            "loups"
+        ]
+    },
+    "Loup blanc": {
+        "night": 10,
+        "color": "#D6D1C3",
+        "description": "Ce rôle doit gagner {{camps.seul}}. Chaque nuit il se réveille avec les {{camps.loups}} pour {{actions.tuer}} une personne. ",
+        "winsWith": [
+            "seul"
+        ]
+    },
+    "Montreur d'ours": {
+        "day": 50,
+        "color": "#E85660",
+        "description": "..... ........ .... ..... ........ ..... ..... ..... ..... ..... ..... ....... ........ ... ... ... ...",
+        "winsWith": [
+            "village"
+        ]
+    },
+    "Petite fille": {
+        "color": "#5A98DF",
+        "description": "..... ........ .... ..... ........ ..... ..... ..... ..... ..... ..... ....... ........ ... ... ... ...",
+        "winsWith": [
+            "village"
+        ]
+    },
+    "Pyromane": {
+        "night": 20,
+        "color": "#FF823F",
+        "description": "..... ........ .... ..... ........ ..... ..... ..... ..... ..... ..... ....... ........ ... ... ... ...",
+        "winsWith": [
+            "seul"
+        ]
+    },
+    "Renard": {
+        "night": 21,
+        "color": "#FF823F",
+        "description": "..... ........ .... ..... ........ ..... ..... ..... ..... ..... ..... ....... ........ ... ... ... ...",
+        "winsWith": [
+            "village"
+        ]
+    },
+    "Salvateur": {
+        "night": 22,
+        "color": "#FFCF4A",
+        "description": "..... ........ .... ..... ........ ..... ..... ..... ..... ..... ..... ....... ........ ... ... ... ...",
+        "winsWith": [
+            "village"
+        ]
+    },
+    "Sorcière": {
+        "night": 5,
+        "color": "#FF823F",
+        "description": "..... ........ .... ..... ........ ..... ..... ..... ..... ..... ..... ....... ........ ... ... ... ...",
+        "winsWith": [
+            "village"
+        ]
+    },
+    "Villageois": {
+        "color": "#FFCF4A",
+        "description": "..... ........ .... ..... ........ ..... ..... ..... ..... ..... ..... ....... ........ ... ... ... ...",
+        "winsWith": [
+            "village"
+        ]
+    },
+    "Voleur": {
+        "night": 0,
+        "color": "#6CD2B2",
+        "description": "..... ........ .... ..... ........ ..... ..... ..... ..... ..... ..... ....... ........ ... ... ... ...",
+        "winsWith": [
+            "seul"
+        ]
+    },
+    "Voyante": {
+        "night": 23,
+        "color": "#A767C5",
+        "description": "..... ........ .... ..... ........ ..... ..... ..... ..... ..... ..... ....... ........ ... ... ... ...",
+        "winsWith": [
+            "village"
+        ]
+    }
+}
