@@ -3,7 +3,7 @@
     <div class="flex flex-col items-center" @mousedown="startFlip" @mouseup="endFlip" @mouseleave="endFlip"
         @touchstart="startFlip" @touchend="endFlip">
         <!-- Carte -->
-        <div class="card cursor-pointer select-none" style="perspective: clamp(0px, 1000px, 200vw)">
+        <div class="flipcard cursor-pointer select-none" style="perspective: clamp(0px, 1000px, 200vw)">
             <div class="w-full h-full transition-transform duration-300"
                 :style="isFlipped ? 'transform: rotateY(180deg)' : ''" style="transform-style: preserve-3d">
                 <div class="absolute w-full h-full" style="backface-visibility: hidden">
@@ -54,7 +54,7 @@ const endFlip = () => {
 </script>
 
 <style scope>
-.card {
+.flipcard {
     width: clamp(0px, 200px, 40vw);
     height: clamp(0px, 200px, 40vw)
 }
