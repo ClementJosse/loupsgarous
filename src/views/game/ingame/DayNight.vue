@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="flex flex-col items-center w-full bg-dark-background">
         <div v-if="props.info === 'day'">
             <img src="@/assets/day.svg" class="w-[clamp(0px,100vw,500px)]" />
         </div>

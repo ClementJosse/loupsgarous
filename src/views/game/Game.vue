@@ -6,7 +6,7 @@
         <LobbyLeader/>
       </div>
       <div v-else-if="isInGame" class="flex flex-col items-center w-full">
-        <InGameLeader/>
+        <InGameLeader :gameInfo="gameInfo"/>
       </div>
     </div>
     <div v-else>
