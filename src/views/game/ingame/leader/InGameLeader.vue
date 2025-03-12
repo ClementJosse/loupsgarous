@@ -4,7 +4,7 @@
         <div class="w-full bg-dark-background justify-items-center pb-[clamp(0px,2vw,10px)]">
             <!-- Bouton pour basculer l'état de révélation -->
             <button v-wave
-                class="flex flex-row text-purple-important justify-center items-center text-xl bg-dark-background font-medium px-[clamp(0px,2vw,10px)] gap-[clamp(0px,10px,2vw)] rounded-xl h-[clamp(0px,50px,10vw)]"
+                class="flex flex-row text-purple-important justify-center active:scale-105 items-center text-xl bg-dark-background font-medium px-[clamp(0px,2vw,10px)] gap-[clamp(0px,10px,2vw)] rounded-xl h-[clamp(0px,50px,10vw)]"
                 @click="toggleReveal">
                 <div class="flex justify-center items-center">
                     <!-- Affiche l'icône visible ou notvisible en fonction de l'état -->

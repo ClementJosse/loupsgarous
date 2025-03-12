@@ -1,7 +1,7 @@
 <template>
-  <DayNight info="day" />
+  <DayNight info="day" class="fixed" />
   <!-- Afficher FlipCard uniquement si playerCards et UID sont disponibles -->
-  <FlipCard v-if="playerCards && UID" :imgname="playerCards[UID]" />
+  <FlipCard class="fixed bottom-0 left-0 w-full z-30" v-if="playerCards && UID" :imgname="playerCards[UID]" />
 </template>
 
 <script setup>

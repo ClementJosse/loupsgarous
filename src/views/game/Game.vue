@@ -1,34 +1,47 @@
 <template>
-  <!-- Si l'utilisateur est déjà dans le jeu, on affiche la liste des joueurs -->
-  <div v-if="isUsernameInGame" class="w-full">
-    <div v-if="isLeader" class="w-full">
-      <div v-if="isInLobby" class="flex flex-col items-center w-full">
-        <LobbyLeader/>
-      </div>
-      <div v-else-if="isInGame" class="flex flex-col items-center w-full">
-        <InGameLeader :gameInfo="gameInfo"/>
-      </div>
-    </div>
-    <div v-else>
-      <div v-if="isInLobby" class="flex flex-col items-center w-full">
-        <LobbyPlayer :gameInfo="gameInfo"/>
-      </div>
-      <div v-else-if="isInGame" class="flex flex-col items-center w-full">
-        <InGamePlayer/>
-      </div>
-    </div>
+  <!-- État de chargement -->
+  <div v-if="isLoading" class="text-white text-4xl flex flex-col h-screen justify-center">
+    <Loader />
   </div>
 
-  <!-- Sinon, on propose d'entrer dans la partie -->
-  <JoinTheGame v-else-if="isInLobby" :username="username" @update:username="val => (username = val)"
-    @joinTheGame="joinTheGame" />
-
-  <CreateTheGame v-else-if="isCreating" :username="username" @update:username="val => (username = val)"
-    @createTheGame="createTheGame" />
-
-  <!-- Si la partie n'existe pas ou n'est pas en lobby -->
-  <div v-else class="text-white text-4xl flex flex-col h-screen justify-center">
+  <!-- Gestion des erreurs -->
+  <div v-else-if="hasError" class="text-white text-4xl flex flex-col h-screen justify-center">
     Partie non disponible
+  </div>
+
+  <!-- Contenu principal une fois chargé -->
+  <div v-else class="w-full">
+    <!-- Si l'utilisateur est déjà dans le jeu -->
+    <div v-if="isUsernameInGame" class="w-full">
+      <div v-if="isLeader" class="w-full">
+        <div v-if="isInLobby" class="flex flex-col items-center w-full">
+          <LobbyLeader />
+        </div>
+        <div v-else-if="isInGame" class="flex flex-col items-center w-full">
+          <InGameLeader :gameInfo="gameInfo" />
+        </div>
+      </div>
+      <div v-else>
+        <div v-if="isInLobby" class="flex flex-col items-center w-full">
+          <LobbyPlayer :gameInfo="gameInfo" />
+        </div>
+        <div v-else-if="isInGame" class="flex flex-col items-center w-full">
+          <InGamePlayer />
+        </div>
+      </div>
+    </div>
+
+    <!-- Sinon, propositions de rejoindre/créer -->
+    <JoinTheGame v-else-if="isInLobby" :username="username" @update:username="val => (username = val)"
+      @joinTheGame="joinTheGame" />
+
+    <CreateTheGame v-else-if="isCreating" :username="username" @update:username="val => (username = val)"
+      @createTheGame="createTheGame" />
+
+    <!-- Fallback si partie indisponible -->
+    <div v-else class="text-white text-4xl flex flex-col h-screen justify-center">
+      Partie non disponible
+    </div>
   </div>
 </template>
 
@@ -37,6 +50,7 @@ import { ref, onMounted } from 'vue'
 import { getDatabase, ref as dbRef, onValue, set, get, update, onDisconnect } from 'firebase/database'
 import { getAuth, signInAnonymously } from 'firebase/auth'
 import JoinTheGame from './JoinTheGame.vue'
+import Loader from './Loader.vue'
 import { useRoute } from 'vue-router'
 import CreateTheGame from './CreateTheGame.vue'
 import LobbyLeader from './lobby/leader/LobbyLeader.vue'
@@ -55,6 +69,8 @@ const isInGame = ref(false)
 const isUsernameInGame = ref(false)
 const isLeader = ref(null)
 const isCreating = ref(false)
+const isLoading = ref(true)
+const hasError = ref(false)
 
 // Configuration Firebase
 const database = getDatabase()
@@ -86,7 +102,7 @@ const initialize = async () => {
         // Vérifie si l'utilisateur (UID) est déjà enregistré dans uid_to_username
         const hasUidToUsername = data.uid_to_username || {}
         isUsernameInGame.value = hasUidToUsername.hasOwnProperty(UID)
-        
+
         isInGame.value = (data.status === 'ingame')
 
         leader.value = data.leader
@@ -94,9 +110,17 @@ const initialize = async () => {
       } else {
         isInLobby.value = false
       }
+
+      isLoading.value = false
+    }, (error) => {
+      console.error("Erreur de récupération des données :", error)
+      hasError.value = true
+      isLoading.value = false
     })
   } catch (error) {
     console.error("Erreur d'auth :", error.code, error.message)
+    hasError.value = true
+    isLoading.value = false
   }
 }
 
@@ -124,7 +148,7 @@ function createTheGame() {
     .then(() => {
       console.log("Utilisateur ajouté + suppression programmée au disconnect")
       isUsernameInGame.value = true
-      console.log("dbRef(database, `/${gameId}/uid_to_username/`)[0]"+dbRef(database, `/${gameId}/uid_to_username/`)[0])
+      console.log("dbRef(database, `/${gameId}/uid_to_username/`)[0]" + dbRef(database, `/${gameId}/uid_to_username/`)[0])
     })
     .catch((err) => {
       console.error("Erreur lors de la création de la partie :", err)
@@ -138,7 +162,7 @@ function joinTheGame() {
     console.error('Aucun utilisateur connecté !')
     return
   }
-  
+
   const uid = user.uid
   const usernameValue = username.value
 
@@ -166,30 +190,8 @@ function joinTheGame() {
         playerList: playerList
       })
     })
-    /*.then(() => {
-      console.log("Utilisateur ajouté avec succès")
-
-      // Programmer la suppression en cas de déconnexion
-      onDisconnect(gameRef).update({
-        [`uid_to_username/${uid}`]: null,
-        playerList: get(gameRef).then(snapshot => {
-          const updatedGameData = snapshot.val() || {}
-          return (updatedGameData.playerList || []).filter(player => player !== usernameValue)
-        })
-      })
-    })
-    .then(() => {
-      console.log("Suppression programmée au disconnect")
-      isUsernameInGame.value = true
-    })*/
     .catch((err) => {
       console.error("Erreur lors de la jonction de la partie :", err)
     })
 }
-
-
 </script>
-
-<style scoped>
-/* Ajoutez vos styles ici si nécessaire */
-</style>

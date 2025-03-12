@@ -1,25 +1,29 @@
 <template>
-    <!-- Conteneur parent qui gère les événements -->
-    <div class="flex flex-col items-center" @mousedown="startFlip" @mouseup="endFlip" @mouseleave="endFlip"
-        @touchstart="startFlip" @touchend="endFlip">
-        <!-- Carte -->
-        <div class="flipcard cursor-pointer select-none" style="perspective: clamp(0px, 1000px, 200vw)">
-            <div class="w-full h-full transition-transform duration-300"
-                :style="isFlipped ? 'transform: rotateY(180deg)' : ''" style="transform-style: preserve-3d">
-                <div class="absolute w-full h-full" style="backface-visibility: hidden">
-                    <img src="../../../assets/roles/Back.png" class="w-full h-full object-cover">
-                </div>
-                <div class="absolute w-full h-full" style="transform: rotateY(180deg); backface-visibility: hidden">
-                    <img :src="getImageUrl(imgname)" class="w-full h-full object-cover">
+    <!-- Conteneur principal fixé en bas de la page -->
+    <div
+        class="fixed bottom-0 left-0 w-full z-5 bg-dark-background h-[clamp(0px,50vw,250px)] flex flex-col items-center justify-center">
+        <!-- Conteneur parent qui gère les événements -->
+        <div class="flex pb-[clamp(0px,50vw,250px)] flex-col items-center" @mousedown="startFlip" @mouseup="endFlip" @mouseleave="endFlip"
+            @touchstart="startFlip" @touchend="endFlip">
+            <!-- Carte -->
+            <div class="flipcard cursor-pointer select-none" style="perspective: clamp(0px, 1000px, 200vw)">
+                <div class="w-full h-full transition-transform duration-300"
+                    :style="isFlipped ? 'transform: rotateY(180deg)' : ''" style="transform-style: preserve-3d">
+                    <div class="absolute w-full h-full" style="backface-visibility: hidden">
+                        <img src="../../../assets/roles/Back.png" class="w-full h-full object-cover">
+                    </div>
+                    <div class="absolute w-full h-full" style="transform: rotateY(180deg); backface-visibility: hidden">
+                        <img :src="getImageUrl(imgname)" class="w-full h-full object-cover">
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Zone de contrôle en dessous de la carte -->
-        <div class="visible-icon-container flex justify-center items-center rounded-full">
-            <!-- Affiche l'icône visible ou notvisible en fonction de l'état -->
-            <img v-if="isFlipped" src="../../../assets/visible.svg" class="visible-icon">
-            <img v-else src="../../../assets/notvisible.svg" class="visible-icon">
+            <!-- Zone de contrôle en dessous de la carte -->
+            <div class="visible-icon-container flex justify-center items-center rounded-full">
+                <!-- Affiche l'icône visible ou notvisible en fonction de l'état -->
+                <img v-if="isFlipped" src="../../../assets/visible.svg" class="visible-icon">
+                <img v-else src="../../../assets/notvisible.svg" class="visible-icon">
+            </div>
         </div>
     </div>
 </template>
@@ -53,17 +57,20 @@ const endFlip = () => {
 };
 </script>
 
-<style scope>
+<style scoped>
+/* Styles pour la carte */
 .flipcard {
     width: clamp(0px, 200px, 40vw);
-    height: clamp(0px, 200px, 40vw)
+    height: clamp(0px, 200px, 40vw);
 }
 
+/* Styles pour le conteneur de l'icône visible */
 .visible-icon-container {
     width: clamp(0px, 75px, 15vw);
-    height: clamp(0px, 75px, 15vw)
+    height: clamp(0px, 75px, 15vw);
 }
 
+/* Styles pour l'icône visible */
 .visible-icon {
     width: clamp(0px, 30px, 6vw);
     height: clamp(0px, 30px, 6vw);
