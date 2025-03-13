@@ -26,7 +26,7 @@
           <LobbyPlayer :gameInfo="gameInfo" />
         </div>
         <div v-else-if="isInGame" class="flex flex-col items-center w-full">
-          <InGamePlayer />
+          <InGamePlayer :gameInfo="gameInfo" />
         </div>
       </div>
     </div>
