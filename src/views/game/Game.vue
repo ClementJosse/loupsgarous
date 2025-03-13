@@ -5,7 +5,7 @@
   </div>
 
   <!-- Gestion des erreurs -->
-  <div v-else-if="hasError" class="text-white text-4xl flex flex-col h-screen justify-center">
+  <div v-else-if="hasError" class="text-white text-4xl flex flex-col h-screen justify-center text-center">
     Partie non disponible
   </div>
 
@@ -39,7 +39,7 @@
       @createTheGame="createTheGame" />
 
     <!-- Fallback si partie indisponible -->
-    <div v-else class="text-white text-4xl flex flex-col h-screen justify-center">
+    <div v-else class="text-white text-4xl flex flex-col h-screen justify-center text-center">
       Partie non disponible
     </div>
   </div>
