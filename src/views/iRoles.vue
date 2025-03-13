@@ -87,25 +87,41 @@ onUnmounted(() => {
 });
 
 const getImagePath = (roleName) => {
-    return `/src/assets/roles/${roleName}.png`;
+    return new URL(`../assets/roles/${roleName}.png`, import.meta.url).href;
 };
 
 
+// First, import all the SVG assets at the top of your script
+import villageIcon from '../assets/camps/village.svg';
+import loupsIcon from '../assets/camps/loups.svg';
+import seulIcon from '../assets/camps/seul.svg';
+import modelIcon from '../assets/actions/model.svg';
+import tuerIcon from '../assets/actions/tuer.svg';
+import amoureuxIcon from '../assets/actions/amoureux.svg';
+import huilerIcon from '../assets/actions/huiler.svg';
+import brulerIcon from '../assets/actions/bruler.svg';
+import protegerIcon from '../assets/actions/proteger.svg';
+import sauverIcon from '../assets/actions/sauver.svg';
+import volerIcon from '../assets/actions/voler.svg';
+import decouvrirIcon from '../assets/actions/decouvrir.svg';
+import infecterIcon from '../assets/actions/infecter.svg';
+
+// Then update the formatDescription function
 const formatDescription = (description) => {
     return description
-        .replace(/\{\{camps\.village\}\}/g, `<img src="/src/assets/camps/village.svg" class="inline h-[clamp(0px,5vw,25px)]" />`)
-        .replace(/\{\{camps\.loups\}\}/g, `<img src="/src/assets/camps/loups.svg" class="inline h-[clamp(0px,5vw,25px)]" />`)
-        .replace(/\{\{camps\.seul\}\}/g, `<img src="/src/assets/camps/seul.svg" class="inline h-[clamp(0px,5vw,25px)]" />`)
-        .replace(/\{\{actions\.model\}\}/g, `<img src="/src/assets/actions/model.svg" class="inline h-[clamp(0px,5vw,25px)]" />`)
-        .replace(/\{\{actions\.tuer\}\}/g, `<img src="/src/assets/actions/tuer.svg" class="inline h-[clamp(0px,5vw,25px)]" />`)
-        .replace(/\{\{actions\.amoureux\}\}/g, `<img src="/src/assets/actions/amoureux.svg" class="inline h-[clamp(0px,5vw,25px)]" />`)
-        .replace(/\{\{actions\.huiler\}\}/g, `<img src="/src/assets/actions/huiler.svg" class="inline h-[clamp(0px,5vw,25px)]" />`)
-        .replace(/\{\{actions\.bruler\}\}/g, `<img src="/src/assets/actions/bruler.svg" class="inline h-[clamp(0px,5vw,25px)]" />`)
-        .replace(/\{\{actions\.proteger\}\}/g, `<img src="/src/assets/actions/proteger.svg" class="inline h-[clamp(0px,5vw,25px)]" />`)
-        .replace(/\{\{actions\.sauver\}\}/g, `<img src="/src/assets/actions/sauver.svg" class="inline h-[clamp(0px,5vw,25px)]" />`)
-        .replace(/\{\{actions\.voler\}\}/g, `<img src="/src/assets/actions/voler.svg" class="inline h-[clamp(0px,5vw,25px)]" />`)
-        .replace(/\{\{actions\.decouvrir\}\}/g, `<img src="/src/assets/actions/decouvrir.svg" class="inline h-[clamp(0px,5vw,25px)]" />`)
-        .replace(/\{\{actions\.infecter\}\}/g, `<img src="/src/assets/actions/infecter.svg" class="inline h-[clamp(0px,5vw,25px)]" />`);
+        .replace(/\{\{camps\.village\}\}/g, `<img src="${villageIcon}" class="inline h-[clamp(0px,5vw,25px)]" />`)
+        .replace(/\{\{camps\.loups\}\}/g, `<img src="${loupsIcon}" class="inline h-[clamp(0px,5vw,25px)]" />`)
+        .replace(/\{\{camps\.seul\}\}/g, `<img src="${seulIcon}" class="inline h-[clamp(0px,5vw,25px)]" />`)
+        .replace(/\{\{actions\.model\}\}/g, `<img src="${modelIcon}" class="inline h-[clamp(0px,5vw,25px)]" />`)
+        .replace(/\{\{actions\.tuer\}\}/g, `<img src="${tuerIcon}" class="inline h-[clamp(0px,5vw,25px)]" />`)
+        .replace(/\{\{actions\.amoureux\}\}/g, `<img src="${amoureuxIcon}" class="inline h-[clamp(0px,5vw,25px)]" />`)
+        .replace(/\{\{actions\.huiler\}\}/g, `<img src="${huilerIcon}" class="inline h-[clamp(0px,5vw,25px)]" />`)
+        .replace(/\{\{actions\.bruler\}\}/g, `<img src="${brulerIcon}" class="inline h-[clamp(0px,5vw,25px)]" />`)
+        .replace(/\{\{actions\.proteger\}\}/g, `<img src="${protegerIcon}" class="inline h-[clamp(0px,5vw,25px)]" />`)
+        .replace(/\{\{actions\.sauver\}\}/g, `<img src="${sauverIcon}" class="inline h-[clamp(0px,5vw,25px)]" />`)
+        .replace(/\{\{actions\.voler\}\}/g, `<img src="${volerIcon}" class="inline h-[clamp(0px,5vw,25px)]" />`)
+        .replace(/\{\{actions\.decouvrir\}\}/g, `<img src="${decouvrirIcon}" class="inline h-[clamp(0px,5vw,25px)]" />`)
+        .replace(/\{\{actions\.infecter\}\}/g, `<img src="${infecterIcon}" class="inline h-[clamp(0px,5vw,25px)]" />`);
 };
 </script>
 
