@@ -2,7 +2,7 @@
   <DayNight info="day" class="fixed" />
   <!-- Afficher FlipCard uniquement si playerCards et UID sont disponibles -->
   <FlipCard class="fixed bottom-0 left-0 w-full z-30" v-if="playerCards && UID" :imgname="playerCards[UID]" />
-  <div class="fixed bottom-0 left-0 w-full z-0 h-[clamp(0px,50vw,250px)] bg-dark-background"></div>
+  <div class="fixed bottom-0 left-0 w-full z-0 h-[clamp(0px,50vw,250px)] bg-dark-background pointer-events-none select-none"></div>
 </template>
 
 <script setup>

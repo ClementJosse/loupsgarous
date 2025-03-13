@@ -10,18 +10,18 @@
                 <div class="w-full h-full transition-transform duration-300"
                     :style="isFlipped ? 'transform: rotateY(180deg)' : ''" style="transform-style: preserve-3d">
                     <div class="absolute w-full h-full" style="backface-visibility: hidden">
-                        <img src="../../../../assets/roles/Back.png" class="w-full h-full object-cover">
+                        <img src="../../../../assets/roles/Back.png" class="w-full h-full object-cover pointer-events-none select-none">
                     </div>
                     <div class="absolute w-full h-full" style="transform: rotateY(180deg); backface-visibility: hidden">
-                        <img :src="getImageUrl(imgname)" class="w-full h-full object-cover">
+                        <img :src="getImageUrl(imgname)" class="w-full h-full object-cover pointer-events-none select-none">
                     </div>
                 </div>
             </div>
             <!-- Zone de contrôle en dessous de la carte -->
             <div class="visible-icon-container flex justify-center items-center rounded-full">
                 <!-- Affiche l'icône visible ou notvisible en fonction de l'état -->
-                <img v-if="isFlipped" src="../../../../assets/visible.svg" class="visible-icon">
-                <img v-else src="../../../../assets/notvisible.svg" class="visible-icon">
+                <img v-if="isFlipped" src="../../../../assets/visible.svg" class="visible-icon pointer-events-none select-none">
+                <img v-else src="../../../../assets/notvisible.svg" class="visible-icon pointer-events-none select-none">
             </div>
         </div>
     </div>
