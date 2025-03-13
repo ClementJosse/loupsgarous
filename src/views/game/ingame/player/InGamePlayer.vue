@@ -6,7 +6,7 @@
 
 <script setup>
 import DayNight from '../DayNight.vue';
-import FlipCard from '../FlipCard.vue';
+import FlipCard from './FlipCard.vue';
 import { useRoute } from 'vue-router';
 import { ref, onMounted } from 'vue';
 import { getDatabase, ref as dbRef, onValue } from 'firebase/database';
