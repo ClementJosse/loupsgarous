@@ -12,7 +12,8 @@
                     <img src="../../../../assets/roles/Back.png" class="h-full w-full">
                 </div>
                 <div class="card-back">
-                    <img :src="getImageUrl(gameInfo.playerCards[props.uid])" class="h-full w-full">
+                    <img v-if="gameInfo.playerCards && gameInfo.playerCards[props.uid]"
+                        :src="getImageUrl(gameInfo.playerCards[props.uid])" class="h-full w-full">
                 </div>
             </div>
         </div>
@@ -51,8 +52,8 @@ watch(() => props.isRevealed, (newVal) => {
 <style scoped>
 .card-container {
     perspective: 1000px;
-    width: clamp(0px,12vw,60px);
-    height: clamp(0px,12vw,60px);
+    width: clamp(0px, 12vw, 60px);
+    height: clamp(0px, 12vw, 60px);
 }
 
 .card {

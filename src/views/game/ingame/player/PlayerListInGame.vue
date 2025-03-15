@@ -1,10 +1,11 @@
 <template>
-    <div class="pb-[clamp(0px,10vw,50px)] mt-[clamp(0px,30vw,150px)] mb-[clamp(0px,20vw,100px)]">
+    <div class="pb-[clamp(0px,10vw,50px)] mt-[clamp(0px,35vw,175px)] mb-[clamp(0px,20vw,100px)]">
         <!-- Liste "principale" -->
-        <ul class="relative flex z-0 flex-col w-[clamp(0px,96vw,480px)] items-center rounded-xl">
+        <ul
+            class="relative flex z-0 flex-col w-[clamp(0px,96vw,480px)] items-center rounded-xl pb-[clamp(0px,35vw,175px)]">
             <!-- Cercle en arrière-plan (on peut le laisser dans un <li> masqué ou utiliser un pseudo-élément) -->
             <li
-                class="absolute z-[-1] top-[clamp(0px,12vw,60px)] bottom-[clamp(0px,7vw,35px)] right-[clamp(0px,10vw,50px)] left-[clamp(0px,10vw,50px)] border-dashed border-disabled border-[clamp(0px,0.8vw,4px)] rounded-full">
+                class="absolute z-[-1] top-[clamp(0px,12vw,60px)] bottom-0 right-[clamp(0px,10vw,50px)] left-[clamp(0px,10vw,50px)] border-dashed border-disabled border-[clamp(0px,0.8vw,4px)] rounded-tl-full rounded-tr-full">
             </li>
 
             <!-- Premier élément s'il y a un nombre impair d'items -->
