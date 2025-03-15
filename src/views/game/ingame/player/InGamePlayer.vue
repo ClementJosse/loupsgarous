@@ -1,6 +1,6 @@
 <template>
   <DayNight info="day" class="fixed z-20" />
-  <PlayerListInGame :gameInfo='gameInfo' :isRevealed='isRevealed' />
+  <PlayerListInGame :gameInfo='gameInfo' />
   <FlipCard class="fixed bottom-0 left-0 w-full z-30" v-if="playerCards && UID" :imgname="playerCards[UID]" />
   <div class="fixed bottom-0 left-0 w-full z-0">
     <div class="h-[clamp(0px,15vw,75px)] gradient"></div>

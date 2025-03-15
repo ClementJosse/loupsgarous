@@ -11,7 +11,7 @@
             <!-- Premier élément s'il y a un nombre impair d'items -->
             <li v-if="middleItem"
                 class="flex z-1 text-base flex-row text-white font-semibold p-[clamp(0px,3vw,15px)] rounded-xl mb-[clamp(0px,2vw,10px)]">
-                <PlayerInfo :gameInfo='gameInfo' :isRevealed='isRevealed' :uid='middleItem' :isCardRight=false />
+                <PlayerInfo :gameInfo='gameInfo' :isRevealed='false' :uid='middleItem' :isCardRight=false />
             </li>
             <!-- Placeholder (invisible) si la liste est paire, pour garder un "espace" cohérent -->
             <li v-else
@@ -26,7 +26,7 @@
                     <li v-for="(item, index) in leftColumn" :key="index"
                         class="text-white text-base font-semibold p-[clamp(0px,3vw,15px)] mb-[clamp(0px,6vw,30px)] rounded-xl"
                         :class="{ 'ml-[clamp(0px,5vw,25px)]': index == 0 }">
-                        <PlayerInfo :gameInfo='gameInfo' :isRevealed='isRevealed' :uid='item' :isCardRight=false />
+                        <PlayerInfo :gameInfo='gameInfo' :isRevealed='false' :uid='item' :isCardRight=false />
                     </li>
                 </ul>
 
@@ -48,37 +48,83 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import PlayerInfo from '../leader/PlayerInfo.vue';
+import { getAuth, signInAnonymously } from 'firebase/auth';
+
 
 const props = defineProps({
     gameInfo: {
         type: Object
-    },
-    isRevealed: {
-        type: Boolean
     }
 });
 
+const playersListFromPlayerView = ref([]);
+const auth = getAuth();
+const UID = ref(null); // Utiliser une référence réactive pour UID
+
+onMounted(() => {
+    initialize()
+})
+
+const initialize = async () => {
+    try {
+        await signInAnonymously(auth);
+        UID.value = auth.currentUser.uid;
+    }
+    catch (error) {
+        console.error('Erreur d\'auth :', error.code, error.message);
+    }
+    console.log("liste actuelle:", props.gameInfo.playerList)
+    console.log("uid du joueur:", UID.value)
+    playersListFromPlayerView.value = rotatePlayerList(props.gameInfo.playerList, UID.value);
+    playersListFromPlayerView.value.pop()
+    console.log("liste sans le joueur:", playersListFromPlayerView.value)
+}
+
+const rotatePlayerList = (players, currentPlayerUID) => {
+    // Find the index of the current player
+    const currentPlayerIndex = players.findIndex(player => player === currentPlayerUID);
+    console.log("currentPlayerIndex", currentPlayerIndex);
+
+    // If player not found or already last, return original array
+    if (currentPlayerIndex === -1 || currentPlayerIndex === players.length - 1) {
+        return [...players];
+    }
+
+    // Create new array with players after current player, then players before
+    return [
+        ...players.slice(currentPlayerIndex + 1),
+        ...players.slice(0, currentPlayerIndex + 1)
+    ];
+};
+
+
 const middleItem = computed(() => {
-    console.log(props)
+    console.log(playersListFromPlayerView.value);
+    // Vérifie si la liste existe déjà
+    if (!playersListFromPlayerView.value) return null;
+
     // Retourne l'élément central si le nombre d'éléments est impair
-    return props.gameInfo.playerList.length % 2 === 1
-        ? props.gameInfo.playerList[Math.floor(props.gameInfo.playerList.length / 2)]
+    return playersListFromPlayerView.value.length % 2 === 1
+        ? playersListFromPlayerView.value[Math.floor(playersListFromPlayerView.value.length / 2)]
         : null;
 });
 
 const remainingItems = computed(() => {
+    // Vérifie si la liste existe déjà
+    if (!playersListFromPlayerView.value) return [];
+
     // Crée un nouveau tableau sans l'élément central
     if (middleItem.value !== null) {
-        const middleIndex = Math.floor(props.gameInfo.playerList.length / 2);
+        const middleIndex = Math.floor(playersListFromPlayerView.value.length / 2);
         return [
-            ...props.gameInfo.playerList.slice(0, middleIndex),
-            ...props.gameInfo.playerList.slice(middleIndex + 1)
+            ...playersListFromPlayerView.value.slice(0, middleIndex),
+            ...playersListFromPlayerView.value.slice(middleIndex + 1)
         ];
     }
     // Retourne une copie du tableau original pour éviter les mutations
-    return [...props.gameInfo.playerList];
+    return [...playersListFromPlayerView.value];
 });
 
 const leftColumn = computed(() => {
