@@ -16,7 +16,7 @@
 import { ref, computed, onMounted } from 'vue';
 import GameCodeInfo from '../GameCodeInfo.vue';
 import LeaderListLobby from './LeaderListLobby.vue';
-import { getDatabase, ref as dbRef, onValue, update} from 'firebase/database';
+import { getDatabase, ref as dbRef, onValue, update } from 'firebase/database';
 import { useRoute } from 'vue-router';
 import LeaderRoleSelectionList from './LeaderRoleSelectionList.vue';
 
@@ -29,6 +29,7 @@ const partiesRef = dbRef(database, `/${gameId}`);
 const cards = ref([]);
 const playerList = ref([]);
 const playerCards = ref({})
+const playerStatus = ref({})
 
 const playerCount = computed(() => playerList.value.length);
 const totalCardsValue = computed(() =>
@@ -83,12 +84,23 @@ const distributeCards = () => {
     });
 };
 
+const setAllPlayersAlive = () => {
+    playerStatus.value = {};
+    playerList.value.forEach((player, index) => {
+        if (!playerStatus.value[player]) {
+            playerStatus.value[player] = [];
+        }
+        playerStatus.value[player] = 'alive';
+    });
+}
+
 const startGame = () => {
     setTimeout(function () {
         distributeCards()
-        update(partiesRef, {status : "ingame"})
-        update(partiesRef, {playerCards : playerCards.value})
-
+        setAllPlayersAlive()
+        update(partiesRef, { status: "ingame" })
+        update(partiesRef, { playerCards: playerCards.value })
+        update(partiesRef, { playerStatus: playerStatus.value })
         console.log('La partie commence !');
     }, 200);
 }

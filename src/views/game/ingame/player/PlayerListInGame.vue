@@ -35,7 +35,7 @@
                     <li v-for="(item, index) in rightColumn" :key="index"
                         class="text-white text-base font-semibold p-[clamp(0px,3vw,15px)] mb-[clamp(0px,6vw,30px)] rounded-xl"
                         :class="{ 'mr-[clamp(0px,5vw,25px)]': index == 0 }">
-                        <PlayerInfo :gameInfo='gameInfo' :isRevealed='isRevealed' :uid='item' :isCardRight=true />
+                        <PlayerInfo :gameInfo='gameInfo' :isRevealed='false' :uid='item' :isCardRight=true />
                     </li>
                 </ul>
             </li>

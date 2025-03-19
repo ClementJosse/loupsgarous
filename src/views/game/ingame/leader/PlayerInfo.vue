@@ -1,12 +1,29 @@
 <template>
     <div class="flex items-center gap-[clamp(0px,2vw,10px)]" :class="isCardRight ? 'flex-row' : 'flex-row-reverse'">
         <!-- Nom d'utilisateur -->
-        <div class="text-center">
+        <div v-if="gameInfo.playerStatus[props.uid] === 'dead'"
+            class="text-disabled flex flex-row gap-[clamp(0px,0.5vw,2.5px)]">
+            <img src="../../../../assets/dead.svg" class="h-[clamp(0px,6vw,30px)] w-auto">
             {{ gameInfo.uid_to_username[props.uid] }}
+        </div>
+        <div v-else>
+            <div v-if="isRevealedClass && gameInfo.playerStatus[props.uid] === 'dying'"
+                class="flex flex-row text-red-kill gap-[clamp(0px,0.5vw,2.5px)]">
+                <img src="../../../../assets/dying.svg" class="h-[clamp(0px,6vw,30px)] w-auto">
+                {{ gameInfo.uid_to_username[props.uid] }}
+            </div>
+            <div v-else>
+                {{ gameInfo.uid_to_username[props.uid] }}
+            </div>
         </div>
 
         <!-- Carte -->
-        <div class="card-container" :class="{ 'is-revealed': isRevealedClass }">
+        <div v-if="gameInfo.playerStatus[props.uid] === 'dead'" class="card-container">
+            <div class="absolute inset-0 bg-blue-background"></div>
+            <img v-if="gameInfo.playerCards && gameInfo.playerCards[props.uid]" :src="getImageUrl(gameInfo.playerCards[props.uid])" class="h-full w-full opacity-50">
+
+        </div>
+        <div v-else class="card-container" :class="{ 'is-revealed': isRevealedClass }">
             <div class="card">
                 <div class="card-front">
                     <img src="../../../../assets/roles/Back.png" class="h-full w-full">
