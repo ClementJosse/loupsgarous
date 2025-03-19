@@ -1,46 +1,53 @@
 <template>
+  <!-- État de chargement -->
+  <div v-if="isLoading" class="text-white text-4xl flex flex-col h-screen justify-center">
+    <Loader />
+  </div>
 
-  <div class="flex flex-row gap-[clamp(0px,3vw,15px)] pt-[clamp(0px,20vw,100px)]">
-    <img src="@/assets/logo.svg" class="w-[clamp(0px,35vw,175px)]" />
-    <div class="flex flex-col justify-center">
-      <h1 class="text-5xl font-jockey text-white">
-        Loups-garous
-      </h1>
-      <h1 class="text-4xl font-jockey text-purple-important">
-        sans cartes
-      </h1>
+  <!-- Contenu principal une fois chargé -->
+  <div v-else class="flex flex-col  justify-center">
+    <div class="flex flex-row gap-[clamp(0px,3vw,15px)] pt-[clamp(0px,20vw,100px)]">
+      <img src="@/assets/logo.svg" class="w-[clamp(0px,35vw,175px)]" />
+      <div class="flex flex-col justify-center">
+        <h1 class="text-5xl font-jockey text-white">
+          Loups-garous
+        </h1>
+        <h1 class="text-4xl font-jockey text-purple-important">
+          sans cartes
+        </h1>
+      </div>
+    </div>
+
+    <p class="text-base font-light text-white mt-[clamp(0px,2vw,10px)]">
+      Jouez ensemble, partout, sans le jeu de carte.
+    </p>
+
+    <button v-wave type="button" @click="createGame()"
+      class="active:scale-105 text-2xl text-blue-background font-semibold bg-purple-important py-[clamp(0px,1.5vw,7.5px)] px-[clamp(0px,20vw,100px)] rounded-full mt-[clamp(0px,30vw,150px)]">
+      Créer une partie
+    </button>
+
+    <div class="pb-[clamp(0px,6vw,30px)]" v-if="lobbyGames.length > 0">
+      <p
+        class="flex justify-center text-base font-light text-white mt-[clamp(0px,20vw,100px)] mb-[clamp(0px,2vw,10px)]">
+        Rejoindre une partie :
+      </p>
+      <ul class="flex flex-col justify-center justify-items-center">
+        <button v-wave type="button" @click="joinGame(game.code)"
+          class="active:scale-105 bg-dark-background justify-center justify-items-center mb-[clamp(0px,3vw,15px)] py-[clamp(0px,1vw,5px)] w-[clamp(0px,84vw,420px)] rounded-xl"
+          v-for="(game, index) in lobbyGames" :key="index">
+          <div class="text-purple-important text-base font-light">#{{ game.code }}</div>
+          <div class="text-white text-lg font-light">{{ game.playersCount }} Joueurs</div>
+          <div class="flex flex-row text-white text-lg font-light gap-1">
+            Meneur :
+            <div class="text-purple-important font-normal">
+              {{ game.uid_to_username?.[game.leader] || 'Chargement...' }}
+            </div>
+          </div>
+        </button>
+      </ul>
     </div>
   </div>
-
-  <p class="text-base font-light text-white mt-[clamp(0px,2vw,10px)]">
-    Jouez ensemble, partout, sans le jeu de carte.
-  </p>
-
-  <button v-wave type="button" @click="createGame()"
-    class="active:scale-105 text-2xl text-blue-background font-semibold bg-purple-important py-[clamp(0px,1.5vw,7.5px)] px-[clamp(0px,20vw,100px)] rounded-full mt-[clamp(0px,30vw,150px)]">
-    Créer une partie
-  </button>
-
-  <div class="pb-[clamp(0px,6vw,30px)]" v-if="lobbyGames.length > 0">
-    <p class="flex justify-center text-base font-light text-white mt-[clamp(0px,20vw,100px)] mb-[clamp(0px,2vw,10px)]">
-      Rejoindre une partie :
-    </p>
-    <ul class="flex flex-col justify-center justify-items-center">
-      <button v-wave type="button" @click="joinGame(game.code)"
-        class="active:scale-105 bg-dark-background justify-center justify-items-center mb-[clamp(0px,3vw,15px)] py-[clamp(0px,1vw,5px)] w-[clamp(0px,84vw,420px)] rounded-xl"
-        v-for="(game, index) in lobbyGames" :key="index">
-        <div class="text-purple-important text-base font-light">#{{ game.code }}</div>
-        <div class="text-white text-lg font-light">{{ game.playersCount }} Joueurs</div>
-        <div class="flex flex-row text-white text-lg font-light gap-1">
-          Meneur :
-          <div class="text-purple-important font-normal">
-            {{ game.uid_to_username?.[game.leader] || 'Chargement...' }}
-          </div>
-        </div>
-      </button>
-    </ul>
-  </div>
-
 </template>
 
 <script setup>
@@ -48,52 +55,62 @@ import { ref, onMounted } from 'vue'
 import router from '../../router'
 import { getDatabase, ref as dbRef, onValue, set, get, child } from 'firebase/database'
 import { getAuth, signInAnonymously } from 'firebase/auth'
+import Loader from '../game/Loader.vue'
 
 const lobbyGames = ref([])
+const isLoading = ref(true)
 const database = getDatabase()
 const partiesRef = dbRef(database, '/') // Racine ou noeud "parties", selon ta structure
 const auth = getAuth()
 let UID = null
 
-// Authentification anonyme
-signInAnonymously(auth)
-  .then(() => {
+// Fonction d'initialisation asynchrone
+const initialize = async () => {
+  try {
+    // Authentification anonyme
+    await signInAnonymously(auth)
     UID = auth.currentUser.uid
     console.log("Authentification anonyme :", UID)
-  })
-  .catch((error) => {
+
+    // Écoute toutes les parties
+    onValue(partiesRef, (snapshot) => {
+      const data = snapshot.val() || {}
+      const filteredGames = []
+
+      // On parcourt chaque clé (ex: "140125", "157648", etc.)
+      for (let code in data) {
+        const party = data[code]
+
+        // On ne garde que les parties dont le status == "lobby"
+        if (party.status === 'lobby') {
+          // On détermine le nombre de joueurs
+          const playersCount = party.playerList
+            ? party.playerList.length
+            : 0
+
+          filteredGames.push({
+            code,                // code de la partie (ex: 140125)
+            leader: party.leader, // meneur
+            playersCount,         // nombre de joueurs
+            uid_to_username: party.uid_to_username
+          })
+        }
+      }
+
+      lobbyGames.value = filteredGames
+      isLoading.value = false
+    }, (error) => {
+      console.error("Erreur de récupération des données :", error)
+      isLoading.value = false
+    })
+  } catch (error) {
     console.error("Erreur d'auth :", error.code, error.message)
-  })
+    isLoading.value = false
+  }
+}
 
 onMounted(() => {
-
-  // Écoute toutes les parties
-  onValue(partiesRef, (snapshot) => {
-    const data = snapshot.val() || {}
-    const filteredGames = []
-
-    // On parcourt chaque clé (ex: "140125", "157648", etc.)
-    for (let code in data) {
-      const party = data[code]
-
-      // On ne garde que les parties dont le status == "lobby"
-      if (party.status === 'lobby') {
-        // On détermine le nombre de joueurs
-        const playersCount = party.playerList
-          ? party.playerList.length
-          : 0
-
-        filteredGames.push({
-          code,                // code de la partie (ex: 140125)
-          leader: party.leader, // meneur
-          playersCount,         // nombre de joueurs
-          uid_to_username: party.uid_to_username
-        })
-      }
-    }
-
-    lobbyGames.value = filteredGames
-  })
+  initialize()
 })
 
 function joinGame(gameCode) {
