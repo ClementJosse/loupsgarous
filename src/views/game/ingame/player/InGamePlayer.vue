@@ -1,5 +1,5 @@
 <template>
-  <DayNight info="day" class="fixed z-20" />
+  <DayNight :gameInfo="gameInfo" class="fixed z-20" />
   <PlayerListInGame :gameInfo='gameInfo' />
   <FlipCard class="fixed bottom-0 left-0 w-full z-30" v-if="playerCards && UID" :imgname="playerCards[UID]" />
   <div class="fixed bottom-0 left-0 w-full z-0">

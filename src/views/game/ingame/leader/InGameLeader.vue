@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col w-full items-center fixed z-20">
-        <DayNight info="night" />
+        <DayNight :gameInfo="gameInfo" />
         <div class="w-full bg-dark-background justify-items-center pb-[clamp(0px,2vw,10px)]">
             <!-- Bouton pour basculer l'état de révélation -->
             <button v-wave
