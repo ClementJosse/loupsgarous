@@ -10,16 +10,23 @@
         </div>
         <!-- Texte superposé toujours visible -->
         <div class="absolute inset-0 flex flex-col items-center justify-center text-white">
-            <div class="text-lg">{{ props.gameInfo.time }} n° {{ props.gameInfo.turnIndex }}</div>
-            <div class="text-xl font-semibold">{{ props.gameInfo.roundMessage }}</div>
+            <div class="text-lg">{{ props.gameInfo.time }} n° {{ props.gameInfo.dayNightNumberIndex }}</div>
+            <div class="text-xl font-semibold">{{ timelineMessageDict[props.gameInfo.timeline[props.gameInfo.timelineIndex]] }}</div>
         </div>
     </div>
 </template>
 
 <script setup>
+import { ref } from 'vue';
+import timelineMessage from '@/timelineMessage.json';
+
+// Utilisez timelineMessage directement comme un objet réactif
+const timelineMessageDict = ref(timelineMessage);
+
 const props = defineProps({
     gameInfo: {
-        type: Object
+        type: Object,
+        required: true,
     },
 });
 </script>

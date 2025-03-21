@@ -102,8 +102,9 @@ const startGame = () => {
         update(partiesRef, { playerCards: playerCards.value })
         update(partiesRef, { playerStatus: playerStatus.value })
         update(partiesRef, { time: 'Jour' })
-        update(partiesRef, { turnIndex: 1 })
-        update(partiesRef, { roundMessage : 'Les rôles ont été distribués' })
+        update(partiesRef, { dayNightNumberIndex: 1 })
+        update(partiesRef, { timelineIndex: 0 })
+        update(partiesRef, { timeline : ['Distribution initiale']})
         console.log('La partie commence !');
     }, 200);
 }

@@ -18,7 +18,7 @@
 
     <LeaderListInGame :gameInfo='gameInfo' :isRevealed='isRevealed' />
 
-    <LeaderTimeline class="fixed bottom-0 left-0 w-full z-30" />
+    <LeaderTimeline :gameInfo='gameInfo' class="fixed bottom-0 left-0 w-full z-30" />
 </template>
 
 <script setup>
