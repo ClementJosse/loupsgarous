@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-col w-full items-center fixed z-20">
         <DayNight :gameInfo="gameInfo" />
-        <div class="w-full bg-dark-background justify-items-center pb-[clamp(0px,2vw,10px)]">
+        <div class="fixed w-full bg-dark-background justify-items-center pb-[clamp(0px,2vw,10px)] mt-[clamp(0px,32vw,160px)]">
             <!-- Bouton pour basculer l'état de révélation -->
             <button v-wave
                 class="flex flex-row text-purple-important justify-center active:scale-105 items-center text-xl bg-dark-background font-medium px-[clamp(0px,2vw,10px)] gap-[clamp(0px,10px,2vw)] rounded-xl h-[clamp(0px,50px,10vw)]"
