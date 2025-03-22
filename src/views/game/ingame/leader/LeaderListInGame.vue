@@ -1,5 +1,5 @@
 <template>
-  <div class="pb-[clamp(0px,10vw,50px)] mt-[clamp(0px,47vw,235px)] mb-[clamp(0px,20vw,100px)]">
+  <div class="pb-[clamp(0px,10vw,50px)] mt-[clamp(0px,35vw,175px)] mb-[clamp(0px,30vw,150px)]">
     <!-- Liste "principale" -->
     <ul class="relative flex z-0 flex-col w-[clamp(0px,96vw,480px)] items-center rounded-xl">
       <!-- Cercle en arrière-plan (on peut le laisser dans un <li> masqué ou utiliser un pseudo-élément) -->

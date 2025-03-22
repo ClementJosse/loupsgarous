@@ -1,5 +1,5 @@
 <template>
-    <div class="relative flex flex-col items-center w-full bg-dark-background">
+    <div class="fixed flex flex-col items-center w-full bg-dark-background">
         <!-- Les deux images sont toujours présentes, mais avec une opacité différente selon le moment -->
         <div class="relative w-full">
             <img src="@/assets/day.svg" class="w-[clamp(0px,100vw,500px)] mx-auto transition-opacity duration-1000"
