@@ -47,7 +47,8 @@ export default {
         'disabled': '#61646B',
         'blue-protect': '#5A98DF',
         'red-kill': '#E85660',
-        'green-save': '#9BE379'
+        'green-save': '#9BE379',
+        'yellow-mayor': '#F4CE7B'
       }
     },
   },

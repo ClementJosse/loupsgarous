@@ -48,7 +48,7 @@
 
 <script setup>
 import { computed } from 'vue';
-import PlayerInfo from './PlayerInfo.vue';
+import PlayerInfo from '../PlayerInfo.vue';
 
 const props = defineProps({
   gameInfo: {

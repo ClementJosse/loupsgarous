@@ -49,7 +49,7 @@
 
 <script setup>
 import { computed, onMounted, ref } from 'vue';
-import PlayerInfo from '../leader/PlayerInfo.vue';
+import PlayerInfo from '../PlayerInfo.vue';
 import { getAuth, signInAnonymously } from 'firebase/auth';
 
 

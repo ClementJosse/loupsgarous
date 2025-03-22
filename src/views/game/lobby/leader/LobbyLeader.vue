@@ -105,6 +105,7 @@ const startGame = () => {
         update(partiesRef, { dayNightNumberIndex: 1 })
         update(partiesRef, { timelineIndex: 0 })
         update(partiesRef, { timeline : ['Distribution initiale']})
+        update(partiesRef, { mayor : false})
         addCardsVariables()
         console.log('La partie commence !');
     }, 200);

@@ -1,17 +1,17 @@
 {
     "Distribution initiale" : "Les rôles ont été distribués",
 
-    "Cupidon": "Cupidon désigne 2 amoureux",
-    "Enfant sauvage": "L'enfant sauvage choisi son modèle",
-    "Voyante": "Au tour de la Voyante",
-    "Salvateur": "Au tour du Salvateur",
-    "Renard": "Au tour du Renard",
-    "Pyromane": "Au tour du Renard",
-    "Loup": "Les loups se réveillent",
-    "Infect père des loups": "Au tour de l'Infect père des loups",
-    "Sorcière": "Au tour de la Sorcière",
-    "Loup blanc": "Au tour du Loup blanc",
-    "Voleur": "Au tour du Voleur",
+    "Cupidon": "Cupidon se réveille",
+    "Enfant sauvage": "L'enfant sauvage se réveille",
+    "Voyante": "La Voyante se réveille",
+    "Salvateur": "Le Salvateur se réveille",
+    "Renard": "Le Renard se réveille",
+    "Pyromane": "Le Pyromane se réveille",
+    "Loup": "Les Loups se réveillent",
+    "Infect père des loups": "L'Infect père des loups se réveille",
+    "Sorcière": "La Sorcière se réveille",
+    "Loup blanc": "Le Loup blanc se réveille",
+    "Voleur": "Le Voleur se réveille",
     
     "Ange": "L'Ange est mort en premier, la partie est terminée",
     "Chasseur": "Le Chasseur choisi quelqu'un a emporter avec lui",
@@ -20,5 +20,5 @@
     "Maire": "Le village élit son maire",
     "Mort Maire": "Le maire lègue son rôle à un autre joueur",
     "Vote": "Le village vote pour éliminer un joueur",
-    "Mort Vote": "Le joueur éliminé par le village est..."
+    "Mort Vote": "Le village a décidé d'éliminer..."
 }

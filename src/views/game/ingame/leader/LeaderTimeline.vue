@@ -21,8 +21,7 @@
                 ]" />
                 <button v-wave v-if="index === props.gameInfo.timelineIndex" @click="nextRole()"
                     class="w-[clamp(0px,10vw,50px)] h-[clamp(0px,10vw,50px)] rounded-full justify-items-center active:scale-105">
-                    <img src="@/assets/next.svg"
-                        class="w-[clamp(0px,5vw,25px)]">
+                    <img src="@/assets/next.svg" class="w-[clamp(0px,7 vw,35px)]">
                 </button>
             </template>
 
@@ -64,25 +63,27 @@ const getImagePath = (role) => {
 
 const nextRole = () => {
     console.log('next')
-    // si timelineIndex === timeline.lengh, inverser/nuit et jour et recréer la timeline en fonction des variables, de la nuit/jour, mettre timelineIndex = 0 
-    // sinon timelineIndex++
-    if (props.gameInfo.timeline.length - 1 === props.gameInfo.timelineIndex) {
-        console.log('fini!')
-        console.log(props.gameInfo.time)
-        if (props.gameInfo.time === 'Jour') {
-            update(partiesRef, { time: 'Nuit' })
-            generateNightTimeline()
+    setTimeout(function () {
+        // si timelineIndex === timeline.lengh, inverser/nuit et jour et recréer la timeline en fonction des variables, de la nuit/jour, mettre timelineIndex = 0 
+        // sinon timelineIndex++
+        if (props.gameInfo.timeline.length - 1 === props.gameInfo.timelineIndex) {
+            console.log('fini!')
+            console.log(props.gameInfo.time)
+            if (props.gameInfo.time === 'Jour') {
+                update(partiesRef, { time: 'Nuit' })
+                generateNightTimeline()
+            }
+            else {
+                update(partiesRef, { time: 'Jour' })
+                update(partiesRef, { dayNightNumberIndex: props.gameInfo.dayNightNumberIndex + 1 })
+                generateDayTimeline()
+            }
+            update(partiesRef, { timelineIndex: 0 })
         }
         else {
-            update(partiesRef, { time: 'Jour' })
-            update(partiesRef, { dayNightNumberIndex: props.gameInfo.dayNightNumberIndex + 1 })
-            generateDayTimeline()
+            update(partiesRef, { timelineIndex: props.gameInfo.timelineIndex + 1 })
         }
-        update(partiesRef, { timelineIndex: 0 })
-    }
-    else {
-        update(partiesRef, { timelineIndex: props.gameInfo.timelineIndex + 1 })
-    }
+    }, 200);
 }
 
 const generateNightTimeline = () => {
@@ -96,37 +97,37 @@ const generateNightTimeline = () => {
 
     const newTimeline = []
 
-    if (cardsAlive.includes('Cupidon') && props.gameInfo.isInLove === false ) {
+    if (cardsAlive.includes('Cupidon') && props.gameInfo.isInLove == false) {
         newTimeline.push('Cupidon')
     }
-    if (cardsAlive.includes('Enfant sauvage') && props.gameInfo.model === false) {
+    if (cardsAlive.includes('Enfant sauvage') && props.gameInfo.model == false) {
         newTimeline.push('Enfant sauvage')
     }
-    if(cardsAlive.includes('Voyante')){
+    if (cardsAlive.includes('Voyante')) {
         newTimeline.push('Voyante')
     }
-    if(cardsAlive.includes('Salvateur')){
+    if (cardsAlive.includes('Salvateur')) {
         newTimeline.push('Salvateur')
     }
-    if(cardsAlive.includes('Renard' && props.gameInfo.canFoxSnif === true)){
+    if (cardsAlive.includes('Renard') && props.gameInfo.canFoxSnif == true) {
         newTimeline.push('Renard')
     }
-    if(cardsAlive.includes('Pyromane' && props.gameInfo.hasUsedLighter === false)){
+    if (cardsAlive.includes('Pyromane') && props.gameInfo.hasUsedLighter == false) {
         newTimeline.push('Pyromane')
     }
-    if(cardsAlive.includes('Loup')){
+    if (cardsAlive.includes('Loup')) {
         newTimeline.push('Loup')
     }
-    if(cardsAlive.includes('Infect père des loups' && props.gameInfo.hasInfected === false)){
+    if (cardsAlive.includes('Infect père des loups') && (props.gameInfo.hasInfected == false)) {
         newTimeline.push('Infect père des loups')
     }
-    if(cardsAlive.includes('Sorcière' && (props.gameInfo.hasLifePotion === true || props.gameInfo.hasDeathPotion === true))){
+    if (cardsAlive.includes('Sorcière') && (props.gameInfo.hasLifePotion == true || props.gameInfo.hasDeathPotion === true)) {
         newTimeline.push('Sorcière')
     }
-    if(cardsAlive.includes('Loup blanc') && props.gameInfo.dayNightNumberIndex % 2 == 0){
+    if (cardsAlive.includes('Loup blanc') && props.gameInfo.dayNightNumberIndex % 2 == 0) {
         newTimeline.push('Loup blanc')
     }
-    if(cardsAlive.includes('Voleur')){
+    if (cardsAlive.includes('Voleur')) {
         newTimeline.push('Voleur')
     }
     update(partiesRef, { timeline: newTimeline })
