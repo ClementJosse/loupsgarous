@@ -19,9 +19,9 @@
                         'bg-purple-important': index === props.gameInfo.timelineIndex
                     }
                 ]" />
-                <button v-wave @click="nextRole()"
+                <button v-wave v-if="index === props.gameInfo.timelineIndex" @click="nextRole()"
                     class="w-[clamp(0px,10vw,50px)] h-[clamp(0px,10vw,50px)] rounded-full justify-items-center active:scale-105">
-                    <img v-if="index === props.gameInfo.timelineIndex" src="@/assets/next.svg"
+                    <img src="@/assets/next.svg"
                         class="w-[clamp(0px,5vw,25px)]">
                 </button>
             </template>
@@ -43,7 +43,7 @@
 
 <script setup>
 import { ref } from 'vue';
-import { getDatabase, ref as dbRef, onValue, update } from 'firebase/database';
+import { getDatabase, ref as dbRef, onValue, update, set } from 'firebase/database';
 import { useRoute } from 'vue-router';
 
 const route = useRoute();
@@ -86,11 +86,56 @@ const nextRole = () => {
 }
 
 const generateNightTimeline = () => {
-    
+    // Pour chaque role pouvant se réveiller la nuit, vérifier si au moins une personne est vivante avec 
+    // et si la/les personnes avec le roles remplissent les conditions pour se réveiller
+
+    // Array des roles des personnes encore en vie
+    const cardsAlive = Object.keys(props.gameInfo.playerCards)
+        .filter(key => props.gameInfo.playerStatus[key] === "alive")
+        .map(key => props.gameInfo.playerCards[key]);
+
+    const newTimeline = []
+
+    if (cardsAlive.includes('Cupidon') && props.gameInfo.isInLove === false ) {
+        newTimeline.push('Cupidon')
+    }
+    if (cardsAlive.includes('Enfant sauvage') && props.gameInfo.model === false) {
+        newTimeline.push('Enfant sauvage')
+    }
+    if(cardsAlive.includes('Voyante')){
+        newTimeline.push('Voyante')
+    }
+    if(cardsAlive.includes('Salvateur')){
+        newTimeline.push('Salvateur')
+    }
+    if(cardsAlive.includes('Renard' && props.gameInfo.canFoxSnif === true)){
+        newTimeline.push('Renard')
+    }
+    if(cardsAlive.includes('Pyromane' && props.gameInfo.hasUsedLighter === false)){
+        newTimeline.push('Pyromane')
+    }
+    if(cardsAlive.includes('Loup')){
+        newTimeline.push('Loup')
+    }
+    if(cardsAlive.includes('Infect père des loups' && props.gameInfo.hasInfected === false)){
+        newTimeline.push('Infect père des loups')
+    }
+    if(cardsAlive.includes('Sorcière' && (props.gameInfo.hasLifePotion === true || props.gameInfo.hasDeathPotion === true))){
+        newTimeline.push('Sorcière')
+    }
+    if(cardsAlive.includes('Loup blanc') && props.gameInfo.dayNightNumberIndex % 2 == 0){
+        newTimeline.push('Loup blanc')
+    }
+    if(cardsAlive.includes('Voleur')){
+        newTimeline.push('Voleur')
+    }
+    update(partiesRef, { timeline: newTimeline })
 }
 
 const generateDayTimeline = () => {
-    
+    const newTimeline = []
+    newTimeline.push('Mort')
+    update(partiesRef, { timeline: newTimeline })
 }
 
 </script>

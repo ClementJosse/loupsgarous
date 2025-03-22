@@ -105,9 +105,38 @@ const startGame = () => {
         update(partiesRef, { dayNightNumberIndex: 1 })
         update(partiesRef, { timelineIndex: 0 })
         update(partiesRef, { timeline : ['Distribution initiale']})
+        addCardsVariables()
         console.log('La partie commence !');
     }, 200);
 }
+
+const addCardsVariables = () => {
+    if(Object.values(playerCards.value).includes('Cupidon')){
+        console.log('cupid')
+        update(partiesRef, { isInLove: false })
+    }
+    if(Object.values(playerCards.value).includes('Enfant sauvage')){
+        update(partiesRef, { model: false })
+    }
+    if(Object.values(playerCards.value).includes('Salvateur')){
+        update(partiesRef, { previousProtected: false })
+    }
+    if(Object.values(playerCards.value).includes('Renard')){
+        update(partiesRef, { canFoxSnif: true })
+    }
+    if(Object.values(playerCards.value).includes('Pyromane')){
+        update(partiesRef, { isOiled: false })
+        update(partiesRef, { hasUsedLighter: false })
+    }
+    if(Object.values(playerCards.value).includes('Infect père des loups')){
+        update(partiesRef, { hasInfected: false })
+    }
+    if(Object.values(playerCards.value).includes('Sorcière')){
+        update(partiesRef, { hasLifePotion: true })
+        update(partiesRef, { hasDeathPotion: true })
+    }
+}
+
 onMounted(() => {
     initialize();
 });
