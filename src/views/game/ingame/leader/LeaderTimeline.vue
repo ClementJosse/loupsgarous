@@ -50,6 +50,7 @@ const gameId = route.params.gameId;
 const gameInfo = ref(null);
 const database = getDatabase();
 const partiesRef = dbRef(database, `/${gameId}`);
+const playerList = ref([]);
 
 const props = defineProps({
     gameInfo: {
@@ -60,6 +61,24 @@ const props = defineProps({
 const getImagePath = (role) => {
     return new URL(`../../../../assets/roles/${role}.png`, import.meta.url).href;
 };
+
+const resetPlayerVote = () => {
+    if (!props.gameInfo || !props.gameInfo.playerList) {
+        console.error('gameInfo or playerList is undefined');
+        return;
+    }
+
+    var playerVote = props.gameInfo.playerVote || {};
+
+    props.gameInfo.playerList.forEach((player, index) => {
+        if (!playerVote[player]) {
+            playerVote[player] = [];
+        }
+        playerVote[player] = '...';
+    });
+
+    update(partiesRef, { playerVote: playerVote });
+}
 
 const nextRole = () => {
     console.log('next')
@@ -81,6 +100,9 @@ const nextRole = () => {
             update(partiesRef, { timelineIndex: 0 })
         }
         else {
+            if (props.gameInfo.timeline[props.gameInfo.timelineIndex + 1] === 'Maire' || props.gameInfo.timeline[props.gameInfo.timelineIndex + 1] === 'Vote') {
+                resetPlayerVote()
+            }
             update(partiesRef, { timelineIndex: props.gameInfo.timelineIndex + 1 })
         }
     }, 200);
@@ -136,6 +158,8 @@ const generateNightTimeline = () => {
 const generateDayTimeline = () => {
     const newTimeline = []
     newTimeline.push('Mort')
+    newTimeline.push('Maire')
+    newTimeline.push('Vote')
     update(partiesRef, { timeline: newTimeline })
 }
 

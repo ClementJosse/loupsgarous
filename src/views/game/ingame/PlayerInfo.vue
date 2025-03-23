@@ -1,7 +1,9 @@
 <template>
-    <div class="flex items-center gap-[clamp(0px,2vw,10px)] text-[clamp(0px,3.25vw,16.25px)] font-semibold"
+    <button v-wave @click="clickOnPlayer()"
+        class="flex items-center gap-[clamp(0px,2vw,10px)] text-[clamp(0px,3.25vw,16.25px)] font-semibold active:scale-105 p-[clamp(0px,2vw,10px)] rounded-xl"
         :class="isCardRight ? 'flex-row' : 'flex-row-reverse'">
         <div class="flex flex-col gap-[clamp(0px,0.5vw,2.5px)]">
+            <!-- Player status/ votes-->
             <div class="flex h-[clamp(0px,3vw,15px)] gap-[clamp(0px,1vw,5px)]"
                 :class="isCardRight ? 'flex-row-reverse' : 'flex-row'">
                 <div v-if="isRevealedClass" class="flex gap-[clamp(0px,1vw,5px)]">
@@ -22,52 +24,59 @@
                 </div>
             </div>
 
+            <!-- Player Name-->
             <div class="h-[clamp(0px,4vw,20px)] flex " :class="isCardRight ? 'flex-row-reverse' : 'flex-row'">
-                <div v-if="gameInfo.playerStatus?.[props.uid] === 'dead'"
+                <div v-if="gameInfo?.playerStatus?.[props.uid] === 'dead'"
                     class="text-disabled flex flex-row gap-[clamp(0px,1vw,5px)]">
                     <img src="../../../assets/dead.svg" class="h-[clamp(0px,4.5vw,22.5px)] w-auto">
-                    <div class="w-full">{{ gameInfo.uid_to_username?.[props.uid] }}</div>
+                    <div class="w-full">{{ gameInfo?.uid_to_username?.[props.uid] }}</div>
                 </div>
-                <div v-else-if="gameInfo.playerStatus?.[props.uid] === 'died'"
+                <div v-else-if="gameInfo?.playerStatus?.[props.uid] === 'died'"
                     class="text-red-kill flex flex-row gap-[clamp(0px,1vw,5px)]">
-                    <img v-if="gameInfo.mayor === props.uid" src="../../../assets/effets/mayor.svg"
+                    <img v-if="gameInfo?.mayor === props.uid" src="../../../assets/effets/mayor.svg"
                         class="h-[clamp(0px,4.5vw,22.5px)] w-auto">
                     <img src="../../../assets/dying.svg" class="h-[clamp(0px,4.5vw,22.5px)] w-auto">
-                    <div class="w-full">{{ gameInfo.uid_to_username?.[props.uid] }}</div>
+                    <div class="w-full">{{ gameInfo?.uid_to_username?.[props.uid] }}</div>
                 </div>
-                <div v-else-if="isRevealedClass && gameInfo.playerStatus?.[props.uid] === 'dying'"
+                <div v-else-if="isRevealedClass && gameInfo?.playerStatus?.[props.uid] === 'dying'"
                     class="flex flex-row text-red-kill gap-[clamp(0px,1vw,5px)]">
-                    <img v-if="gameInfo.mayor === props.uid" src="../../../assets/effets/mayor.svg"
+                    <img v-if="gameInfo?.mayor === props.uid" src="../../../assets/effets/mayor.svg"
                         class="h-[clamp(0px,4.5vw,22.5px)] w-auto">
                     <img src="../../../assets/dying.svg" class="h-[clamp(0px,4.5vw,22.5px)] w-auto">
-                    <div class="w-full">{{ gameInfo.uid_to_username?.[props.uid] }}</div>
+                    <div class="w-full">{{ gameInfo?.uid_to_username?.[props.uid] }}</div>
                 </div>
                 <div v-else class="flex flex-row gap-[clamp(0px,1vw,5px)]"
-                    :class="gameInfo.mayor === props.uid ? 'text-yellow-mayor' : 'text-white'">
-                    <img v-if="gameInfo.mayor === props.uid" src="../../../assets/effets/mayor.svg"
+                    :class="gameInfo?.mayor === props.uid ? 'text-yellow-mayor' : 'text-white'">
+                    <img v-if="gameInfo?.mayor === props.uid" src="../../../assets/effets/mayor.svg"
                         class="h-[clamp(0px,4.5vw,22.5px)] w-auto">
-                    {{ gameInfo.uid_to_username?.[props.uid] }}
+                    {{ gameInfo?.uid_to_username?.[props.uid] }}
                 </div>
             </div>
 
+            <!-- Player Vote for-->
             <div class="flex gap-[clamp(0px,1vw,5px)] h-[clamp(0px,3vw,15px)]"
                 :class="isCardRight ? 'flex-row-reverse' : 'flex-row'">
-                <div class="flex gap-[clamp(0px,1vw,5px)]" v-if="isRevealedClass">
-
-                </div>
-                <div v-else class="text-purple-important text-[clamp(0px,3vw,15px)]">
-                    <!-- Aurora -->
+                <div class="text-purple-important text-[clamp(0px,3vw,15px)]">
+                    <div v-if="gameInfo?.timeline &&
+                        gameInfo.timelineIndex !== undefined &&
+                        gameInfo.timeline[gameInfo.timelineIndex] &&
+                        (gameInfo.timeline[gameInfo.timelineIndex] === 'Maire' ||
+                            gameInfo.timeline[gameInfo.timelineIndex] === 'Vote')">
+                        {{ gameInfo.playerVote?.[props.uid] === '...' ? gameInfo.playerVote?.[props.uid] : gameInfo.uid_to_username[gameInfo.playerVote?.[props.uid]] }}
+                    </div>
                 </div>
             </div>
+
         </div>
 
-        <div v-if="gameInfo.playerStatus?.[props.uid] === 'dead'" class="card-container">
+        <!-- Player Card-->
+        <div v-if="gameInfo?.playerStatus?.[props.uid] === 'dead'" class="card-container">
             <div class="absolute inset-0 bg-blue-background"></div>
-            <img v-if="gameInfo.playerCards?.[props.uid]" :src="getImageUrl(gameInfo.playerCards[props.uid])"
+            <img v-if="gameInfo?.playerCards?.[props.uid]" :src="getImageUrl(gameInfo.playerCards[props.uid])"
                 class="h-full w-full opacity-50">
         </div>
-        <div v-else-if="gameInfo.playerStatus?.[props.uid] === 'died'" class="card-container">
-            <img v-if="gameInfo.playerCards?.[props.uid]" :src="getImageUrl(gameInfo.playerCards[props.uid])"
+        <div v-else-if="gameInfo?.playerStatus?.[props.uid] === 'died'" class="card-container">
+            <img v-if="gameInfo?.playerCards?.[props.uid]" :src="getImageUrl(gameInfo.playerCards[props.uid])"
                 class="h-full w-full">
         </div>
         <div v-else class="card-container" :class="{ 'is-revealed': isRevealedClass }">
@@ -76,16 +85,25 @@
                     <img src="../../../assets/roles/Back.png" class="h-full w-full">
                 </div>
                 <div class="card-back">
-                    <img v-if="gameInfo.playerCards?.[props.uid]" :src="getImageUrl(gameInfo.playerCards[props.uid])"
+                    <img v-if="gameInfo?.playerCards?.[props.uid]" :src="getImageUrl(gameInfo.playerCards[props.uid])"
                         class="h-full w-full">
                 </div>
             </div>
         </div>
-    </div>
+    </button>
 </template>
 
 <script setup>
-import { ref, watch } from 'vue';
+import { ref, watch, onMounted } from 'vue';
+import { getDatabase, ref as dbRef, onValue, update, set } from 'firebase/database';
+import { useRoute } from 'vue-router';
+import { getAuth, signInAnonymously } from 'firebase/auth'
+
+const route = useRoute();
+const gameId = route.params.gameId;
+const database = getDatabase();
+const partiesRef = dbRef(database, `/${gameId}`);
+const authorUID = ref(null)
 
 const props = defineProps({
     gameInfo: {
@@ -99,8 +117,19 @@ const props = defineProps({
     },
     isCardRight: {
         type: Boolean
-    }
+    },
 });
+
+const initialize = async () => {
+    try {
+        // Authentification anonyme
+        const auth = getAuth()
+        await signInAnonymously(auth)
+        authorUID.value = auth.currentUser.uid
+    } catch (error) {
+        console.error("Erreur d'auth :", error.code, error.message)
+    }
+}
 
 const getImageUrl = (imgname) => {
     return new URL(`../../../assets/roles/${imgname}.png`, import.meta.url).href;
@@ -108,9 +137,35 @@ const getImageUrl = (imgname) => {
 
 const isRevealedClass = ref(false);
 
+const clickOnPlayer = () => {
+    if (props.gameInfo?.leader == authorUID.value) {
+        // Si leader
+        console.log('leader clicked on ' + props.uid)
+    }
+    else {
+        // Si joueur
+        console.log('player clicked on ' + props.uid)
+        if (props.gameInfo?.timeline &&
+            props.gameInfo.timelineIndex !== undefined &&
+            props.gameInfo.timeline[props.gameInfo.timelineIndex] &&
+            (props.gameInfo.timeline[props.gameInfo.timelineIndex] === 'Maire' ||
+                props.gameInfo.timeline[props.gameInfo.timelineIndex] === 'Vote')) {
+            var playerVote = props.gameInfo.playerVote || {}
+            console.log(authorUID.value)
+            playerVote[authorUID.value] = props.uid
+            update(partiesRef, { playerVote: playerVote })
+        }
+    }
+}
+
 watch(() => props.isRevealed, (newVal) => {
     isRevealedClass.value = newVal;
 });
+
+onMounted(() => {
+    initialize()
+})
+
 </script>
 
 <style scoped>

@@ -15,7 +15,7 @@
             </li>
             <!-- Placeholder (invisible) si la liste est paire, pour garder un "espace" cohérent -->
             <li v-else
-                class="flex opacity-0 text-base flex-row text-white font-semibold p-[clamp(0px,3vw,15px)] rounded-xl mb-[clamp(0px,100vw,50px)]">
+                class="flex opacity-0 text-base flex-row text-white font-semibold p-[clamp(0px,3vw,15px)] rounded-xl mb-[clamp(0px,10vw,50px)]">
                 .
             </li>
 
