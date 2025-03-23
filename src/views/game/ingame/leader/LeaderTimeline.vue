@@ -16,7 +16,7 @@
                         'border-[clamp(0px,0.5vw,2.5px)]': index === props.gameInfo.timelineIndex,
                         'rounded-md': index === props.gameInfo.timelineIndex,
                         'border-purple-important': index === props.gameInfo.timelineIndex,
-                        'bg-purple-important': index === props.gameInfo.timelineIndex
+                        'bg-dark-background': index === props.gameInfo.timelineIndex
                     }
                 ]" />
                 <button v-wave v-if="index === props.gameInfo.timelineIndex" @click="nextRole()"
