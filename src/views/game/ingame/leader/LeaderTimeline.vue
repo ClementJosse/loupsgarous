@@ -158,7 +158,9 @@ const generateNightTimeline = () => {
 const generateDayTimeline = () => {
     const newTimeline = []
     newTimeline.push('Mort')
-    newTimeline.push('Maire')
+    if (props.gameInfo.mayor === false){
+        newTimeline.push('Maire')
+    }
     newTimeline.push('Vote')
     update(partiesRef, { timeline: newTimeline })
 }

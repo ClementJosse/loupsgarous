@@ -15,12 +15,29 @@
                     <img src="../../../assets/effets/protect.svg" class="h-[clamp(0px,3vw,15px)]">
                     -->
                 </div>
-                <div v-else class="flex gap-[clamp(0px,1vw,5px)]">
-                    <!--
-                    <img src="../../../assets/effets/mayor.svg" class="h-[clamp(0px,3vw,15px)]">
-                    <img src="../../../assets/dying.svg" class="h-[clamp(0px,3vw,15px)]">
-                    <img src="../../../assets/effets/mayorvote.svg" class="h-[clamp(0px,3vw,15px)]">
-                    -->
+                <div v-else class="flex">
+                    <!-- Section Maire -->
+                    <div class="flex flex-row" v-if="gameInfo.timeline[gameInfo.timelineIndex] === 'Maire'">
+                        <div v-for="(vote, name) in gameInfo.playerVote" class="flex flex-row">
+                            <div v-if="vote === props.uid" class="mx-[clamp(0px,0.5vw,2.5px)]">
+                                <img src="../../../assets/effets/mayor.svg" class="h-[clamp(0px,3vw,15px)]">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section Vote -->
+                    <div class="flex flex-row" v-if="gameInfo.timeline[gameInfo.timelineIndex] === 'Vote'">
+                        <div v-for="(vote, name) in gameInfo.playerVote" class="flex flex-row">
+                            <!-- Vote du maire -->
+                            <div v-if="vote === props.uid && name === gameInfo.mayor" class="mx-[clamp(0px,0.5vw,2.5px)]">
+                                <img src="../../../assets/effets/mayorvote.svg" class="h-[clamp(0px,3vw,15px)]">
+                            </div>
+                            <!-- Vote des autres joueurs -->
+                            <div v-else-if="vote === props.uid" class="mx-[clamp(0px,0.5vw,2.5px)]">
+                                <img src="../../../assets/dying.svg" class="h-[clamp(0px,3vw,15px)]">
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -62,7 +79,8 @@
                         gameInfo.timeline[gameInfo.timelineIndex] &&
                         (gameInfo.timeline[gameInfo.timelineIndex] === 'Maire' ||
                             gameInfo.timeline[gameInfo.timelineIndex] === 'Vote')">
-                        {{ gameInfo.playerVote?.[props.uid] === '...' ? gameInfo.playerVote?.[props.uid] : gameInfo.uid_to_username[gameInfo.playerVote?.[props.uid]] }}
+                        {{ gameInfo.playerVote?.[props.uid] === '...' ? gameInfo.playerVote?.[props.uid] :
+                            gameInfo.uid_to_username[gameInfo.playerVote?.[props.uid]] }}
                     </div>
                 </div>
             </div>
