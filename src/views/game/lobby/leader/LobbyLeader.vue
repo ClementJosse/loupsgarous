@@ -28,9 +28,11 @@ const partiesRef = dbRef(database, `/${gameId}`);
 
 const cards = ref([]);
 const playerList = ref([]);
+
 const playerCards = ref({})
 const playerStatus = ref({})
 const playerVote = ref({})
+const playerAction = ref({})
 
 const playerCount = computed(() => playerList.value.length);
 const totalCardsValue = computed(() =>
@@ -98,11 +100,16 @@ const setAllPlayersAlive = () => {
 const createPlayerVote = () => {
     playerVote.value = {};
     playerList.value.forEach((player, index) => {
-        if (!playerVote.value[player]) {
-            playerVote.value[player] = [];
-        }
         playerVote.value[player] = '...';
     });
+}
+
+const createPlayerAction = () => {
+    playerAction.value = {};
+    playerList.value.forEach((player, index) => {
+        playerAction.value[player] = '';
+    });
+    playerAction.value[props.gameInfo.leader] = '';
 }
 
 const startGame = () => {
@@ -110,42 +117,44 @@ const startGame = () => {
         distributeCards()
         setAllPlayersAlive()
         createPlayerVote()
+        createPlayerAction()
         update(partiesRef, { status: "ingame" })
         update(partiesRef, { playerCards: playerCards.value })
         update(partiesRef, { playerStatus: playerStatus.value })
         update(partiesRef, { playerVote: playerVote.value })
+        update(partiesRef, { playerAction: playerAction.value })
         update(partiesRef, { time: 'Jour' })
         update(partiesRef, { dayNightNumberIndex: 1 })
         update(partiesRef, { timelineIndex: 0 })
-        update(partiesRef, { timeline : ['Distribution initiale']})
-        update(partiesRef, { mayor : false})
+        update(partiesRef, { timeline: ['Distribution initiale'] })
+        update(partiesRef, { mayor: false })
         addCardsVariables()
         console.log('La partie commence !');
     }, 200);
 }
 
 const addCardsVariables = () => {
-    if(Object.values(playerCards.value).includes('Cupidon')){
+    if (Object.values(playerCards.value).includes('Cupidon')) {
         console.log('cupid')
         update(partiesRef, { isInLove: false })
     }
-    if(Object.values(playerCards.value).includes('Enfant sauvage')){
+    if (Object.values(playerCards.value).includes('Enfant sauvage')) {
         update(partiesRef, { model: false })
     }
-    if(Object.values(playerCards.value).includes('Salvateur')){
+    if (Object.values(playerCards.value).includes('Salvateur')) {
         update(partiesRef, { previousProtected: false })
     }
-    if(Object.values(playerCards.value).includes('Renard')){
+    if (Object.values(playerCards.value).includes('Renard')) {
         update(partiesRef, { canFoxSnif: true })
     }
-    if(Object.values(playerCards.value).includes('Pyromane')){
+    if (Object.values(playerCards.value).includes('Pyromane')) {
         update(partiesRef, { isOiled: false })
         update(partiesRef, { hasUsedLighter: false })
     }
-    if(Object.values(playerCards.value).includes('Infect père des loups')){
+    if (Object.values(playerCards.value).includes('Infect père des loups')) {
         update(partiesRef, { hasInfected: false })
     }
-    if(Object.values(playerCards.value).includes('Sorcière')){
+    if (Object.values(playerCards.value).includes('Sorcière')) {
         update(partiesRef, { hasLifePotion: true })
         update(partiesRef, { hasDeathPotion: true })
     }

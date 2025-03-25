@@ -1,12 +1,7 @@
 <template>
     <div class="w-full bg-dark-background h-[clamp(0px,40vw,200px)] flex items-center flex-col">
         <div class="flex flex-row pb-[clamp(0px,2.7vw,13.5px)]">
-            <button v-wave class="m-[clamp(0px,3vw,15px)] rounded-lg">
-                <img src="../../../../assets/actions/decouvrir.svg" class="h-[clamp(0px,6vw,30px)]">
-            </button>
-            <button v-wave class="m-[clamp(0px,3vw,15px)] rounded-lg">
-                <img src="../../../../assets/actions/decouvrirOn.svg" class="h-[clamp(0px,6vw,30px)]">
-            </button>
+            <Actions :gameInfo="props.gameInfo" :isLeader="true"/>
         </div>
 
         <div class="flex flex-row w-[clamp(0px,90vw,450px)] items-center justify-between z-10">
@@ -50,6 +45,7 @@
 import { ref } from 'vue';
 import { getDatabase, ref as dbRef, onValue, update, set } from 'firebase/database';
 import { useRoute } from 'vue-router';
+import Actions from '../Actions.vue';
 
 const route = useRoute();
 const gameId = route.params.gameId;
@@ -86,8 +82,24 @@ const resetPlayerVote = () => {
     update(partiesRef, { playerVote: playerVote });
 }
 
+const resetPlayerAction = () => {
+    if (!props.gameInfo || !props.gameInfo.playerList) {
+        console.error('gameInfo or playerList is undefined');
+        return;
+    }
+
+    var playerAction = props.gameInfo.playerAction || {};
+
+    props.gameInfo.playerList.forEach((player, index) => {
+        playerAction[player] = '';
+    });
+    playerAction[props.gameInfo.leader] = '';
+    update(partiesRef, { playerAction: playerAction });
+}
+
 const nextRole = () => {
     console.log('next')
+    resetPlayerAction()
     setTimeout(function () {
         // si timelineIndex === timeline.lengh, inverser/nuit et jour et recréer la timeline en fonction des variables, de la nuit/jour, mettre timelineIndex = 0 
         // sinon timelineIndex++
