@@ -1,6 +1,6 @@
 <template>
     <div class="fixed z-[3000] left-1/2 flex flex-row justify-end w-[clamp(0px,47vw,235px)]">
-        <button @click="toggleSidePanel"
+        <button v-wave @click="toggleSidePanel"
             class="flex flex-start z-[3000] gap-[clamp(0px,1vw,5px)] mt-[clamp(0px,2vw,10px)] py-[clamp(0px,2vw,10px)] px-[clamp(0px,3vw,15px)] active:scale-105 rounded-xl">
             <img src="@/assets/i.svg" class="w-[clamp(0px,7vw,35px)]" />
             <h1 class="text-xl text-purple-important font-medium">
@@ -13,7 +13,7 @@
             <div class="relative w-full">
                 <div
                     class="absolute left-1/2 flex flex-row justify-end w-[clamp(0px,47vw,235px)] mt-[clamp(0px,2vw,10px)]">
-                    <button @click="toggleSidePanel"
+                    <button v-wave @click="toggleSidePanel"
                         class="flex flex-start z-[5000] gap-[clamp(0px,1vw,5px)] py-[clamp(0px,2vw,10px)] px-[clamp(0px,3vw,15px)] active:scale-105 rounded-xl">
                         <img src="@/assets/close.svg" class="w-[clamp(0px,7vw,35px)]" />
                         <h1 class="text-xl text-purple-important font-medium">
@@ -53,7 +53,7 @@
                             <div class="flex flex-col">
                                 <span :style="{ color: cardsGameInfos[role].color }" class="text-xl font-bold">{{
                                     role }}</span>
-                                <p class="text-white text-sm"
+                                <p class="text-white text-sm/[clamp(0px,5.5vw,27.5px)]"
                                     v-html="formatDescription(cardsGameInfos[role].description)"></p>
                             </div>
                         </div>
@@ -72,13 +72,15 @@ const isSidePanelOpen = ref(false);
 const roles = ref(Object.keys(cardsGameInfos));
 
 const toggleSidePanel = () => {
-    isSidePanelOpen.value = !isSidePanelOpen.value;
+    setTimeout(function () {
+        isSidePanelOpen.value = !isSidePanelOpen.value;
 
-    if (isSidePanelOpen.value) {
-        document.body.classList.add('overflow-hidden');
-    } else {
-        document.body.classList.remove('overflow-hidden');
-    }
+        if (isSidePanelOpen.value) {
+            document.body.classList.add('overflow-hidden');
+        } else {
+            document.body.classList.remove('overflow-hidden');
+        }
+    }, 200);
 };
 
 // Nettoyage au démontage du composant (utile si le composant est détruit pour éviter les effets persistants)
@@ -109,19 +111,19 @@ import infecterIcon from '../assets/actions/infecter.svg';
 // Then update the formatDescription function
 const formatDescription = (description) => {
     return description
-        .replace(/\{\{camps\.village\}\}/g, `<img src="${villageIcon}" class="inline h-[clamp(0px,5vw,25px)]" />`)
-        .replace(/\{\{camps\.loups\}\}/g, `<img src="${loupsIcon}" class="inline h-[clamp(0px,5vw,25px)]" />`)
-        .replace(/\{\{camps\.seul\}\}/g, `<img src="${seulIcon}" class="inline h-[clamp(0px,5vw,25px)]" />`)
-        .replace(/\{\{actions\.model\}\}/g, `<img src="${modelIcon}" class="inline h-[clamp(0px,5vw,25px)]" />`)
-        .replace(/\{\{actions\.tuer\}\}/g, `<img src="${tuerIcon}" class="inline h-[clamp(0px,5vw,25px)]" />`)
-        .replace(/\{\{actions\.amoureux\}\}/g, `<img src="${amoureuxIcon}" class="inline h-[clamp(0px,5vw,25px)]" />`)
-        .replace(/\{\{actions\.huiler\}\}/g, `<img src="${huilerIcon}" class="inline h-[clamp(0px,5vw,25px)]" />`)
-        .replace(/\{\{actions\.bruler\}\}/g, `<img src="${brulerIcon}" class="inline h-[clamp(0px,5vw,25px)]" />`)
-        .replace(/\{\{actions\.proteger\}\}/g, `<img src="${protegerIcon}" class="inline h-[clamp(0px,5vw,25px)]" />`)
-        .replace(/\{\{actions\.sauver\}\}/g, `<img src="${sauverIcon}" class="inline h-[clamp(0px,5vw,25px)]" />`)
-        .replace(/\{\{actions\.voler\}\}/g, `<img src="${volerIcon}" class="inline h-[clamp(0px,5vw,25px)]" />`)
-        .replace(/\{\{actions\.decouvrir\}\}/g, `<img src="${decouvrirIcon}" class="inline h-[clamp(0px,5vw,25px)]" />`)
-        .replace(/\{\{actions\.infecter\}\}/g, `<img src="${infecterIcon}" class="inline h-[clamp(0px,5vw,25px)]" />`);
+        .replace(/\{\{camps\.village\}\}/g, `<img src="${villageIcon}" class="inline h-[clamp(0px,5vw,25px)] mb-[clamp(0px,1vw,5px)]" />`)
+        .replace(/\{\{camps\.loups\}\}/g, `<img src="${loupsIcon}" class="inline h-[clamp(0px,5vw,25px)] mb-[clamp(0px,1vw,5px)]" />`)
+        .replace(/\{\{camps\.seul\}\}/g, `<img src="${seulIcon}" class="inline h-[clamp(0px,5vw,25px)] mb-[clamp(0px,1vw,5px)]" />`)
+        .replace(/\{\{actions\.model\}\}/g, `<img src="${modelIcon}" class="inline h-[clamp(0px,5vw,25px)] mb-[clamp(0px,1vw,5px)]" />`)
+        .replace(/\{\{actions\.tuer\}\}/g, `<img src="${tuerIcon}" class="inline h-[clamp(0px,5vw,25px)] mb-[clamp(0px,1vw,5px)]" />`)
+        .replace(/\{\{actions\.amoureux\}\}/g, `<img src="${amoureuxIcon}" class="inline h-[clamp(0px,5vw,25px)] mb-[clamp(0px,1vw,5px)]" />`)
+        .replace(/\{\{actions\.huiler\}\}/g, `<img src="${huilerIcon}" class="inline h-[clamp(0px,5vw,25px)] mb-[clamp(0px,1vw,5px)]" />`)
+        .replace(/\{\{actions\.bruler\}\}/g, `<img src="${brulerIcon}" class="inline h-[clamp(0px,5vw,25px)] mb-[clamp(0px,1vw,5px)]" />`)
+        .replace(/\{\{actions\.proteger\}\}/g, `<img src="${protegerIcon}" class="inline h-[clamp(0px,5vw,25px)] mb-[clamp(0px,1vw,5px)]" />`)
+        .replace(/\{\{actions\.sauver\}\}/g, `<img src="${sauverIcon}" class="inline h-[clamp(0px,5vw,25px)] mb-[clamp(0px,1vw,5px)]" />`)
+        .replace(/\{\{actions\.voler\}\}/g, `<img src="${volerIcon}" class="inline h-[clamp(0px,5vw,25px)] mb-[clamp(0px,1vw,5px)]" />`)
+        .replace(/\{\{actions\.decouvrir\}\}/g, `<img src="${decouvrirIcon}" class="inline h-[clamp(0px,5vw,25px)] mb-[clamp(0px,1vw,5px)]" />`)
+        .replace(/\{\{actions\.infecter\}\}/g, `<img src="${infecterIcon}" class="inline h-[clamp(0px,5vw,25px)] mb-[clamp(0px,1vw,5px)]" />`);
 };
 </script>
 

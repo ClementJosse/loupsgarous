@@ -1,8 +1,14 @@
 <template>
     <div class="w-full bg-dark-background h-[clamp(0px,40vw,200px)] flex items-center flex-col">
-        <div class="text-white text-lg bg-blue-background m-[clamp(0px,2vw,10px)] p-[clamp(0px,2vw,10px)] rounded-xl">
-            'Action'
+        <div class="flex flex-row pb-[clamp(0px,2.7vw,13.5px)]">
+            <button v-wave class="m-[clamp(0px,3vw,15px)] rounded-lg">
+                <img src="../../../../assets/actions/decouvrir.svg" class="h-[clamp(0px,6vw,30px)]">
+            </button>
+            <button v-wave class="m-[clamp(0px,3vw,15px)] rounded-lg">
+                <img src="../../../../assets/actions/decouvrirOn.svg" class="h-[clamp(0px,6vw,30px)]">
+            </button>
         </div>
+
         <div class="flex flex-row w-[clamp(0px,90vw,450px)] items-center justify-between z-10">
             <img v-if="props.gameInfo.time === 'Jour'" src="@/assets/sun.svg" class="w-[clamp(0px,5vw,25px)]">
             <img v-if="props.gameInfo.time === 'Nuit'" src="@/assets/moon.svg" class="w-[clamp(0px,5vw,25px)]">
@@ -21,7 +27,7 @@
                 ]" />
                 <button v-wave v-if="index === props.gameInfo.timelineIndex" @click="nextRole()"
                     class="w-[clamp(0px,10vw,50px)] h-[clamp(0px,10vw,50px)] rounded-full justify-items-center active:scale-105">
-                    <img src="@/assets/next.svg" class="w-[clamp(0px,7 vw,35px)]">
+                    <img src="@/assets/next.svg" class="w-[clamp(0px,8vw,40px)]">
                 </button>
             </template>
 
@@ -158,7 +164,7 @@ const generateNightTimeline = () => {
 const generateDayTimeline = () => {
     const newTimeline = []
     newTimeline.push('Mort')
-    if (props.gameInfo.mayor === false){
+    if (props.gameInfo.mayor === false) {
         newTimeline.push('Maire')
     }
     newTimeline.push('Vote')
