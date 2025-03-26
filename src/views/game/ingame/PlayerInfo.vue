@@ -1,20 +1,22 @@
 <template>
+    <!-- Affichage du role au centre de l'écran pour le pouvoir de la Voyante-->
     <button v-if="showCard" class="z-[100000000] fixed top-0 left-0 w-full h-full flex items-center justify-center" @click="setShowCard(false)">
         <img v-if="gameInfo?.playerCards?.[props.uid]" :src="getImageUrl(gameInfo.playerCards[props.uid])"
             class="h-[clamp(0px,80vw,400px)] w-[clamp(0px,80vw,400px)] z-[100000000]">
         <div class="bg-blue-background absolute inset-0 z-[10000000]"></div>
     </button>
-    <button @click="clickOnPlayer()" :disabled="currentActiveState.state === ''"
+
+    <button @click="clickOnPlayer()" v-wave :disabled="currentActiveState.state === '' && canBeSelected()"
         class="flex items-center gap-[clamp(0px,2vw,10px)] text-[clamp(0px,3.25vw,16.25px)] font-semibold p-[clamp(0px,2vw,10px)] rounded-xl"
-        :class="isCardRight ? 'flex-row' : 'flex-row-reverse', currentActiveState.state !== '' ? 'active:scale-105 animate-tilt-shaking' : ''">
+        :class="isCardRight ? 'flex-row' : 'flex-row-reverse', currentActiveState.state !== '' && canBeSelected() ? 'animate-tilt-shaking active:scale-105' : ''">
         <div class="flex flex-col gap-[clamp(0px,0.5vw,2.5px)]">
             <!-- Player status/ votes-->
             <div class="flex h-[clamp(0px,3vw,15px)] gap-[clamp(0px,1vw,5px)]"
                 :class="isCardRight ? 'flex-row-reverse' : 'flex-row'">
                 <div v-if="isRevealedClass" class="flex gap-[clamp(0px,1vw,5px)]">
+                    <img src="../../../assets/effets/infected.svg" class="h-[clamp(0px,3vw,15px)]" v-if="props.gameInfo.hasInfected === props.uid">
                     <!--
                     <img src="../../../assets/effets/love.svg" class="h-[clamp(0px,3vw,15px)]">
-                    <img src="../../../assets/effets/infected.svg" class="h-[clamp(0px,3vw,15px)]">
                     <img src="../../../assets/effets/mentor.svg" class="h-[clamp(0px,3vw,15px)]">
                     <img src="../../../assets/effets/oiled.svg" class="h-[clamp(0px,3vw,15px)]">
                     <img src="../../../assets/effets/protect.svg" class="h-[clamp(0px,3vw,15px)]">
@@ -167,13 +169,20 @@ const getImageUrl = (imgname) => {
 const isRevealedClass = ref(false);
 
 const clickOnPlayer = () => {
-    if (props.gameInfo?.leader == authorUID.value) {
+    if(!canBeSelected()){
+
+    }
+    else if (props.gameInfo?.leader == authorUID.value) {
         // Si leader
         console.log('leader clicked on ' + props.uid)
 
         // action de la voyante
         if (currentActiveState.state === 'decouvrir') {
             setShowCard(true)
+        }
+        if (currentActiveState.state === 'tuer') {
+            props.gameInfo.playerStatus[props.uid] = 'dying'
+            update(partiesRef, {playerStatus : props.gameInfo.playerStatus })
         }
     }
     else {
@@ -189,6 +198,18 @@ const clickOnPlayer = () => {
             playerVote[authorUID.value] = props.uid
             update(partiesRef, { playerVote: playerVote })
         }
+    }
+}
+
+const canBeSelected = () => {
+    if (props.gameInfo.playerStatus[props.uid] === 'dead') {
+        return false
+    }
+    else if (props.gameInfo.timeline[props.gameInfo.timelineIndex] === 'Sorcière' && props.gameInfo.playerStatus[props.uid] === 'dying' && currentActiveState.state === 'sauver') {
+        return true
+    }
+    else {
+        return true
     }
 }
 

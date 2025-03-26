@@ -67,14 +67,13 @@
         <div v-else-if="props.gameInfo.timeline[props.gameInfo.timelineIndex] === 'Loup'"
             class="flex flex-row my-[clamp(0px,3vw,15px)] gap-[clamp(0px,1vw,5px)]">
             <button v-wave class="rounded-lg active:scale-105" @click.stop="currentActiveState.setState('tuer')">
-                <img :src="currentActiveState.state === 'tuer' ? tuerOnSvg : tuerSvg"
-                    class="h-[clamp(0px,6vw,30px)]">
+                <img :src="currentActiveState.state === 'tuer' ? tuerOnSvg : tuerSvg" class="h-[clamp(0px,6vw,30px)]">
             </button>
         </div>
-        
+
         <div v-else-if="props.gameInfo.timeline[props.gameInfo.timelineIndex] === 'Infect père des loups'"
             class="flex flex-row my-[clamp(0px,3vw,15px)] gap-[clamp(0px,1vw,5px)]">
-            <button v-wave class="rounded-lg active:scale-105">
+            <button v-wave class="rounded-lg active:scale-105" @click="infecter()">
                 <img :src="infecterSvg" class="h-[clamp(0px,6vw,30px)]">
             </button>
         </div>
@@ -86,16 +85,14 @@
                     class="h-[clamp(0px,6vw,30px)]">
             </button>
             <button v-wave class="rounded-lg active:scale-105" @click.stop="currentActiveState.setState('tuer')">
-                <img :src="currentActiveState.state === 'tuer' ? tuerOnSvg : tuerSvg"
-                    class="h-[clamp(0px,6vw,30px)]">
+                <img :src="currentActiveState.state === 'tuer' ? tuerOnSvg : tuerSvg" class="h-[clamp(0px,6vw,30px)]">
             </button>
         </div>
 
         <div v-else-if="props.gameInfo.timeline[props.gameInfo.timelineIndex] === 'Loup blanc'"
             class="flex flex-row my-[clamp(0px,3vw,15px)] gap-[clamp(0px,1vw,5px)]">
             <button v-wave class="rounded-lg active:scale-105" @click.stop="currentActiveState.setState('tuer')">
-                <img :src="currentActiveState.state === 'tuer' ? tuerOnSvg : tuerSvg"
-                    class="h-[clamp(0px,6vw,30px)]">
+                <img :src="currentActiveState.state === 'tuer' ? tuerOnSvg : tuerSvg" class="h-[clamp(0px,6vw,30px)]">
             </button>
         </div>
 
@@ -130,7 +127,7 @@
                 <img src="../../../assets/actions/maire.svg" class="h-[clamp(0px,6vw,30px)]">
             </button>
         </div>
-        
+
         <div v-else class="flex flex-row my-[clamp(0px,6vw,30px)]">
         </div>
 
@@ -138,7 +135,6 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
 import forcevoteSvg from '../../../assets/actions/forcevote.svg'
 import forcevoteOnSvg from '../../../assets/actions/forcevoteOn.svg'
 import forcemaireSvg from '../../../assets/actions/forcemaire.svg'
@@ -174,6 +170,12 @@ import sauverOnSvg from '../../../assets/actions/sauverOn.svg'
 import volerSvg from '../../../assets/actions/voler.svg'
 import volerOnSvg from '../../../assets/actions/volerOn.svg'
 
+import { currentActiveState } from './currentActiveState.js'
+
+import { ref, onMounted, onUnmounted } from 'vue'
+import { getDatabase, ref as dbRef, onValue, update, set } from 'firebase/database';
+import { useRoute } from 'vue-router';
+
 const props = defineProps({
     gameInfo: {
         type: Object,
@@ -185,7 +187,32 @@ const props = defineProps({
     }
 });
 
-import { currentActiveState } from './currentActiveState.js'
+const route = useRoute();
+const gameId = route.params.gameId;
+const gameInfo = ref(null);
+const database = getDatabase();
+const partiesRef = dbRef(database, `/${gameId}`);
+
+const infecter = () => {
+    const dyingPlayerKey = Object.keys(props.gameInfo.playerStatus)
+        .find(key => props.gameInfo.playerStatus[key] === 'dying');
+
+    if (dyingPlayerKey) {
+        // Update the status to 'alive'
+        props.gameInfo.playerStatus[dyingPlayerKey] = 'alive';
+
+        // Set hasInfected to the dying player's key
+        props.gameInfo.hasInfected = dyingPlayerKey;
+
+        // Update Firebase references
+        update(partiesRef, {
+            playerStatus: { [dyingPlayerKey]: 'alive' },
+            hasInfected: dyingPlayerKey
+        });
+    } else {
+        console.log('No dying player found');
+    }
+}
 
 
 const handleClickOutside = (event) => {
@@ -194,7 +221,7 @@ const handleClickOutside = (event) => {
 
 onMounted(() => {
     document.addEventListener('click', handleClickOutside)
-    return {currentActiveState}
+    return { currentActiveState }
 })
 
 onUnmounted(() => {
