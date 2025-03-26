@@ -152,9 +152,6 @@ const generateNightTimeline = () => {
     if (cardsAlive.includes('Renard') && props.gameInfo.canFoxSnif == true) {
         newTimeline.push('Renard')
     }
-    if (cardsAlive.includes('Pyromane') && props.gameInfo.hasUsedLighter == false) {
-        newTimeline.push('Pyromane')
-    }
     if (cardsAlive.includes('Loup')) {
         newTimeline.push('Loup')
     }
@@ -166,6 +163,9 @@ const generateNightTimeline = () => {
     }
     if (cardsAlive.includes('Loup blanc') && props.gameInfo.dayNightNumberIndex % 2 == 0) {
         newTimeline.push('Loup blanc')
+    }
+    if (cardsAlive.includes('Pyromane') && props.gameInfo.hasUsedLighter == false) {
+        newTimeline.push('Pyromane')
     }
     if (cardsAlive.includes('Voleur')) {
         newTimeline.push('Voleur')

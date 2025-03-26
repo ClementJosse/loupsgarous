@@ -34,7 +34,7 @@
         ]
     },
     "Infect père des loups": {
-        "night": 11,
+        "night": 10,
         "color": "#E85660",
         "description": "C'est un membre des {{camps.loups}}. Une unique fois pendant la partie, il peut {{actions.infecter}} la personne éliminée par les {{camps.loups}}, la personne doit maintenant gagner avec le camps des {{camps.loups}} tout en conservant son rôle d'origine.",
         "winsWith": [
@@ -42,7 +42,7 @@
         ]
     },
     "Loup": {
-        "night": 12,
+        "night": 11,
         "color": "#E85660",
         "description": "C'est un membre des {{camps.loups}}. Chaque nuit, toutes les personnes de ce camps se réunissent pendant le tour des {{camps.loups}} pour {{actions.tuer}} une nouvelle personne. ",
         "winsWith": [
@@ -73,7 +73,7 @@
         ]
     },
     "Pyromane": {
-        "night": 20,
+        "night": 1,
         "color": "#FF823F",
         "description": "Il doit gagner {{camps.seul}}. Chaque nuit, le Pyromane peut {{actions.huiler}} une personne ou {{actions.bruler}} toutes les personnes huilées ce qui va tous les tuer. Il n'y a pas de limite de personne pour sa capacité {{actions.huiler}}, par contre il ne peut utiliser {{actions.bruler}} qu'une seule fois dans la partie.",
         "winsWith": [
@@ -97,7 +97,7 @@
         ]
     },
     "Sorcière": {
-        "night": 10,
+        "night": 6,
         "color": "#FF823F",
         "description": "C'est un membre du {{camps.village}}. la Sorcière se réveille la nuit et possède alors 3 choix. Utiliser sa potion de vie pour {{actions.sauver}} la personne tué au tour des {{camps.loups}}, utiliser sa potion de mort pour {{actions.tuer}} une personne supplémentaire ou ne rien faire. Elle ne peut utiliser qu'une potion maximum par nuit et ne possède qu'un exemplaire de chaque potion par partie. Si la sorcière se fait {{actions.voler}}, la nouvelle sorcière ne pourra pas réutiliser les potions qui ont déjà été utilisée par la Sorcière précédente.",
         "winsWith": [

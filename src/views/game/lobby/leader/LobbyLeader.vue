@@ -109,7 +109,7 @@ const createPlayerAction = () => {
     playerList.value.forEach((player, index) => {
         playerAction.value[player] = '';
     });
-    playerAction.value[props.gameInfo.leader] = '';
+    playerAction.value[gameInfo.leader] = '';
 }
 
 const startGame = () => {
