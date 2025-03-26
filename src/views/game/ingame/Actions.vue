@@ -3,8 +3,8 @@
         <!-- Actions du meneur de jour-->
         <div v-if="props.gameInfo.timeline[props.gameInfo.timelineIndex] === 'Vote'"
             class="flex flex-row my-[clamp(0px,3vw,15px)] gap-[clamp(0px,1vw,5px)]">
-            <button v-wave class="rounded-lg active:scale-105" @click.stop="toggleCurrentState('forcevote')">
-                <img :src="currentActiveState === 'forcevote' ? forcevoteOnSvg : forcevoteSvg"
+            <button v-wave class="rounded-lg active:scale-105" @click.stop="currentActiveState.setState('forcevote')">
+                <img :src="currentActiveState.state === 'forcevote' ? forcevoteOnSvg : forcevoteSvg"
                     class="h-[clamp(0px,6vw,30px)]">
             </button>
 
@@ -14,8 +14,8 @@
         </div>
         <div v-else-if="props.gameInfo.timeline[props.gameInfo.timelineIndex] === 'Maire'"
             class="flex flex-row my-[clamp(0px,3vw,15px)] gap-[clamp(0px,1vw,5px)]">
-            <button v-wave class="rounded-lg active:scale-105" @click.stop="toggleCurrentState('forcemaire')">
-                <img :src="currentActiveState === 'forcemaire' ? forcemaireOnSvg : forcemaireSvg"
+            <button v-wave class="rounded-lg active:scale-105" @click.stop="currentActiveState.setState('forcemaire')">
+                <img :src="currentActiveState.state === 'forcemaire' ? forcemaireOnSvg : forcemaireSvg"
                     class="h-[clamp(0px,6vw,30px)]">
             </button>
 
@@ -27,32 +27,32 @@
         <!-- Actions du meneur de nuit -->
         <div v-else-if="props.gameInfo.timeline[props.gameInfo.timelineIndex] === 'Cupidon'"
             class="flex flex-row my-[clamp(0px,3vw,15px)] gap-[clamp(0px,1vw,5px)]">
-            <button v-wave class="rounded-lg active:scale-105" @click.stop="toggleCurrentState('amoureux')">
-                <img :src="currentActiveState === 'amoureux' ? amoureuxOnSvg : amoureuxSvg"
+            <button v-wave class="rounded-lg active:scale-105" @click.stop="currentActiveState.setState('amoureux')">
+                <img :src="currentActiveState.state === 'amoureux' ? amoureuxOnSvg : amoureuxSvg"
                     class="h-[clamp(0px,6vw,30px)]">
             </button>
         </div>
 
         <div v-else-if="props.gameInfo.timeline[props.gameInfo.timelineIndex] === 'Enfant sauvage'"
             class="flex flex-row my-[clamp(0px,3vw,15px)] gap-[clamp(0px,1vw,5px)]">
-            <button v-wave class="rounded-lg active:scale-105" @click.stop="toggleCurrentState('model')">
-                <img :src="currentActiveState === 'model' ? modelOnSvg : modelSvg"
+            <button v-wave class="rounded-lg active:scale-105" @click.stop="currentActiveState.setState('model')">
+                <img :src="currentActiveState.state === 'model' ? modelOnSvg : modelSvg"
                     class="h-[clamp(0px,6vw,30px)]">
             </button>
         </div>
 
         <div v-else-if="props.gameInfo.timeline[props.gameInfo.timelineIndex] === 'Voyante'"
             class="flex flex-row my-[clamp(0px,3vw,15px)] gap-[clamp(0px,1vw,5px)]">
-            <button v-wave class="rounded-lg active:scale-105" @click.stop="toggleCurrentState('decouvrir')">
-                <img :src="currentActiveState === 'decouvrir' ? decouvrirOnSvg : decouvrirSvg"
+            <button v-wave class="rounded-lg active:scale-105" @click.stop="currentActiveState.setState('decouvrir')">
+                <img :src="currentActiveState.state === 'decouvrir' ? decouvrirOnSvg : decouvrirSvg"
                     class="h-[clamp(0px,6vw,30px)]">
             </button>
         </div>
 
         <div v-else-if="props.gameInfo.timeline[props.gameInfo.timelineIndex] === 'Salvateur'"
             class="flex flex-row my-[clamp(0px,3vw,15px)] gap-[clamp(0px,1vw,5px)]">
-            <button v-wave class="rounded-lg active:scale-105" @click.stop="toggleCurrentState('proteger')">
-                <img :src="currentActiveState === 'proteger' ? protegerOnSvg : protegerSvg"
+            <button v-wave class="rounded-lg active:scale-105" @click.stop="currentActiveState.setState('proteger')">
+                <img :src="currentActiveState.state === 'proteger' ? protegerOnSvg : protegerSvg"
                     class="h-[clamp(0px,6vw,30px)]">
             </button>
         </div>
@@ -66,8 +66,8 @@
 
         <div v-else-if="props.gameInfo.timeline[props.gameInfo.timelineIndex] === 'Loup'"
             class="flex flex-row my-[clamp(0px,3vw,15px)] gap-[clamp(0px,1vw,5px)]">
-            <button v-wave class="rounded-lg active:scale-105" @click.stop="toggleCurrentState('tuer')">
-                <img :src="currentActiveState === 'tuer' ? tuerOnSvg : tuerSvg"
+            <button v-wave class="rounded-lg active:scale-105" @click.stop="currentActiveState.setState('tuer')">
+                <img :src="currentActiveState.state === 'tuer' ? tuerOnSvg : tuerSvg"
                     class="h-[clamp(0px,6vw,30px)]">
             </button>
         </div>
@@ -81,28 +81,28 @@
 
         <div v-else-if="props.gameInfo.timeline[props.gameInfo.timelineIndex] === 'Sorcière'"
             class="flex flex-row my-[clamp(0px,3vw,15px)] gap-[clamp(0px,1vw,5px)]">
-            <button v-wave class="rounded-lg active:scale-105" @click.stop="toggleCurrentState('sauver')">
-                <img :src="currentActiveState === 'sauver' ? sauverOnSvg : sauverSvg"
+            <button v-wave class="rounded-lg active:scale-105" @click.stop="currentActiveState.setState('sauver')">
+                <img :src="currentActiveState.state === 'sauver' ? sauverOnSvg : sauverSvg"
                     class="h-[clamp(0px,6vw,30px)]">
             </button>
-            <button v-wave class="rounded-lg active:scale-105" @click.stop="toggleCurrentState('tuer')">
-                <img :src="currentActiveState === 'tuer' ? tuerOnSvg : tuerSvg"
+            <button v-wave class="rounded-lg active:scale-105" @click.stop="currentActiveState.setState('tuer')">
+                <img :src="currentActiveState.state === 'tuer' ? tuerOnSvg : tuerSvg"
                     class="h-[clamp(0px,6vw,30px)]">
             </button>
         </div>
 
         <div v-else-if="props.gameInfo.timeline[props.gameInfo.timelineIndex] === 'Loup blanc'"
             class="flex flex-row my-[clamp(0px,3vw,15px)] gap-[clamp(0px,1vw,5px)]">
-            <button v-wave class="rounded-lg active:scale-105" @click.stop="toggleCurrentState('tuer')">
-                <img :src="currentActiveState === 'tuer' ? tuerOnSvg : tuerSvg"
+            <button v-wave class="rounded-lg active:scale-105" @click.stop="currentActiveState.setState('tuer')">
+                <img :src="currentActiveState.state === 'tuer' ? tuerOnSvg : tuerSvg"
                     class="h-[clamp(0px,6vw,30px)]">
             </button>
         </div>
 
         <div v-else-if="props.gameInfo.timeline[props.gameInfo.timelineIndex] === 'Pyromane'"
             class="flex flex-row my-[clamp(0px,3vw,15px)] gap-[clamp(0px,1vw,5px)]">
-            <button v-wave class="rounded-lg active:scale-105" @click.stop="toggleCurrentState('huiler')">
-                <img :src="currentActiveState === 'huiler' ? huilerOnSvg : huilerSvg"
+            <button v-wave class="rounded-lg active:scale-105" @click.stop="currentActiveState.setState('huiler')">
+                <img :src="currentActiveState.state === 'huiler' ? huilerOnSvg : huilerSvg"
                     class="h-[clamp(0px,6vw,30px)]">
             </button>
             <button v-wave class="rounded-lg active:scale-105">
@@ -112,8 +112,8 @@
 
         <div v-else-if="props.gameInfo.timeline[props.gameInfo.timelineIndex] === 'Voleur'"
             class="flex flex-row my-[clamp(0px,3vw,15px)] gap-[clamp(0px,1vw,5px)]">
-            <button v-wave class="rounded-lg active:scale-105" @click.stop="toggleCurrentState('voler')">
-                <img :src="currentActiveState === 'voler' ? volerOnSvg : volerSvg"
+            <button v-wave class="rounded-lg active:scale-105" @click.stop="currentActiveState.setState('voler')">
+                <img :src="currentActiveState.state === 'voler' ? volerOnSvg : volerSvg"
                     class="h-[clamp(0px,6vw,30px)]">
             </button>
         </div>
@@ -185,18 +185,16 @@ const props = defineProps({
     }
 });
 
-const currentActiveState = ref('')
+import { currentActiveState } from './currentActiveState.js'
 
-const toggleCurrentState = (action) => {
-    currentActiveState.value = currentActiveState.value === action ? '' : action
-}
 
 const handleClickOutside = (event) => {
-    currentActiveState.value = ''
+    currentActiveState.resetState()
 }
 
 onMounted(() => {
     document.addEventListener('click', handleClickOutside)
+    return {currentActiveState}
 })
 
 onUnmounted(() => {
