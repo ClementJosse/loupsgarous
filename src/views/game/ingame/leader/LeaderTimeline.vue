@@ -1,7 +1,7 @@
 <template>
     <div class="w-full bg-dark-background h-[clamp(0px,40vw,200px)] flex items-center flex-col">
         <div class="flex flex-row pb-[clamp(0px,2.7vw,13.5px)]">
-            <Actions :gameInfo="props.gameInfo" :isLeader="true"/>
+            <Actions :gameInfo="props.gameInfo" :isLeader="true" />
         </div>
 
         <div class="flex flex-row w-[clamp(0px,90vw,450px)] items-center justify-between z-10">
@@ -116,8 +116,22 @@ const nextRole = () => {
                 generateDayTimeline()
             }
             update(partiesRef, { timelineIndex: 0 })
+            Object.keys(props.gameInfo.playerStatus).forEach(key => {
+                if (props.gameInfo.playerStatus[key] === 'dying') {
+                    props.gameInfo.playerStatus[key] = 'died';
+                }
+            });
+            update(partiesRef, { playerStatus: props.gameInfo.playerStatus })
         }
         else {
+            if (props.gameInfo.timeline[props.gameInfo.timelineIndex] === 'Mort') {
+                Object.keys(props.gameInfo.playerStatus).forEach(key => {
+                    if (props.gameInfo.playerStatus[key] === 'died') {
+                        props.gameInfo.playerStatus[key] = 'dead';
+                    }
+                });
+                update(partiesRef, { playerStatus: props.gameInfo.playerStatus })
+            }
             if (props.gameInfo.timeline[props.gameInfo.timelineIndex + 1] === 'Maire' || props.gameInfo.timeline[props.gameInfo.timelineIndex + 1] === 'Vote') {
                 resetPlayerVote()
             }
