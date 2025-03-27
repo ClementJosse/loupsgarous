@@ -107,6 +107,14 @@ const nextRole = () => {
             console.log('fini!')
             console.log(props.gameInfo.time)
             if (props.gameInfo.time === 'Jour') {
+
+                Object.keys(props.gameInfo.playerStatus).forEach(key => {
+                if (props.gameInfo.playerStatus[key] === 'died') {
+                    props.gameInfo.playerStatus[key] = 'dead';
+                }
+            });
+            update(partiesRef, { playerStatus: props.gameInfo.playerStatus })
+            
                 update(partiesRef, { time: 'Nuit' })
                 generateNightTimeline()
             }
@@ -194,6 +202,7 @@ const generateDayTimeline = () => {
         newTimeline.push('Maire')
     }
     newTimeline.push('Vote')
+    newTimeline.push('Mort')
     update(partiesRef, { timeline: newTimeline })
 }
 

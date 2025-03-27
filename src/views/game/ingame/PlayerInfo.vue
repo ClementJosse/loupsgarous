@@ -188,6 +188,10 @@ const clickOnPlayer = () => {
             props.gameInfo.mayor = props.uid
             update(partiesRef, {mayor : props.gameInfo.mayor })
         }
+        if (currentActiveState.state === 'forcevote') {
+            props.gameInfo.playerStatus[props.uid] = 'died'
+            update(partiesRef, {playerStatus : props.gameInfo.playerStatus })
+        }
     }
     else {
         // Si joueur
