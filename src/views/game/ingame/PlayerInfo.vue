@@ -16,6 +16,7 @@
                 <div v-if="isRevealedClass" class="flex gap-[clamp(0px,1vw,5px)]">
                     <img src="../../../assets/effets/infected.svg" class="h-[clamp(0px,3vw,15px)]" v-if="props.gameInfo.hasInfected === props.uid || (props.gameInfo.playerStatus[props.gameInfo.model] === 'dead' && props.gameInfo.playerCards[props.uid] === 'Enfant sauvage')">
                     <img src="../../../assets/effets/model.svg" class="h-[clamp(0px,3vw,15px)]" v-if="props.gameInfo.model === props.uid">
+                    <img src="../../../assets/effets/love.svg" class="h-[clamp(0px,3vw,15px)]" v-if="props.gameInfo.isInLove !== false && props.gameInfo.isInLove.includes(props.uid)">
                     <!--
                     <img src="../../../assets/effets/love.svg" class="h-[clamp(0px,3vw,15px)]">
                     <img src="../../../assets/effets/oiled.svg" class="h-[clamp(0px,3vw,15px)]">
@@ -183,6 +184,16 @@ const clickOnPlayer = () => {
         if (currentActiveState.state === 'model') {
             props.gameInfo.model = props.uid
             update(partiesRef, {model : props.gameInfo.model })
+        }
+        if (currentActiveState.state === 'amoureux') {
+            if(props.gameInfo.isInLove === false){
+                props.gameInfo.isInLove = [props.uid]
+                update(partiesRef, {isInLove : props.gameInfo.isInLove })
+            }
+            else{
+                props.gameInfo.isInLove.push(props.uid)
+                update(partiesRef, {isInLove : props.gameInfo.isInLove })
+            }
         }
         if (currentActiveState.state === 'tuer') {
             // TODO plus a venir ici

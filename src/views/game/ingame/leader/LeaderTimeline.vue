@@ -97,6 +97,11 @@ const resetPlayerAction = () => {
     update(partiesRef, { playerAction: playerAction });
 }
 
+const killLovers = () => {
+    props.gameInfo.isInLove.forEach((item) => {props.gameInfo.playerStatus[item] = 'died';
+    update(partiesRef, { playerStatus: props.gameInfo.playerStatus })})
+}
+
 const nextRole = () => {
     console.log('next')
     resetPlayerAction()
@@ -127,6 +132,9 @@ const nextRole = () => {
             Object.keys(props.gameInfo.playerStatus).forEach(key => {
                 if (props.gameInfo.playerStatus[key] === 'dying') {
                     props.gameInfo.playerStatus[key] = 'died';
+                    if(props.gameInfo.isInLove.includes(key)){
+                        killLovers()
+                    }
                 }
             });
             update(partiesRef, { playerStatus: props.gameInfo.playerStatus })
@@ -202,7 +210,7 @@ const generateDayTimeline = () => {
         newTimeline.push('Maire')
     }
     newTimeline.push('Vote')
-    newTimeline.push('MortVote')
+    newTimeline.push('Mort Vote')
     update(partiesRef, { timeline: newTimeline })
 }
 
