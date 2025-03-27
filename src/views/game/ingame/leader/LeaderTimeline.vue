@@ -202,7 +202,7 @@ const generateDayTimeline = () => {
         newTimeline.push('Maire')
     }
     newTimeline.push('Vote')
-    newTimeline.push('Mort')
+    newTimeline.push('MortVote')
     update(partiesRef, { timeline: newTimeline })
 }
 
