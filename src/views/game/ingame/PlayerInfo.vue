@@ -189,6 +189,9 @@ const clickOnPlayer = () => {
             if(props.gameInfo.isInLove === ''){
                 props.gameInfo.isInLove = [props.uid]
                 update(partiesRef, {isInLove : props.gameInfo.isInLove })
+                setTimeout(function () {
+                    currentActiveState.setState('amoureux')
+                }, 0)
             }
             else{
                 props.gameInfo.isInLove.push(props.uid)
