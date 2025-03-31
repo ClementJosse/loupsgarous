@@ -4,7 +4,7 @@
     <ul class="relative flex z-0 flex-col w-[clamp(0px,96vw,480px)] items-center rounded-xl">
       <!-- Cercle en arrière-plan (on peut le laisser dans un <li> masqué ou utiliser un pseudo-élément) -->
       <li
-        class="absolute z-[-1] top-[clamp(0px,12vw,60px)] bottom-[clamp(0px,7vw,35px)] right-[clamp(0px,10vw,50px)] left-[clamp(0px,10vw,50px)] border-dashed border-disabled border-[clamp(0px,0.8vw,4px)] rounded-full">
+        class="absolute z-[-1] top-[clamp(0px,14vw,70px)] bottom-[clamp(0px,7vw,35px)] right-[clamp(0px,10vw,50px)] left-[clamp(0px,10vw,50px)] border-dashed border-disabled border-[clamp(0px,0.8vw,4px)] rounded-full">
       </li>
 
       <!-- Premier élément s'il y a un nombre impair d'items -->

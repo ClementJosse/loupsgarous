@@ -31,7 +31,6 @@ const playerList = ref([]);
 
 const playerCards = ref({})
 const playerStatus = ref({})
-const playerVote = ref({})
 const playerAction = ref({})
 
 const playerCount = computed(() => playerList.value.length);
@@ -97,12 +96,6 @@ const setAllPlayersAlive = () => {
     });
 }
 
-const createPlayerVote = () => {
-    playerVote.value = {};
-    playerList.value.forEach((player, index) => {
-        playerVote.value[player] = '...';
-    });
-}
 
 const createPlayerAction = () => {
     playerAction.value = {};
@@ -116,12 +109,10 @@ const startGame = () => {
     setTimeout(function () {
         distributeCards()
         setAllPlayersAlive()
-        createPlayerVote()
         createPlayerAction()
         update(partiesRef, { status: "ingame" })
         update(partiesRef, { playerCards: playerCards.value })
         update(partiesRef, { playerStatus: playerStatus.value })
-        update(partiesRef, { playerVote: playerVote.value })
         update(partiesRef, { playerAction: playerAction.value })
         update(partiesRef, { time: 'Jour' })
         update(partiesRef, { dayNightNumberIndex: 1 })

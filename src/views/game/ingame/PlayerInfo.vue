@@ -1,6 +1,7 @@
 <template>
     <!-- Affichage du role au centre de l'écran pour le pouvoir de la Voyante-->
-    <button v-if="showCard" class="z-[100000000] fixed top-0 left-0 w-full h-full flex items-center justify-center" @click="setShowCard(false)">
+    <button v-if="showCard" class="z-[100000000] fixed top-0 left-0 w-full h-full flex items-center justify-center"
+        @click="setShowCard(false)">
         <img v-if="gameInfo?.playerCards?.[props.uid]" :src="getImageUrl(gameInfo.playerCards[props.uid])"
             class="h-[clamp(0px,80vw,400px)] w-[clamp(0px,80vw,400px)] z-[100000000]">
         <div class="bg-blue-background absolute inset-0 z-[10000000]"></div>
@@ -10,43 +11,21 @@
         class="flex items-center gap-[clamp(0px,2vw,10px)] text-[clamp(0px,3.25vw,16.25px)] font-semibold p-[clamp(0px,2vw,10px)] rounded-xl"
         :class="isCardRight ? 'flex-row' : 'flex-row-reverse', currentActiveState.state !== '' && canBeSelected() ? 'animate-tilt-shaking active:scale-105' : ''">
         <div class="flex flex-col gap-[clamp(0px,0.5vw,2.5px)]">
-            <!-- Player status/ votes-->
+            <!-- Player status-->
             <div class="flex h-[clamp(0px,3vw,15px)] gap-[clamp(0px,1vw,5px)]"
                 :class="isCardRight ? 'flex-row-reverse' : 'flex-row'">
                 <div v-if="isRevealedClass" class="flex gap-[clamp(0px,1vw,5px)]">
-                    <img src="../../../assets/effets/infected.svg" class="h-[clamp(0px,3vw,15px)]" v-if="props.gameInfo.hasInfected === props.uid || (props.gameInfo.playerStatus[props.gameInfo.model] === 'dead' && props.gameInfo.playerCards[props.uid] === 'Enfant sauvage')">
-                    <img src="../../../assets/effets/model.svg" class="h-[clamp(0px,3vw,15px)]" v-if="props.gameInfo.model === props.uid">
-                    <img src="../../../assets/effets/love.svg" class="h-[clamp(0px,3vw,15px)]" v-if="props.gameInfo.isInLove !== false && props.gameInfo.isInLove.includes(props.uid)">
+                    <img src="../../../assets/effets/infected.svg" class="h-[clamp(0px,3vw,15px)]"
+                        v-if="props.gameInfo.hasInfected === props.uid || (props.gameInfo.playerStatus[props.gameInfo.model] === 'dead' && props.gameInfo.playerCards[props.uid] === 'Enfant sauvage')">
+                    <img src="../../../assets/effets/model.svg" class="h-[clamp(0px,3vw,15px)]"
+                        v-if="props.gameInfo.model === props.uid">
+                    <img src="../../../assets/effets/love.svg" class="h-[clamp(0px,3vw,15px)]"
+                        v-if="((props.gameInfo?.isInLove || props.gameInfo.isInLove !== '') && Array.isArray(props.gameInfo?.isInLove) && props.gameInfo.isInLove.includes(props.uid))">
                     <!--
                     <img src="../../../assets/effets/love.svg" class="h-[clamp(0px,3vw,15px)]">
                     <img src="../../../assets/effets/oiled.svg" class="h-[clamp(0px,3vw,15px)]">
                     <img src="../../../assets/effets/protect.svg" class="h-[clamp(0px,3vw,15px)]">
                     -->
-                </div>
-                <div v-else class="flex">
-                    <!-- Section Maire -->
-                    <div class="flex flex-row" v-if="gameInfo.timeline[gameInfo.timelineIndex] === 'Maire'">
-                        <div v-for="(vote, name) in gameInfo.playerVote" class="flex flex-row">
-                            <div v-if="vote === props.uid" class="mx-[clamp(0px,0.5vw,2.5px)]">
-                                <img src="../../../assets/effets/mayor.svg" class="h-[clamp(0px,3vw,15px)]">
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Section Vote -->
-                    <div class="flex flex-row" v-if="gameInfo.timeline[gameInfo.timelineIndex] === 'Vote'">
-                        <div v-for="(vote, name) in gameInfo.playerVote" class="flex flex-row">
-                            <!-- Vote du maire -->
-                            <div v-if="vote === props.uid && name === gameInfo.mayor"
-                                class="mx-[clamp(0px,0.5vw,2.5px)]">
-                                <img src="../../../assets/effets/mayorvote.svg" class="h-[clamp(0px,3vw,15px)]">
-                            </div>
-                            <!-- Vote des autres joueurs -->
-                            <div v-else-if="vote === props.uid" class="mx-[clamp(0px,0.5vw,2.5px)]">
-                                <img src="../../../assets/dying.svg" class="h-[clamp(0px,3vw,15px)]">
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
 
@@ -78,22 +57,9 @@
                     {{ gameInfo?.uid_to_username?.[props.uid] }}
                 </div>
             </div>
+            <div class="flex gap-[clamp(0px,1vw,5px)] h-[clamp(0px,3vw,15px)]">
 
-            <!-- Player Vote for-->
-            <div class="flex gap-[clamp(0px,1vw,5px)] h-[clamp(0px,3vw,15px)]"
-                :class="isCardRight ? 'flex-row-reverse' : 'flex-row'">
-                <div class="text-purple-important text-[clamp(0px,3vw,15px)]">
-                    <div v-if="gameInfo?.timeline &&
-                        gameInfo.timelineIndex !== undefined &&
-                        gameInfo.timeline[gameInfo.timelineIndex] &&
-                        (gameInfo.timeline[gameInfo.timelineIndex] === 'Maire' ||
-                            gameInfo.timeline[gameInfo.timelineIndex] === 'Vote')">
-                        {{ gameInfo.playerVote?.[props.uid] === '...' ? gameInfo.playerVote?.[props.uid] :
-                            gameInfo.uid_to_username[gameInfo.playerVote?.[props.uid]] }}
-                    </div>
-                </div>
             </div>
-
         </div>
 
         <!-- Player Card-->
@@ -170,7 +136,7 @@ const getImageUrl = (imgname) => {
 const isRevealedClass = ref(false);
 
 const clickOnPlayer = () => {
-    if(!canBeSelected()){
+    if (!canBeSelected()) {
 
     }
     else if (props.gameInfo?.leader == authorUID.value) {
@@ -183,49 +149,50 @@ const clickOnPlayer = () => {
         }
         if (currentActiveState.state === 'model') {
             props.gameInfo.model = props.uid
-            update(partiesRef, {model : props.gameInfo.model })
+            update(partiesRef, { model: props.gameInfo.model })
         }
         if (currentActiveState.state === 'amoureux') {
-            if(props.gameInfo.isInLove === ''){
+            if (props.gameInfo.isInLove === '') {
                 props.gameInfo.isInLove = [props.uid]
-                update(partiesRef, {isInLove : props.gameInfo.isInLove })
+                update(partiesRef, { isInLove: props.gameInfo.isInLove })
                 setTimeout(function () {
                     currentActiveState.setState('amoureux')
                 }, 0)
             }
-            else{
+            else {
                 props.gameInfo.isInLove.push(props.uid)
-                update(partiesRef, {isInLove : props.gameInfo.isInLove })
+                update(partiesRef, { isInLove: props.gameInfo.isInLove })
             }
         }
         if (currentActiveState.state === 'tuer') {
-            // TODO plus a venir ici
-            props.gameInfo.playerStatus[props.uid] = 'dying'
-            update(partiesRef, {playerStatus : props.gameInfo.playerStatus })
+            if (props.gameInfo.timeline[props.gameInfo.timelineIndex] == 'Vote') {
+                props.gameInfo.playerStatus[props.uid] = 'died'
+                update(partiesRef, { playerStatus: props.gameInfo.playerStatus })
+                if ((props.gameInfo?.isInLove || props.gameInfo.isInLove !== '') && Array.isArray(props.gameInfo?.isInLove) && props.gameInfo.isInLove.includes(props.uid)) {
+                    killLovers()
+                }
+            }
+            else {
+                props.gameInfo.playerStatus[props.uid] = 'dying'
+                update(partiesRef, { playerStatus: props.gameInfo.playerStatus })
+            }
         }
         if (currentActiveState.state === 'forcemaire') {
             props.gameInfo.mayor = props.uid
-            update(partiesRef, {mayor : props.gameInfo.mayor })
+            update(partiesRef, { mayor: props.gameInfo.mayor })
         }
         if (currentActiveState.state === 'forcevote') {
             props.gameInfo.playerStatus[props.uid] = 'died'
-            update(partiesRef, {playerStatus : props.gameInfo.playerStatus })
+            update(partiesRef, { playerStatus: props.gameInfo.playerStatus })
         }
     }
-    else {
-        // Si joueur
-        console.log('player clicked on ' + props.uid)
-        if (props.gameInfo?.timeline &&
-            props.gameInfo.timelineIndex !== undefined &&
-            props.gameInfo.timeline[props.gameInfo.timelineIndex] &&
-            (props.gameInfo.timeline[props.gameInfo.timelineIndex] === 'Maire' ||
-                props.gameInfo.timeline[props.gameInfo.timelineIndex] === 'Vote')) {
-            var playerVote = props.gameInfo.playerVote || {}
-            console.log(authorUID.value)
-            playerVote[authorUID.value] = props.uid
-            update(partiesRef, { playerVote: playerVote })
-        }
-    }
+}
+
+const killLovers = () => {
+    props.gameInfo.isInLove.forEach((item) => {
+        props.gameInfo.playerStatus[item] = 'died';
+        update(partiesRef, { playerStatus: props.gameInfo.playerStatus })
+    })
 }
 
 const canBeSelected = () => {

@@ -64,23 +64,6 @@ const getImagePath = (role) => {
     return new URL(`../../../../assets/roles/${role}.png`, import.meta.url).href;
 };
 
-const resetPlayerVote = () => {
-    if (!props.gameInfo || !props.gameInfo.playerList) {
-        console.error('gameInfo or playerList is undefined');
-        return;
-    }
-
-    var playerVote = props.gameInfo.playerVote || {};
-
-    props.gameInfo.playerList.forEach((player, index) => {
-        if (!playerVote[player]) {
-            playerVote[player] = [];
-        }
-        playerVote[player] = '...';
-    });
-
-    update(partiesRef, { playerVote: playerVote });
-}
 
 const resetPlayerAction = () => {
     if (!props.gameInfo || !props.gameInfo.playerList) {
@@ -98,8 +81,10 @@ const resetPlayerAction = () => {
 }
 
 const killLovers = () => {
-    props.gameInfo.isInLove.forEach((item) => {props.gameInfo.playerStatus[item] = 'died';
-    update(partiesRef, { playerStatus: props.gameInfo.playerStatus })})
+    props.gameInfo.isInLove.forEach((item) => {
+        props.gameInfo.playerStatus[item] = 'died';
+        update(partiesRef, { playerStatus: props.gameInfo.playerStatus })
+    })
 }
 
 const nextRole = () => {
@@ -114,12 +99,12 @@ const nextRole = () => {
             if (props.gameInfo.time === 'Jour') {
 
                 Object.keys(props.gameInfo.playerStatus).forEach(key => {
-                if (props.gameInfo.playerStatus[key] === 'died') {
-                    props.gameInfo.playerStatus[key] = 'dead';
-                }
-            });
-            update(partiesRef, { playerStatus: props.gameInfo.playerStatus })
-            
+                    if (props.gameInfo.playerStatus[key] === 'died') {
+                        props.gameInfo.playerStatus[key] = 'dead';
+                    }
+                });
+                update(partiesRef, { playerStatus: props.gameInfo.playerStatus })
+
                 update(partiesRef, { time: 'Nuit' })
                 generateNightTimeline()
             }
@@ -132,7 +117,7 @@ const nextRole = () => {
             Object.keys(props.gameInfo.playerStatus).forEach(key => {
                 if (props.gameInfo.playerStatus[key] === 'dying') {
                     props.gameInfo.playerStatus[key] = 'died';
-                    if(props.gameInfo.isInLove.includes(key)){
+                    if (props.gameInfo.isInLove.includes(key)) {
                         killLovers()
                     }
                 }
@@ -147,9 +132,6 @@ const nextRole = () => {
                     }
                 });
                 update(partiesRef, { playerStatus: props.gameInfo.playerStatus })
-            }
-            if (props.gameInfo.timeline[props.gameInfo.timelineIndex + 1] === 'Maire' || props.gameInfo.timeline[props.gameInfo.timelineIndex + 1] === 'Vote') {
-                resetPlayerVote()
             }
             update(partiesRef, { timelineIndex: props.gameInfo.timelineIndex + 1 })
         }
@@ -210,7 +192,6 @@ const generateDayTimeline = () => {
         newTimeline.push('Maire')
     }
     newTimeline.push('Vote')
-    newTimeline.push('Mort Vote')
     update(partiesRef, { timeline: newTimeline })
 }
 
