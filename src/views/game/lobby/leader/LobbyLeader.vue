@@ -136,7 +136,7 @@ const startGame = () => {
 const addCardsVariables = () => {
     if (Object.values(playerCards.value).includes('Cupidon')) {
         console.log('cupid')
-        update(partiesRef, { isInLove: false })
+        update(partiesRef, { isInLove: '' })
     }
     if (Object.values(playerCards.value).includes('Enfant sauvage')) {
         update(partiesRef, { model: false })

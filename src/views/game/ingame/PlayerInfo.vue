@@ -186,7 +186,7 @@ const clickOnPlayer = () => {
             update(partiesRef, {model : props.gameInfo.model })
         }
         if (currentActiveState.state === 'amoureux') {
-            if(props.gameInfo.isInLove === false){
+            if(props.gameInfo.isInLove === ''){
                 props.gameInfo.isInLove = [props.uid]
                 update(partiesRef, {isInLove : props.gameInfo.isInLove })
             }
