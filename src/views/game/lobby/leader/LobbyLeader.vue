@@ -133,7 +133,7 @@ const addCardsVariables = () => {
         update(partiesRef, { model: false })
     }
     if (Object.values(playerCards.value).includes('Salvateur')) {
-        update(partiesRef, { previousProtected: false })
+        update(partiesRef, { protected: '' })
     }
     if (Object.values(playerCards.value).includes('Renard')) {
         update(partiesRef, { canFoxSnif: true })

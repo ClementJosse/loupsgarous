@@ -21,6 +21,9 @@
                         v-if="props.gameInfo.model === props.uid">
                     <img src="../../../assets/effets/love.svg" class="h-[clamp(0px,3vw,15px)]"
                         v-if="((props.gameInfo?.isInLove || props.gameInfo.isInLove !== '') && Array.isArray(props.gameInfo?.isInLove) && props.gameInfo.isInLove.includes(props.uid))">
+                    <img src="../../../assets/effets/protect.svg" class="h-[clamp(0px,3vw,15px)]"
+                        v-if="props.gameInfo.protected === props.uid && props.gameInfo.time === 'Nuit'">
+
                     <!--
                     <img src="../../../assets/effets/love.svg" class="h-[clamp(0px,3vw,15px)]">
                     <img src="../../../assets/effets/oiled.svg" class="h-[clamp(0px,3vw,15px)]">
@@ -147,16 +150,20 @@ const clickOnPlayer = () => {
         if (currentActiveState.state === 'decouvrir') {
             setShowCard(true)
         }
-        if (currentActiveState.state === 'sauver') {
+        else if (currentActiveState.state === 'sauver') {
             props.gameInfo.playerStatus[props.uid] = 'alive'
             update(partiesRef, { playerStatus: props.gameInfo.playerStatus })
             update(partiesRef, { hasLifePotion: false })
         }
-        if (currentActiveState.state === 'model') {
+        else if (currentActiveState.state === 'model') {
             props.gameInfo.model = props.uid
             update(partiesRef, { model: props.gameInfo.model })
         }
-        if (currentActiveState.state === 'amoureux') {
+        else if (currentActiveState.state === 'proteger') {
+            props.gameInfo.protected = props.uid
+            update(partiesRef, { protected: props.gameInfo.protected })
+        }
+        else if (currentActiveState.state === 'amoureux') {
             if (props.gameInfo.isInLove === '') {
                 props.gameInfo.isInLove = [props.uid]
                 update(partiesRef, { isInLove: props.gameInfo.isInLove })
@@ -169,7 +176,7 @@ const clickOnPlayer = () => {
                 update(partiesRef, { isInLove: props.gameInfo.isInLove })
             }
         }
-        if (currentActiveState.state === 'tuer') {
+        else if (currentActiveState.state === 'tuer') {
             if (props.gameInfo.timeline[props.gameInfo.timelineIndex] == 'Vote') {
                 props.gameInfo.playerStatus[props.uid] = 'died'
                 update(partiesRef, { playerStatus: props.gameInfo.playerStatus })
@@ -185,11 +192,11 @@ const clickOnPlayer = () => {
                 update(partiesRef, { hasDeathPotion: false })
             }
         }
-        if (currentActiveState.state === 'forcemaire') {
+        else if (currentActiveState.state === 'forcemaire') {
             props.gameInfo.mayor = props.uid
             update(partiesRef, { mayor: props.gameInfo.mayor })
         }
-        if (currentActiveState.state === 'forcevote') {
+        else if (currentActiveState.state === 'forcevote') {
             props.gameInfo.playerStatus[props.uid] = 'died'
             update(partiesRef, { playerStatus: props.gameInfo.playerStatus })
         }
@@ -212,8 +219,16 @@ const canBeSelected = () => {
             || (currentActiveState.state === 'tuer' && props.gameInfo.playerStatus[props.uid] === 'alive')) {
             return true
         }
-        else{
+        else {
             return false
+        }
+    }
+    else if (props.gameInfo.timeline[props.gameInfo.timelineIndex] === 'Salvateur') {
+        if(props.uid === props.gameInfo.protected){
+            return false
+        }
+        else{
+            return true
         }
     }
     else {

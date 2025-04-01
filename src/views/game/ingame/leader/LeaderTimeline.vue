@@ -91,8 +91,7 @@ const nextRole = () => {
     console.log('next')
     resetPlayerAction()
     setTimeout(function () {
-        // si timelineIndex === timeline.lengh, inverser/nuit et jour et recréer la timeline en fonction des variables, de la nuit/jour, mettre timelineIndex = 0 
-        // sinon timelineIndex++
+        // si au bout de la timeline, inverser/nuit et jour et recréer la timeline en fonction des variables, de la nuit/jour, mettre timelineIndex = 0 
         if (props.gameInfo.timeline.length - 1 === props.gameInfo.timelineIndex) {
             console.log('fini!')
             console.log(props.gameInfo.time)
@@ -101,6 +100,11 @@ const nextRole = () => {
                 Object.keys(props.gameInfo.playerStatus).forEach(key => {
                     if (props.gameInfo.playerStatus[key] === 'died') {
                         props.gameInfo.playerStatus[key] = 'dead';
+                        console.log('key ' + key)
+                        if (props.gameInfo.playerCards[key] === 'Salvateur') {
+                            props.gameInfo.protected = ''
+                            update(partiesRef, { protected: props.gameInfo.protected })
+                        }
                     }
                 });
                 update(partiesRef, { playerStatus: props.gameInfo.playerStatus })
@@ -109,6 +113,12 @@ const nextRole = () => {
                 generateNightTimeline()
             }
             else {
+                if (props.gameInfo?.protected && props.gameInfo.protected !== '') {
+                    if (props.gameInfo.playerStatus[props.gameInfo.protected] === 'dying') {
+                        props.gameInfo.playerStatus[props.gameInfo.protected] = 'alive'
+                        update(partiesRef, { playerStatus: props.gameInfo.playerStatus })
+                    }
+                }
                 update(partiesRef, { time: 'Jour' })
                 update(partiesRef, { dayNightNumberIndex: props.gameInfo.dayNightNumberIndex + 1 })
                 generateDayTimeline()
@@ -120,10 +130,15 @@ const nextRole = () => {
                     if (props.gameInfo?.isInLove && props.gameInfo.isInLove.includes(key)) {
                         killLovers()
                     }
+                    if (props.gameInfo.playerCards[key] === 'Salvateur') {
+                        props.gameInfo.protected = ''
+                        update(partiesRef, { protected: props.gameInfo.protected })
+                    }
                 }
             });
             update(partiesRef, { playerStatus: props.gameInfo.playerStatus })
         }
+        // sinon timelineIndex++
         else {
             if (props.gameInfo.timeline[props.gameInfo.timelineIndex] === 'Mort') {
                 Object.keys(props.gameInfo.playerStatus).forEach(key => {
