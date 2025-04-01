@@ -117,7 +117,7 @@ const nextRole = () => {
             Object.keys(props.gameInfo.playerStatus).forEach(key => {
                 if (props.gameInfo.playerStatus[key] === 'dying') {
                     props.gameInfo.playerStatus[key] = 'died';
-                    if (props.gameInfo.isInLove.includes(key)) {
+                    if (props.gameInfo?.isInLove && props.gameInfo.isInLove.includes(key)) {
                         killLovers()
                     }
                 }

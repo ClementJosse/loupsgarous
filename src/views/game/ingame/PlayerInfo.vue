@@ -147,6 +147,11 @@ const clickOnPlayer = () => {
         if (currentActiveState.state === 'decouvrir') {
             setShowCard(true)
         }
+        if (currentActiveState.state === 'sauver') {
+            props.gameInfo.playerStatus[props.uid] = 'alive'
+            update(partiesRef, { playerStatus: props.gameInfo.playerStatus })
+            update(partiesRef, { hasLifePotion: false })
+        }
         if (currentActiveState.state === 'model') {
             props.gameInfo.model = props.uid
             update(partiesRef, { model: props.gameInfo.model })
@@ -176,6 +181,9 @@ const clickOnPlayer = () => {
                 props.gameInfo.playerStatus[props.uid] = 'dying'
                 update(partiesRef, { playerStatus: props.gameInfo.playerStatus })
             }
+            if (props.gameInfo.timeline[props.gameInfo.timelineIndex] == 'Sorcière') {
+                update(partiesRef, { hasDeathPotion: false })
+            }
         }
         if (currentActiveState.state === 'forcemaire') {
             props.gameInfo.mayor = props.uid
@@ -199,12 +207,19 @@ const canBeSelected = () => {
     if (props.gameInfo.playerStatus[props.uid] === 'dead') {
         return false
     }
-    else if (props.gameInfo.timeline[props.gameInfo.timelineIndex] === 'Sorcière' && props.gameInfo.playerStatus[props.uid] === 'dying' && currentActiveState.state === 'sauver') {
-        return true
+    else if (props.gameInfo.timeline[props.gameInfo.timelineIndex] === 'Sorcière') {
+        if ((currentActiveState.state === 'sauver' && props.gameInfo.playerStatus[props.uid] === 'dying')
+            || (currentActiveState.state === 'tuer' && props.gameInfo.playerStatus[props.uid] === 'alive')) {
+            return true
+        }
+        else{
+            return false
+        }
     }
     else {
         return true
     }
+
 }
 
 watch(() => props.isRevealed, (newVal) => {

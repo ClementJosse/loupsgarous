@@ -70,11 +70,18 @@
 
     <div v-else-if="props.gameInfo.timeline[props.gameInfo.timelineIndex] === 'Sorcière'"
         class="flex flex-row my-[clamp(0px,3vw,15px)] gap-[clamp(0px,1vw,5px)]">
-        <button v-wave class="rounded-lg active:scale-105" @click.stop="currentActiveState.setState('sauver')">
+        <button v-if="props.gameInfo.hasLifePotion" v-wave class="rounded-lg active:scale-105" @click.stop="currentActiveState.setState('sauver')">
             <img :src="currentActiveState.state === 'sauver' ? sauverOnSvg : sauverSvg" class="h-[clamp(0px,6vw,30px)]">
         </button>
-        <button v-wave class="rounded-lg active:scale-105" @click.stop="currentActiveState.setState('tuer')">
+        <button v-else class="rounded-lg">
+            <img :src="sauverOffSvg" class="h-[clamp(0px,6vw,30px)]">
+        </button>
+
+        <button v-if="props.gameInfo.hasDeathPotion" v-wave class="rounded-lg active:scale-105" @click.stop="currentActiveState.setState('tuer')">
             <img :src="currentActiveState.state === 'tuer' ? tuerOnSvg : tuerSvg" class="h-[clamp(0px,6vw,30px)]">
+        </button>
+        <button v-else class="rounded-lg">
+            <img :src="tuerOffSvg" class="h-[clamp(0px,6vw,30px)]">
         </button>
     </div>
 
@@ -134,11 +141,13 @@ import brulerSvg from '../../../assets/actions/bruler.svg'
 
 import tuerSvg from '../../../assets/actions/tuer.svg'
 import tuerOnSvg from '../../../assets/actions/tuerOn.svg'
+import tuerOffSvg from '../../../assets/actions/tuerOff.svg'
 
 import infecterSvg from '../../../assets/actions/infecter.svg'
 
 import sauverSvg from '../../../assets/actions/sauver.svg'
 import sauverOnSvg from '../../../assets/actions/sauverOn.svg'
+import sauverOffSvg from '../../../assets/actions/sauverOff.svg'
 
 import volerSvg from '../../../assets/actions/voler.svg'
 import volerOnSvg from '../../../assets/actions/volerOn.svg'
