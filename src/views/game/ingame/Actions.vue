@@ -3,8 +3,7 @@
     <div v-if="props.gameInfo.timeline[props.gameInfo.timelineIndex] === 'Vote'"
         class="flex flex-row my-[clamp(0px,3vw,15px)] gap-[clamp(0px,1vw,5px)]">
         <button v-wave class="rounded-lg active:scale-105" @click.stop="currentActiveState.setState('tuer')">
-            <img :src="currentActiveState.state === 'tuer' ? tuerOnSvg : tuerSvg"
-                class="h-[clamp(0px,6vw,30px)]">
+            <img :src="currentActiveState.state === 'tuer' ? tuerOnSvg : tuerSvg" class="h-[clamp(0px,6vw,30px)]">
         </button>
     </div>
     <div v-else-if="props.gameInfo.timeline[props.gameInfo.timelineIndex] === 'Maire'"
@@ -70,14 +69,16 @@
 
     <div v-else-if="props.gameInfo.timeline[props.gameInfo.timelineIndex] === 'Sorcière'"
         class="flex flex-row my-[clamp(0px,3vw,15px)] gap-[clamp(0px,1vw,5px)]">
-        <button v-if="props.gameInfo.hasLifePotion" v-wave class="rounded-lg active:scale-105" @click.stop="currentActiveState.setState('sauver')">
+        <button v-if="props.gameInfo.hasLifePotion" v-wave class="rounded-lg active:scale-105"
+            @click.stop="currentActiveState.setState('sauver')">
             <img :src="currentActiveState.state === 'sauver' ? sauverOnSvg : sauverSvg" class="h-[clamp(0px,6vw,30px)]">
         </button>
         <button v-else class="rounded-lg">
             <img :src="sauverOffSvg" class="h-[clamp(0px,6vw,30px)]">
         </button>
 
-        <button v-if="props.gameInfo.hasDeathPotion" v-wave class="rounded-lg active:scale-105" @click.stop="currentActiveState.setState('tuer')">
+        <button v-if="props.gameInfo.hasDeathPotion" v-wave class="rounded-lg active:scale-105"
+            @click.stop="currentActiveState.setState('tuer')">
             <img :src="currentActiveState.state === 'tuer' ? tuerOnSvg : tuerSvg" class="h-[clamp(0px,6vw,30px)]">
         </button>
         <button v-else class="rounded-lg">
@@ -98,7 +99,7 @@
             <img :src="currentActiveState.state === 'huiler' ? huilerOnSvg : huilerSvg" class="h-[clamp(0px,6vw,30px)]">
         </button>
         <button v-wave class="rounded-lg active:scale-105">
-            <img :src="brulerSvg" class="h-[clamp(0px,6vw,30px)]">
+            <img :src="brulerSvg" class="h-[clamp(0px,6vw,30px)]" @click.stop="bruler()">
         </button>
     </div>
 
@@ -196,6 +197,16 @@ const infecter = () => {
     }
 }
 
+const bruler = () => {
+    Object.keys(props.gameInfo.isOiled).forEach(key => {
+        console.log(key)
+        if(props.gameInfo.playerStatus[props.gameInfo.isOiled[key]] === 'alive'){
+            props.gameInfo.playerStatus[props.gameInfo.isOiled[key]] = 'dying'
+            update(partiesRef, {playerStatus: props.gameInfo.playerStatus});
+        }
+    });
+    update(partiesRef, {isOiled: '', hasUsedLighter : true});
+}
 
 const handleClickOutside = (event) => {
     currentActiveState.resetState()

@@ -23,12 +23,8 @@
                         v-if="((props.gameInfo?.isInLove || props.gameInfo.isInLove !== '') && Array.isArray(props.gameInfo?.isInLove) && props.gameInfo.isInLove.includes(props.uid))">
                     <img src="../../../assets/effets/protect.svg" class="h-[clamp(0px,3vw,15px)]"
                         v-if="props.gameInfo.protected === props.uid && props.gameInfo.time === 'Nuit'">
-
-                    <!--
-                    <img src="../../../assets/effets/love.svg" class="h-[clamp(0px,3vw,15px)]">
-                    <img src="../../../assets/effets/oiled.svg" class="h-[clamp(0px,3vw,15px)]">
-                    <img src="../../../assets/effets/protect.svg" class="h-[clamp(0px,3vw,15px)]">
-                    -->
+                    <img src="../../../assets/effets/oiled.svg" class="h-[clamp(0px,3vw,15px)]"
+                        v-if="((props.gameInfo?.isOiled || props.gameInfo.isOiled !== '') && Array.isArray(props.gameInfo?.isOiled) && props.gameInfo.isOiled.includes(props.uid))">
                 </div>
             </div>
 
@@ -163,6 +159,16 @@ const clickOnPlayer = () => {
             props.gameInfo.protected = props.uid
             update(partiesRef, { protected: props.gameInfo.protected })
         }
+        else if (currentActiveState.state === 'huiler') {
+            if (props.gameInfo.isOiled === '') {
+                props.gameInfo.isOiled = [props.uid]
+                update(partiesRef, { isOiled: props.gameInfo.isOiled })
+            }
+            else {
+                props.gameInfo.isOiled.push(props.uid)
+                update(partiesRef, { isOiled: props.gameInfo.isOiled })
+            }
+        }
         else if (currentActiveState.state === 'amoureux') {
             if (props.gameInfo.isInLove === '') {
                 props.gameInfo.isInLove = [props.uid]
@@ -224,10 +230,10 @@ const canBeSelected = () => {
         }
     }
     else if (props.gameInfo.timeline[props.gameInfo.timelineIndex] === 'Salvateur') {
-        if(props.uid === props.gameInfo.protected){
+        if (props.uid === props.gameInfo.protected) {
             return false
         }
-        else{
+        else {
             return true
         }
     }

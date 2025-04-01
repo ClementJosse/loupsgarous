@@ -139,7 +139,7 @@ const addCardsVariables = () => {
         update(partiesRef, { canFoxSnif: true })
     }
     if (Object.values(playerCards.value).includes('Pyromane')) {
-        update(partiesRef, { isOiled: false })
+        update(partiesRef, { isOiled: '' })
         update(partiesRef, { hasUsedLighter: false })
     }
     if (Object.values(playerCards.value).includes('Infect père des loups')) {
