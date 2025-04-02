@@ -1,23 +1,30 @@
 {
-    "Distribution initiale" : "Les rôles ont été distribués",
+    "Distribution initiale":"Les rôles ont été distribués",
 
-    "Cupidon": "Cupidon se réveille",
-    "Enfant sauvage": "L'enfant sauvage se réveille",
-    "Voyante": "La Voyante se réveille",
-    "Salvateur": "Le Salvateur se réveille",
-    "Renard": "Le Renard se réveille",
-    "Pyromane": "Le Pyromane se réveille",
-    "Loup": "Les Loups se réveillent",
-    "Infect père des loups": "L'Infect père des loups se réveille",
-    "Sorcière": "La Sorcière se réveille",
-    "Loup blanc": "Le Loup blanc se réveille",
-    "Voleur": "Le Voleur se réveille",
-    
-    "Ange": "L'Ange est mort en premier, la partie est terminée",
-    "Chasseur": "Le Chasseur choisi quelqu'un a emporter avec lui",
+    "Cupidon":              "Cupidon se réveille",
+    "Enfant sauvage":       "L'enfant sauvage se réveille",
+    "Voyante":              "La Voyante se réveille",
+    "Salvateur":            "Le Salvateur se réveille",
+    "Renard":               "Le Renard se réveille",
+    "Pyromane":             "Le Pyromane se réveille",
+    "Loup":                 "Les Loups se réveillent",
+    "Infect père des loups":"L'Infect père des loups se réveille",
+    "Sorcière":             "La Sorcière se réveille",
+    "Loup blanc":           "Le Loup blanc se réveille",
+    "Montreur d'ours":      "L'ours grogne",
+    "Voleur":               "Le Voleur se réveille",
 
-    "Mort": "Le village se réveille sans...",
-    "Maire": "Le village élit son maire",
-    "Mort Maire": "Le maire lègue son rôle à un autre joueur",
-    "Vote": "Le village vote pour éliminer un joueur"
+    "Chasseur":             "Le Chasseur choisi quelqu'un a emporter avec lui",
+
+    "Mort":                 "Le village se réveille sans...",
+    "Maire":                "Le village élit son maire",
+    "Mort Maire":           "Le maire lègue son rôle à un autre joueur",
+    "Vote":                 "Le village vote pour éliminer un joueur",
+
+    "Victoire Ange":        "Partie terminée! L'Ange a gagné",
+    "Victoire Loups":       "Partie terminée! Les Loups ont gagnés",
+    "Victoire Loup blanc":  "Partie terminée! le Loup blanc ont gagnés",
+    "Victoire Village":     "Partie terminée! Le village a gagné",
+    "Victoire Pyromane":    "Partie terminée! Le Pyromane a gagné",
+    "Victoire Amoureux":    "Partie terminée! Le Pyromane a gagné"
 }

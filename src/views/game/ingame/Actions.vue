@@ -113,17 +113,63 @@
         </button>
     </div>
 
+    <div v-else-if="props.gameInfo.timeline[props.gameInfo.timelineIndex] === 'Chasseur'"
+        class="flex flex-row my-[clamp(0px,3vw,15px)] gap-[clamp(0px,1vw,5px)]">
+        <button v-wave class="rounded-lg active:scale-105" @click.stop="currentActiveState.setState('tuer')">
+            <img :src="currentActiveState.state === 'tuer' ? tuerOnSvg : tuerSvg" class="h-[clamp(0px,6vw,30px)]">
+        </button>
+    </div>
+
+    <div v-else-if="props.gameInfo.timeline[props.gameInfo.timelineIndex] === 'Victoire Ange'"
+        class="flex flex-row my-[clamp(0px,3vw,15px)] gap-[clamp(0px,1vw,5px)]">
+        <button v-wave class="rounded-lg active:scale-105">
+            <img :src="lobbySvg" class="h-[clamp(0px,6vw,30px)]" @click.stop="returnToLobby()">
+        </button>
+    </div>
+
+    <div v-else-if="props.gameInfo.timeline[props.gameInfo.timelineIndex] === 'Victoire Loups'"
+        class="flex flex-row my-[clamp(0px,3vw,15px)] gap-[clamp(0px,1vw,5px)]">
+        <button v-wave class="rounded-lg active:scale-105">
+            <img :src="lobbySvg" class="h-[clamp(0px,6vw,30px)]" @click.stop="returnToLobby()">
+        </button>
+    </div>
+
+    <div v-else-if="props.gameInfo.timeline[props.gameInfo.timelineIndex] === 'Victoire Loup blanc'"
+        class="flex flex-row my-[clamp(0px,3vw,15px)] gap-[clamp(0px,1vw,5px)]">
+        <button v-wave class="rounded-lg active:scale-105">
+            <img :src="lobbySvg" class="h-[clamp(0px,6vw,30px)]" @click.stop="returnToLobby()">
+        </button>
+    </div>
+
+    <div v-else-if="props.gameInfo.timeline[props.gameInfo.timelineIndex] === 'Victoire Village'"
+        class="flex flex-row my-[clamp(0px,3vw,15px)] gap-[clamp(0px,1vw,5px)]">
+        <button v-wave class="rounded-lg active:scale-105">
+            <img :src="lobbySvg" class="h-[clamp(0px,6vw,30px)]" @click.stop="returnToLobby()">
+        </button>
+    </div>
+
+    <div v-else-if="props.gameInfo.timeline[props.gameInfo.timelineIndex] === 'Victoire Pyromane'"
+        class="flex flex-row my-[clamp(0px,3vw,15px)] gap-[clamp(0px,1vw,5px)]">
+        <button v-wave class="rounded-lg active:scale-105">
+            <img :src="lobbySvg" class="h-[clamp(0px,6vw,30px)]" @click.stop="returnToLobby()">
+        </button>
+    </div>
+
+    <div v-else-if="props.gameInfo.timeline[props.gameInfo.timelineIndex] === 'Victoire Amoureux'"
+        class="flex flex-row my-[clamp(0px,3vw,15px)] gap-[clamp(0px,1vw,5px)]">
+        <button v-wave class="rounded-lg active:scale-105">
+            <img :src="lobbySvg" class="h-[clamp(0px,6vw,30px)]" @click.stop="returnToLobby()">
+        </button>
+    </div>
+
     <div v-else class="flex flex-row my-[clamp(0px,6vw,30px)]">
     </div>
 
 </template>
 
 <script setup>
-import forcevoteSvg from '../../../assets/actions/forcevote.svg'
-import forcevoteOnSvg from '../../../assets/actions/forcevoteOn.svg'
 import forcemaireSvg from '../../../assets/actions/forcemaire.svg'
 import forcemaireOnSvg from '../../../assets/actions/forcemaireOn.svg'
-import resetSvg from '../../../assets/actions/reset.svg'
 
 import amoureuxSvg from '../../../assets/actions/amoureux.svg'
 import amoureuxOnSvg from '../../../assets/actions/amoureuxOn.svg'
@@ -179,6 +225,16 @@ const gameId = route.params.gameId;
 const gameInfo = ref(null);
 const database = getDatabase();
 const partiesRef = dbRef(database, `/${gameId}`);
+
+const returnToLobby = () => {
+    set(partiesRef, {
+        cards: props.gameInfo.cards,
+        leader: props.gameInfo.leader,
+        playerList: props.gameInfo.playerList,
+        status: "lobby",
+        uid_to_username: props.gameInfo.uid_to_username,
+    })
+}
 
 const infecter = () => {
     const dyingPlayerKey = Object.keys(props.gameInfo.playerStatus)

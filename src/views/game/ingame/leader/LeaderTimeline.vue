@@ -200,13 +200,35 @@ const generateNightTimeline = () => {
     update(partiesRef, { timeline: newTimeline })
 }
 
+const isChasseurDying = () => {
+    return Object.keys(props.gameInfo.playerCards)
+        .filter(key => props.gameInfo.playerStatus[key] === "dying")
+        .filter(key => props.gameInfo.playerCards[key] === "Chasseur").length > 0
+}
+
 const generateDayTimeline = () => {
     const newTimeline = []
+    const cardsAlive = Object.keys(props.gameInfo.playerCards)
+        .filter(key => props.gameInfo.playerStatus[key] === "alive")
+        .map(key => props.gameInfo.playerCards[key]);
+
     newTimeline.push('Mort')
-    if (props.gameInfo.mayor === false) {
-        newTimeline.push('Maire')
+    if (Object.values(props.gameInfo.playerCards).includes('Ange') && !cardsAlive.includes('Ange') && props.gameInfo.dayNightNumberIndex <= 2) {
+        newTimeline.push('Victoire Ange')
     }
-    newTimeline.push('Vote')
+    else {
+        if (/*Si le montreur d'ours est à coté d'un loup */ cardsAlive.includes("Montreur d'ours")) {
+            newTimeline.push("Montreur d'ours")
+        }
+        if (Object.values(props.gameInfo.playerCards).includes('Chasseur') && isChasseurDying()) {
+            newTimeline.push("Chasseur")
+        }
+        if (props.gameInfo.mayor === false) {
+            newTimeline.push('Maire')
+        }
+        newTimeline.push('Vote')
+    }
+
     update(partiesRef, { timeline: newTimeline })
 }
 
