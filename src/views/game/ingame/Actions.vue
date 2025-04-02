@@ -48,8 +48,11 @@
 
     <div v-else-if="props.gameInfo.timeline[props.gameInfo.timelineIndex] === 'Renard'"
         class="flex flex-row my-[clamp(0px,3vw,15px)] gap-[clamp(0px,1vw,5px)]">
-        <button v-wave class="rounded-lg active:scale-105">
-            <img :src="flaireSvg" class="h-[clamp(0px,6vw,30px)]">
+        <button v-if="props.gameInfo.canFoxSnif" v-wave class="rounded-lg active:scale-105">
+            <img :src="flaireSvg" class="h-[clamp(0px,6vw,30px)]" @click="flaire()">
+        </button>
+        <button v-else class="rounded-lg">
+            <img :src="flaireOffSvg" class="h-[clamp(0px,6vw,30px)]">
         </button>
     </div>
 
@@ -135,6 +138,7 @@ import protegerSvg from '../../../assets/actions/proteger.svg'
 import protegerOnSvg from '../../../assets/actions/protegerOn.svg'
 
 import flaireSvg from '../../../assets/actions/flaire.svg'
+import flaireOffSvg from '../../../assets/actions/flaireOff.svg'
 
 import huilerSvg from '../../../assets/actions/huiler.svg'
 import huilerOnSvg from '../../../assets/actions/huilerOn.svg'
@@ -206,6 +210,11 @@ const bruler = () => {
         }
     });
     update(partiesRef, {isOiled: '', hasUsedLighter : true});
+}
+
+const flaire = () => {
+    props.gameInfo.canFoxSnif = false
+    update(partiesRef, {canFoxSnif : false})
 }
 
 const handleClickOutside = (event) => {
