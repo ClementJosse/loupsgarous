@@ -155,6 +155,17 @@ const clickOnPlayer = () => {
             props.gameInfo.model = props.uid
             update(partiesRef, { model: props.gameInfo.model })
         }
+        else if (currentActiveState.state === 'voler') {
+            var uidVoleur = null
+            Object.keys(props.gameInfo.playerCards).forEach(key => {
+                if(props.gameInfo.playerCards[key] == 'Voleur'){
+                    uidVoleur = key
+                }
+            })
+            props.gameInfo.playerCards[uidVoleur] = props.gameInfo.playerCards[props.uid]
+            props.gameInfo.playerCards[props.uid] = 'Voleur'
+            update(partiesRef, { playerCards: props.gameInfo.playerCards })
+        }
         else if (currentActiveState.state === 'proteger') {
             props.gameInfo.protected = props.uid
             update(partiesRef, { protected: props.gameInfo.protected })
