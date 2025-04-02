@@ -8,8 +8,8 @@
     </button>
 
     <button @click="clickOnPlayer()" v-wave :disabled="currentActiveState.state === '' && canBeSelected()"
-        class="flex items-center gap-[clamp(0px,2vw,10px)] text-[clamp(0px,3.25vw,16.25px)] font-semibold p-[clamp(0px,2vw,10px)] rounded-xl"
-        :class="isCardRight ? 'flex-row' : 'flex-row-reverse', currentActiveState.state !== '' && canBeSelected() ? 'animate-tilt-shaking active:scale-105' : ''">
+        class="flex items-center gap-[clamp(0px,2vw,10px)] text-[clamp(0px,3.25vw,16.25px)] font-semibold p-[clamp(0px,2vw,10px)] rounded-xl active:scale-105"
+        :class="isCardRight ? 'flex-row' : 'flex-row-reverse', currentActiveState.state !== '' && canBeSelected() ? 'animate-tilt-shaking active:bg-dark-background' : ''">
         <div class="flex flex-col gap-[clamp(0px,0.5vw,2.5px)]">
             <!-- Player status-->
             <div class="flex h-[clamp(0px,3vw,15px)] gap-[clamp(0px,1vw,5px)]"
