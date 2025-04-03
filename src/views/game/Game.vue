@@ -14,19 +14,25 @@
     <!-- Si l'utilisateur est déjà dans le jeu -->
     <div v-if="isUsernameInGame" class="w-full">
       <div v-if="isLeader" class="w-full">
-        <div v-if="isInLobby" class="flex flex-col items-center w-full">
+        <div v-if="isInLobby && !isTransitioning" class="flex flex-col items-center w-full">
           <LobbyLeader />
         </div>
-        <div v-else-if="isInGame" class="flex flex-col items-center w-full">
+        <div v-else-if="isInGame && !isTransitioning" class="flex flex-col items-center w-full">
           <InGameLeader :gameInfo="gameInfo" />
+        </div>
+        <div v-if="isTransitioning" class="text-white text-4xl flex flex-col h-screen justify-center">
+          <Loader />
         </div>
       </div>
       <div v-else>
-        <div v-if="isInLobby" class="flex flex-col items-center w-full">
+        <div v-if="isInLobby && !isTransitioning" class="flex flex-col items-center w-full">
           <LobbyPlayer :gameInfo="gameInfo" />
         </div>
-        <div v-else-if="isInGame" class="flex flex-col items-center w-full">
+        <div v-else-if="isInGame && !isTransitioning" class="flex flex-col items-center w-full">
           <InGamePlayer :gameInfo="gameInfo" :uid="UID" />
+        </div>
+        <div v-if="isTransitioning" class="text-white text-4xl flex flex-col h-screen justify-center">
+          <Loader />
         </div>
       </div>
     </div>
@@ -71,6 +77,7 @@ const isLeader = ref(null)
 const isCreating = ref(false)
 const isLoading = ref(true)
 const hasError = ref(false)
+const isTransitioning = ref(false)
 
 // Configuration Firebase
 const database = getDatabase()
@@ -102,9 +109,18 @@ const initialize = async () => {
         // Vérifie si l'utilisateur (UID) est déjà enregistré dans uid_to_username
         const hasUidToUsername = data.uid_to_username || {}
         isUsernameInGame.value = hasUidToUsername.hasOwnProperty(UID)
-        setTimeout(function () { // Obligatoire sinon la carte du joueur ne fonctionne pas (?)
+
+        // Gestion de la transition
+        if (data.status === 'ingame' && !isInGame.value) {
+          isTransitioning.value = true
+          setTimeout(() => {
+            isInGame.value = true
+            isTransitioning.value = false
+          }, 500)
+        } else {
           isInGame.value = (data.status === 'ingame')
-        }, 150);
+        }
+
         leader.value = data.leader
         isLeader.value = (data.leader === UID)
       } else {
