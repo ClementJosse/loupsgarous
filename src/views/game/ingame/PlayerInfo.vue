@@ -195,6 +195,10 @@ const clickOnPlayer = () => {
                 if ((props.gameInfo?.isInLove || props.gameInfo.isInLove !== '') && Array.isArray(props.gameInfo?.isInLove) && props.gameInfo.isInLove.includes(props.uid)) {
                     killLovers()
                 }
+                if(props.gameInfo.playerCards[props.uid] === 'Chasseur'){
+                    props.gameInfo.timeline.push('Chasseur')
+                    update(partiesRef, { timeline: props.gameInfo.timeline })
+                }
             }
             else {
                 props.gameInfo.playerStatus[props.uid] = 'dying'
@@ -225,15 +229,6 @@ const killLovers = () => {
 const canBeSelected = () => {
     if (props.gameInfo.playerStatus[props.uid] === 'dead') {
         return false
-    }
-    else if (props.gameInfo.timeline[props.gameInfo.timelineIndex] === 'Sorcière') {
-        if ((currentActiveState.state === 'sauver' && props.gameInfo.playerStatus[props.uid] === 'dying')
-            || (currentActiveState.state === 'tuer' && props.gameInfo.playerStatus[props.uid] === 'alive')) {
-            return true
-        }
-        else {
-            return false
-        }
     }
     else if (props.gameInfo.timeline[props.gameInfo.timelineIndex] === 'Salvateur') {
         if (props.uid === props.gameInfo.protected) {
