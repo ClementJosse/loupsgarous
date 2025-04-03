@@ -13,7 +13,7 @@
                         <img src="../../../../assets/roles/Back.png" class="w-full h-full object-cover pointer-events-none select-none">
                     </div>
                     <div class="absolute w-full h-full" style="transform: rotateY(180deg); backface-visibility: hidden">
-                        <img :src="getImageUrl(imgname)" class="w-full h-full object-cover pointer-events-none select-none">
+                        <img :src="getImageUrl()" class="w-full h-full object-cover pointer-events-none select-none">
                     </div>
                 </div>
             </div>
@@ -30,11 +30,6 @@
 <script setup>
 import { ref } from 'vue';
 
-// Fonction pour récupérer l'URL des images
-const getImageUrl = (imgname) => {
-    return new URL(`../../../../assets/roles/${imgname}.png`, import.meta.url).href;
-};
-
 // Définition des props
 const props = defineProps({
     imgname: {
@@ -42,6 +37,12 @@ const props = defineProps({
         default: ''
     }
 });
+
+// Fonction pour récupérer l'URL des images
+const getImageUrl = () => {
+    return new URL(`../../../../assets/roles/${props.imgname}.png`, import.meta.url).href;
+};
+
 
 // État réactif pour gérer le flip de la carte
 const isFlipped = ref(false);

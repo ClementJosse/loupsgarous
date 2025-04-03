@@ -26,7 +26,7 @@
           <LobbyPlayer :gameInfo="gameInfo" />
         </div>
         <div v-else-if="isInGame" class="flex flex-col items-center w-full">
-          <InGamePlayer :gameInfo="gameInfo" />
+          <InGamePlayer :gameInfo="gameInfo" :uid="UID" />
         </div>
       </div>
     </div>
@@ -102,9 +102,9 @@ const initialize = async () => {
         // Vérifie si l'utilisateur (UID) est déjà enregistré dans uid_to_username
         const hasUidToUsername = data.uid_to_username || {}
         isUsernameInGame.value = hasUidToUsername.hasOwnProperty(UID)
-
-        isInGame.value = (data.status === 'ingame')
-
+        setTimeout(function () { // Obligatoire sinon la carte du joueur ne fonctionne pas (?)
+          isInGame.value = (data.status === 'ingame')
+        }, 150);
         leader.value = data.leader
         isLeader.value = (data.leader === UID)
       } else {

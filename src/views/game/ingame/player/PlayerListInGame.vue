@@ -1,18 +1,18 @@
 <template>
-    <div class="pb-[clamp(0px,10vw,50px)] mt-[clamp(0px,35vw,175px)] mb-[clamp(0px,20vw,100px)]" :class="'mt-[clamp(0px,35vw,175px)]'">
+    <div class="pb-[clamp(0px,10vw,50px)] mt-[clamp(0px,35vw,175px)] mb-[clamp(0px,20vw,100px)]"
+        :class="'mt-[clamp(0px,35vw,175px)]'">
         <!-- Liste "principale" -->
-        <ul
-            class="relative flex z-0 flex-col w-[clamp(0px,96vw,480px)] items-center rounded-xl">
+        <ul class="relative flex z-0 flex-col w-[clamp(0px,96vw,480px)] items-center rounded-xl">
             <!-- Cercle en arrière-plan (on peut le laisser dans un <li> masqué ou utiliser un pseudo-élément) -->
-            <li
-                class="absolute z-[-1] bottom-0 right-[clamp(0px,10vw,50px)] left-[clamp(0px,10vw,50px)] border-dashed border-disabled border-[clamp(0px,0.8vw,4px)] rounded-tl-full rounded-tr-full" 
-                :class="props.gameInfo.playerList.length % 2 == 0 ? 'top-[clamp(0px,14vw,70px)]': 'top-[clamp(0px,4vw,20px)]'">
+            <li class="absolute z-[-1] bottom-0 right-[clamp(0px,10vw,50px)] left-[clamp(0px,10vw,50px)] border-dashed border-disabled border-[clamp(0px,0.8vw,4px)] rounded-tl-full rounded-tr-full"
+                :class="props.gameInfo.playerList.length % 2 == 0 ? 'top-[clamp(0px,14vw,70px)]' : 'top-[clamp(0px,4vw,20px)]'">
             </li>
 
             <!-- Premier élément s'il y a un nombre impair d'items -->
             <li v-if="middleItem"
                 class="flex z-1 text-base flex-row text-white font-semibold p-[clamp(0px,3vw,15px)] rounded-xl">
-                <PlayerInfo :gameInfo='gameInfo' :isRevealed='false || isGameOver()' :uid='middleItem' :isCardRight=false />
+                <PlayerInfo :gameInfo='gameInfo' :isRevealed='false || isGameOver()' :uid='middleItem'
+                    :isCardRight=false />
             </li>
             <!-- Placeholder (invisible) si la liste est paire, pour garder un "espace" cohérent -->
             <li v-else
@@ -27,7 +27,8 @@
                     <li v-for="(item, index) in leftColumn" :key="index"
                         class="text-white text-base font-semibold p-[clamp(0px,3vw,15px)] mb-[clamp(0px,2vw,10px)] rounded-xl"
                         :class="{ 'ml-[clamp(0px,5vw,25px)]': index == 0 }">
-                        <PlayerInfo :gameInfo='gameInfo' :isRevealed='false || isGameOver()' :uid='item' :isCardRight=false />
+                        <PlayerInfo :gameInfo='gameInfo' :isRevealed='false || isGameOver()' :uid='item'
+                            :isCardRight=false />
                     </li>
                 </ul>
 
@@ -36,13 +37,14 @@
                     <li v-for="(item, index) in rightColumn" :key="index"
                         class="text-white text-base font-semibold p-[clamp(0px,3vw,15px)] mb-[clamp(0px,2vw,10px)] rounded-xl"
                         :class="{ 'mr-[clamp(0px,5vw,25px)]': index == 0 }">
-                        <PlayerInfo :gameInfo='gameInfo' :isRevealed='false || isGameOver()' :uid='item' :isCardRight=true />
+                        <PlayerInfo :gameInfo='gameInfo' :isRevealed='false || isGameOver()' :uid='item'
+                            :isCardRight=true />
                     </li>
                 </ul>
             </li>
 
             <li class="flex w-full p-[clamp(0px,18vw,90px)] gradient">
-                
+
             </li>
         </ul>
     </div>
@@ -101,7 +103,7 @@ const rotatePlayerList = (players, currentPlayerUID) => {
 };
 
 const isGameOver = () => {
-    var currentTurn = props.gameInfo.timeline[props.gameInfo.timelineIndex]
+    var currentTurn = props.gameInfo?.timeline[props.gameInfo?.timelineIndex]
     return (
         currentTurn === "Victoire Ange" ||
         currentTurn === "Victoire Loup blanc" ||
@@ -110,6 +112,7 @@ const isGameOver = () => {
         currentTurn === "Victoire Amoureux" ||
         currentTurn === "Victoire Loups"
     )
+
 }
 
 const middleItem = computed(() => {
@@ -154,8 +157,8 @@ const rightColumn = computed(() => {
 
 <style scoped>
 .gradient {
-  background: linear-gradient(to top, #193143FF, #19314300);
-  pointer-events: none;
-  user-select: none;
+    background: linear-gradient(to top, #193143FF, #19314300);
+    pointer-events: none;
+    user-select: none;
 }
 </style>
