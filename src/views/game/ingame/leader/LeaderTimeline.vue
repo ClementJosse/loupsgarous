@@ -20,7 +20,7 @@
                         'bg-dark-background': index === props.gameInfo.timelineIndex
                     }
                 ]" />
-                <button v-wave v-if="index === props.gameInfo.timelineIndex" @click="nextRole()"
+                <button v-wave v-if="index === props.gameInfo.timelineIndex && !isGameOver()" @click="nextRole()"
                     class="w-[clamp(0px,10vw,50px)] h-[clamp(0px,10vw,50px)] rounded-full justify-items-center active:scale-105">
                     <img src="@/assets/next.svg" class="w-[clamp(0px,8vw,40px)]">
                 </button>
@@ -87,6 +87,18 @@ const killLovers = () => {
     })
 }
 
+const isGameOver = () => {
+    var currentTurn = props.gameInfo.timeline[props.gameInfo.timelineIndex]
+    return (
+        currentTurn === "Victoire Ange" ||
+        currentTurn === "Victoire Loup blanc" ||
+        currentTurn === "Victoire Village" ||
+        currentTurn === "Victoire Pyromane" ||
+        currentTurn === "Victoire Amoureux" ||
+        currentTurn === "Victoire Loups"
+    )
+}
+
 const nextRole = () => {
     console.log('next')
     resetPlayerAction()
@@ -140,7 +152,7 @@ const nextRole = () => {
         }
         // sinon timelineIndex++
         else {
-            if (props.gameInfo.timeline[props.gameInfo.timelineIndex] === 'Mort') {
+            if (props.gameInfo.timeline[props.gameInfo.timelineIndex] === 'Mort' || props.gameInfo.timeline[props.gameInfo.timelineIndex] === 'Chasseur' ) {
                 Object.keys(props.gameInfo.playerStatus).forEach(key => {
                     if (props.gameInfo.playerStatus[key] === 'died') {
                         props.gameInfo.playerStatus[key] = 'dead';

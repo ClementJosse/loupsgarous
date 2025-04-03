@@ -2,7 +2,7 @@
     "Distribution initiale":"Les rôles ont été distribués",
 
     "Cupidon":              "Cupidon se réveille",
-    "Enfant sauvage":       "L'enfant sauvage se réveille",
+    "Enfant sauvage":       "L'Enfant sauvage se réveille",
     "Voyante":              "La Voyante se réveille",
     "Salvateur":            "Le Salvateur se réveille",
     "Renard":               "Le Renard se réveille",
@@ -14,7 +14,7 @@
     "Montreur d'ours":      "L'ours grogne",
     "Voleur":               "Le Voleur se réveille",
 
-    "Chasseur":             "Le Chasseur choisi quelqu'un a emporter avec lui",
+    "Chasseur":             "Le Chasseur choisit une dernière cible",
 
     "Mort":                 "Le village se réveille sans...",
     "Maire":                "Le village élit son maire",
@@ -22,9 +22,9 @@
     "Vote":                 "Le village vote pour éliminer un joueur",
 
     "Victoire Ange":        "Partie terminée! L'Ange a gagné",
-    "Victoire Loups":       "Partie terminée! Les Loups ont gagnés",
-    "Victoire Loup blanc":  "Partie terminée! le Loup blanc ont gagnés",
-    "Victoire Village":     "Partie terminée! Le village a gagné",
+    "Victoire Loups":       "Partie terminée! Les Loups ont gagné",
+    "Victoire Loup blanc":  "Partie terminée! Le Loup blanc a gagné",
+    "Victoire Village":     "Partie terminée! Le Village a gagné",
     "Victoire Pyromane":    "Partie terminée! Le Pyromane a gagné",
-    "Victoire Amoureux":    "Partie terminée! Le Pyromane a gagné"
+    "Victoire Amoureux":    "Partie terminée! Les Amoureux ont gagné"
 }

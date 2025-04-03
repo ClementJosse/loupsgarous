@@ -194,7 +194,7 @@ const clickOnPlayer = () => {
             }
         }
         else if (currentActiveState.state === 'tuer') {
-            if (props.gameInfo.timeline[props.gameInfo.timelineIndex] == 'Vote') {
+            if (props.gameInfo.time == 'Jour') {
                 props.gameInfo.playerStatus[props.uid] = 'died'
                 update(partiesRef, { playerStatus: props.gameInfo.playerStatus })
                 if ((props.gameInfo?.isInLove || props.gameInfo.isInLove !== '') && Array.isArray(props.gameInfo?.isInLove) && props.gameInfo.isInLove.includes(props.uid)) {
