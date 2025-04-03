@@ -153,7 +153,7 @@ const clickOnPlayer = () => {
         else if (currentActiveState.state === 'voler') {
             var uidVoleur = null
             Object.keys(props.gameInfo.playerCards).forEach(key => {
-                if(props.gameInfo.playerCards[key] == 'Voleur'){
+                if (props.gameInfo.playerCards[key] == 'Voleur') {
                     uidVoleur = key
                 }
             })
@@ -195,8 +195,12 @@ const clickOnPlayer = () => {
                 if ((props.gameInfo?.isInLove || props.gameInfo.isInLove !== '') && Array.isArray(props.gameInfo?.isInLove) && props.gameInfo.isInLove.includes(props.uid)) {
                     killLovers()
                 }
-                if(props.gameInfo.playerCards[props.uid] === 'Chasseur'){
+                if (props.gameInfo.playerCards[props.uid] === 'Chasseur') {
                     props.gameInfo.timeline.push('Chasseur')
+                    update(partiesRef, { timeline: props.gameInfo.timeline })
+                }
+                if (props.gameInfo.playerStatus[props.gameInfo.mayor] === 'died') {
+                    props.gameInfo.timeline.push('Mort Maire')
                     update(partiesRef, { timeline: props.gameInfo.timeline })
                 }
             }
@@ -230,11 +234,16 @@ const canBeSelected = () => {
     if (props.gameInfo.playerStatus[props.uid] === 'dead') {
         return false
     }
-    else if (props.gameInfo.timeline[props.gameInfo.timelineIndex] === 'Salvateur') {
-        if (props.uid === props.gameInfo.protected) {
-            return false
+    else if (props.gameInfo?.timeline && props.gameInfo?.timelineIndex) {
+        if (props.gameInfo.timeline[props.gameInfo.timelineIndex] === 'Salvateur') {
+            if (props.uid === props.gameInfo.protected) {
+                return false
+            }
+            else {
+                return true
+            }
         }
-        else {
+        else{
             return true
         }
     }

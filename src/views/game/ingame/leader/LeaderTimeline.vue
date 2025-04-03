@@ -96,15 +96,20 @@ const killLovers = () => {
 }
 
 const isGameOver = () => {
-    var currentTurn = props.gameInfo.timeline[props.gameInfo.timelineIndex]
-    return (
-        currentTurn === "Victoire Ange" ||
-        currentTurn === "Victoire Loup blanc" ||
-        currentTurn === "Victoire Village" ||
-        currentTurn === "Victoire Pyromane" ||
-        currentTurn === "Victoire Amoureux" ||
-        currentTurn === "Victoire Loups"
-    )
+    if (props.gameInfo?.timeline && props.gameInfo?.timelineIndex) {
+        var currentTurn = props.gameInfo.timeline[props.gameInfo.timelineIndex]
+        return (
+            currentTurn === "Victoire Ange" ||
+            currentTurn === "Victoire Loup blanc" ||
+            currentTurn === "Victoire Village" ||
+            currentTurn === "Victoire Pyromane" ||
+            currentTurn === "Victoire Amoureux" ||
+            currentTurn === "Victoire Loups"
+        )
+    }
+    else{
+        return false
+    }
 }
 
 const nextRole = () => {
@@ -128,7 +133,6 @@ const nextRole = () => {
                     }
                 });
                 update(partiesRef, { playerStatus: props.gameInfo.playerStatus })
-
                 update(partiesRef, { time: 'Nuit' })
                 generateNightTimeline()
             }
@@ -178,11 +182,11 @@ const generateNightTimeline = () => {
     // et si la/les personnes avec le roles remplissent les conditions pour se réveiller
 
     // Array des roles des personnes encore en vie
-    const cardsAlive = Object.keys(props.gameInfo.playerCards)
+    var cardsAlive = Object.keys(props.gameInfo.playerCards)
         .filter(key => props.gameInfo.playerStatus[key] === "alive")
         .map(key => props.gameInfo.playerCards[key]);
 
-    const newTimeline = []
+    var newTimeline = []
 
     if (cardsAlive.includes('Cupidon') && props.gameInfo.isInLove == false) {
         newTimeline.push('Cupidon')
@@ -217,6 +221,7 @@ const generateNightTimeline = () => {
     if (cardsAlive.includes('Voleur')) {
         newTimeline.push('Voleur')
     }
+
     update(partiesRef, { timeline: newTimeline })
 }
 
@@ -242,6 +247,10 @@ const generateDayTimeline = () => {
         }
         if (Object.values(props.gameInfo.playerCards).includes('Chasseur') && isChasseurDying()) {
             newTimeline.push("Chasseur")
+        }
+        if(props.gameInfo.playerStatus[props.gameInfo.mayor] === 'dying' || props.gameInfo.playerStatus[props.gameInfo.mayor] === 'dead' ){
+            //if()
+            newTimeline.push("Mort Maire")
         }
         if (props.gameInfo.mayor === false) {
             newTimeline.push('Maire')

@@ -6,7 +6,7 @@
             <img :src="currentActiveState.state === 'tuer' ? tuerOnSvg : tuerSvg" class="h-[clamp(0px,6vw,30px)]">
         </button>
     </div>
-    <div v-else-if="props.gameInfo.timeline[props.gameInfo.timelineIndex] === 'Maire'"
+    <div v-else-if="props.gameInfo.timeline[props.gameInfo.timelineIndex] === 'Maire' || props.gameInfo.timeline[props.gameInfo.timelineIndex] === 'Mort Maire'"
         class="flex flex-row my-[clamp(0px,3vw,15px)] gap-[clamp(0px,1vw,5px)]">
         <button v-wave class="rounded-lg active:scale-105" @click.stop="currentActiveState.setState('forcemaire')">
             <img :src="currentActiveState.state === 'forcemaire' ? forcemaireOnSvg : forcemaireSvg"
@@ -237,9 +237,10 @@ const returnToLobby = () => {
 }
 
 const infecter = () => {
-    const dyingPlayerKey = Object.keys(props.gameInfo.playerStatus)
+    var dyingPlayerKey = Object.keys(props.gameInfo.playerStatus)
         .find(key => props.gameInfo.playerStatus[key] === 'dying');
 
+    console.log("infected dyingPlayerKey "+dyingPlayerKey)
     if (dyingPlayerKey) {
         // Update the status to 'alive'
         props.gameInfo.playerStatus[dyingPlayerKey] = 'alive';
@@ -249,8 +250,8 @@ const infecter = () => {
 
         // Update Firebase references
         update(partiesRef, {
-            playerStatus: { [dyingPlayerKey]: 'alive' },
-            hasInfected: dyingPlayerKey
+            playerStatus: props.gameInfo.playerStatus,
+            hasInfected: props.gameInfo.hasInfected
         });
     } else {
         console.log('No dying player found');
@@ -258,7 +259,7 @@ const infecter = () => {
 }
 
 const sauver = () => {
-    const dyingPlayerKey = Object.keys(props.gameInfo.playerStatus)
+    var dyingPlayerKey = Object.keys(props.gameInfo.playerStatus)
         .find(key => props.gameInfo.playerStatus[key] === 'dying');
 
     if (dyingPlayerKey) {

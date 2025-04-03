@@ -103,16 +103,20 @@ const rotatePlayerList = (players, currentPlayerUID) => {
 };
 
 const isGameOver = () => {
-    var currentTurn = props.gameInfo?.timeline[props.gameInfo?.timelineIndex]
-    return (
-        currentTurn === "Victoire Ange" ||
-        currentTurn === "Victoire Loup blanc" ||
-        currentTurn === "Victoire Village" ||
-        currentTurn === "Victoire Pyromane" ||
-        currentTurn === "Victoire Amoureux" ||
-        currentTurn === "Victoire Loups"
-    )
-
+    if (props.gameInfo?.timeline && props.gameInfo?.timelineIndex) {
+        var currentTurn = props.gameInfo.timeline[props.gameInfo.timelineIndex]
+        return (
+            currentTurn === "Victoire Ange" ||
+            currentTurn === "Victoire Loup blanc" ||
+            currentTurn === "Victoire Village" ||
+            currentTurn === "Victoire Pyromane" ||
+            currentTurn === "Victoire Amoureux" ||
+            currentTurn === "Victoire Loups"
+        )
+    }
+    else{
+        return false
+    }
 }
 
 const middleItem = computed(() => {
