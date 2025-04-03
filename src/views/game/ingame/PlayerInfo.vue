@@ -200,8 +200,11 @@ const clickOnPlayer = () => {
                     update(partiesRef, { timeline: props.gameInfo.timeline })
                 }
                 if (props.gameInfo.playerStatus[props.gameInfo.mayor] === 'died') {
-                    props.gameInfo.timeline.push('Mort Maire')
-                    update(partiesRef, { timeline: props.gameInfo.timeline })
+                    if (!props.gameInfo.timeline.slice(props.gameInfo.timelineIndex, props.gameInfo.timeline.length).includes('Mort Maire')) {
+
+                        props.gameInfo.timeline.push('Mort Maire')
+                        update(partiesRef, { timeline: props.gameInfo.timeline })
+                    }
                 }
             }
             else {
@@ -243,7 +246,7 @@ const canBeSelected = () => {
                 return true
             }
         }
-        else{
+        else {
             return true
         }
     }

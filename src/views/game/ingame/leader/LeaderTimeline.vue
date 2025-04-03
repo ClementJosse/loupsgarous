@@ -107,7 +107,7 @@ const isGameOver = () => {
             currentTurn === "Victoire Loups"
         )
     }
-    else{
+    else {
         return false
     }
 }
@@ -164,7 +164,7 @@ const nextRole = () => {
         }
         // sinon timelineIndex++
         else {
-            if (props.gameInfo.timeline[props.gameInfo.timelineIndex] === 'Mort' || props.gameInfo.timeline[props.gameInfo.timelineIndex] === 'Chasseur' ) {
+            if (props.gameInfo.timeline[props.gameInfo.timelineIndex] === 'Mort' || props.gameInfo.timeline[props.gameInfo.timelineIndex] === 'Chasseur') {
                 Object.keys(props.gameInfo.playerStatus).forEach(key => {
                     if (props.gameInfo.playerStatus[key] === 'died') {
                         props.gameInfo.playerStatus[key] = 'dead';
@@ -248,8 +248,7 @@ const generateDayTimeline = () => {
         if (Object.values(props.gameInfo.playerCards).includes('Chasseur') && isChasseurDying()) {
             newTimeline.push("Chasseur")
         }
-        if(props.gameInfo.playerStatus[props.gameInfo.mayor] === 'dying' || props.gameInfo.playerStatus[props.gameInfo.mayor] === 'dead' ){
-            //if()
+        if (props.gameInfo.playerStatus[props.gameInfo.mayor] === 'dying' || props.gameInfo.playerStatus[props.gameInfo.mayor] === 'dead') {
             newTimeline.push("Mort Maire")
         }
         if (props.gameInfo.mayor === false) {
