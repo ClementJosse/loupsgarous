@@ -146,11 +146,6 @@ const clickOnPlayer = () => {
         if (currentActiveState.state === 'decouvrir') {
             setShowCard(true)
         }
-        else if (currentActiveState.state === 'sauver') {
-            props.gameInfo.playerStatus[props.uid] = 'alive'
-            update(partiesRef, { playerStatus: props.gameInfo.playerStatus })
-            update(partiesRef, { hasLifePotion: false })
-        }
         else if (currentActiveState.state === 'model') {
             props.gameInfo.model = props.uid
             update(partiesRef, { model: props.gameInfo.model })

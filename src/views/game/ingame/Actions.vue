@@ -49,7 +49,7 @@
     <div v-else-if="props.gameInfo.timeline[props.gameInfo.timelineIndex] === 'Renard'"
         class="flex flex-row my-[clamp(0px,3vw,15px)] gap-[clamp(0px,1vw,5px)]">
         <button v-if="props.gameInfo.canFoxSnif" v-wave class="rounded-lg active:scale-105">
-            <img :src="flaireSvg" class="h-[clamp(0px,6vw,30px)]" @click="flaire()">
+            <img :src="flaireSvg" class="h-[clamp(0px,6vw,30px)]" @click.stop="flaire()">
         </button>
         <button v-else class="rounded-lg">
             <img :src="flaireOffSvg" class="h-[clamp(0px,6vw,30px)]">
@@ -65,16 +65,15 @@
 
     <div v-else-if="props.gameInfo.timeline[props.gameInfo.timelineIndex] === 'Infect père des loups'"
         class="flex flex-row my-[clamp(0px,3vw,15px)] gap-[clamp(0px,1vw,5px)]">
-        <button v-wave class="rounded-lg active:scale-105" @click="infecter()">
+        <button v-wave class="rounded-lg active:scale-105" @click.stop="infecter()">
             <img :src="infecterSvg" class="h-[clamp(0px,6vw,30px)]">
         </button>
     </div>
 
     <div v-else-if="props.gameInfo.timeline[props.gameInfo.timelineIndex] === 'Sorcière'"
         class="flex flex-row my-[clamp(0px,3vw,15px)] gap-[clamp(0px,1vw,5px)]">
-        <button v-if="props.gameInfo.hasLifePotion" v-wave class="rounded-lg active:scale-105"
-            @click.stop="currentActiveState.setState('sauver')">
-            <img :src="currentActiveState.state === 'sauver' ? sauverOnSvg : sauverSvg" class="h-[clamp(0px,6vw,30px)]">
+        <button v-if="props.gameInfo.hasLifePotion" v-wave class="rounded-lg active:scale-105" @click.stop="sauver()">
+            <img :src="sauverSvg" class="h-[clamp(0px,6vw,30px)]">
         </button>
         <button v-else class="rounded-lg">
             <img :src="sauverOffSvg" class="h-[clamp(0px,6vw,30px)]">
@@ -197,7 +196,6 @@ import tuerOffSvg from '../../../assets/actions/tuerOff.svg'
 import infecterSvg from '../../../assets/actions/infecter.svg'
 
 import sauverSvg from '../../../assets/actions/sauver.svg'
-import sauverOnSvg from '../../../assets/actions/sauverOn.svg'
 import sauverOffSvg from '../../../assets/actions/sauverOff.svg'
 
 import volerSvg from '../../../assets/actions/voler.svg'
@@ -259,20 +257,33 @@ const infecter = () => {
     }
 }
 
+const sauver = () => {
+    const dyingPlayerKey = Object.keys(props.gameInfo.playerStatus)
+        .find(key => props.gameInfo.playerStatus[key] === 'dying');
+
+    if (dyingPlayerKey) {
+        props.gameInfo.playerStatus[dyingPlayerKey] = 'alive'
+        update(partiesRef, { playerStatus: props.gameInfo.playerStatus })
+        update(partiesRef, { hasLifePotion: false })
+    } else {
+        console.log('No dying player found');
+    }
+}
+
 const bruler = () => {
     Object.keys(props.gameInfo.isOiled).forEach(key => {
         console.log(key)
-        if(props.gameInfo.playerStatus[props.gameInfo.isOiled[key]] === 'alive'){
+        if (props.gameInfo.playerStatus[props.gameInfo.isOiled[key]] === 'alive') {
             props.gameInfo.playerStatus[props.gameInfo.isOiled[key]] = 'dying'
-            update(partiesRef, {playerStatus: props.gameInfo.playerStatus});
+            update(partiesRef, { playerStatus: props.gameInfo.playerStatus });
         }
     });
-    update(partiesRef, {isOiled: '', hasUsedLighter : true});
+    update(partiesRef, { isOiled: '', hasUsedLighter: true });
 }
 
 const flaire = () => {
     props.gameInfo.canFoxSnif = false
-    update(partiesRef, {canFoxSnif : false})
+    update(partiesRef, { canFoxSnif: false })
 }
 
 const handleClickOutside = (event) => {
