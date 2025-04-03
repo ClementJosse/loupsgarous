@@ -11,7 +11,7 @@
             <!-- Premier élément s'il y a un nombre impair d'items -->
             <li v-if="middleItem"
                 class="flex z-1 text-base flex-row text-white font-semibold p-[clamp(0px,3vw,15px)] rounded-xl mb-[clamp(0px,2vw,10px)]">
-                <PlayerInfo :gameInfo='gameInfo' :isRevealed='false' :uid='middleItem' :isCardRight=false />
+                <PlayerInfo :gameInfo='gameInfo' :isRevealed='false || isGameOver()' :uid='middleItem' :isCardRight=false />
             </li>
             <!-- Placeholder (invisible) si la liste est paire, pour garder un "espace" cohérent -->
             <li v-else
@@ -26,7 +26,7 @@
                     <li v-for="(item, index) in leftColumn" :key="index"
                         class="text-white text-base font-semibold p-[clamp(0px,3vw,15px)] mb-[clamp(0px,6vw,30px)] rounded-xl"
                         :class="{ 'ml-[clamp(0px,5vw,25px)]': index == 0 }">
-                        <PlayerInfo :gameInfo='gameInfo' :isRevealed='false' :uid='item' :isCardRight=false />
+                        <PlayerInfo :gameInfo='gameInfo' :isRevealed='false || isGameOver()' :uid='item' :isCardRight=false />
                     </li>
                 </ul>
 
@@ -35,7 +35,7 @@
                     <li v-for="(item, index) in rightColumn" :key="index"
                         class="text-white text-base font-semibold p-[clamp(0px,3vw,15px)] mb-[clamp(0px,6vw,30px)] rounded-xl"
                         :class="{ 'mr-[clamp(0px,5vw,25px)]': index == 0 }">
-                        <PlayerInfo :gameInfo='gameInfo' :isRevealed='false' :uid='item' :isCardRight=true />
+                        <PlayerInfo :gameInfo='gameInfo' :isRevealed='false || isGameOver()' :uid='item' :isCardRight=true />
                     </li>
                 </ul>
             </li>
@@ -99,6 +99,17 @@ const rotatePlayerList = (players, currentPlayerUID) => {
     ];
 };
 
+const isGameOver = () => {
+    var currentTurn = props.gameInfo.timeline[props.gameInfo.timelineIndex]
+    return (
+        currentTurn === "Victoire Ange" ||
+        currentTurn === "Victoire Loup blanc" ||
+        currentTurn === "Victoire Village" ||
+        currentTurn === "Victoire Pyromane" ||
+        currentTurn === "Victoire Amoureux" ||
+        currentTurn === "Victoire Loups"
+    )
+}
 
 const middleItem = computed(() => {
     console.log(playersListFromPlayerView.value);

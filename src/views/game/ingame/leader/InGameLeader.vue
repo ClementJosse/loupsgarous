@@ -17,7 +17,7 @@
         </div>
     </div>
 
-    <LeaderListInGame :gameInfo='gameInfo' :isRevealed='isRevealed' />
+    <LeaderListInGame :gameInfo='gameInfo' :isRevealed='isRevealed || isGameOver() ' />
 
     <LeaderTimeline :gameInfo='gameInfo' class="fixed bottom-0 left-0 w-full z-30" />
 </template>
@@ -44,4 +44,16 @@ const toggleReveal = () => {
         currentActiveState.setState(tempState)
     }, 0)
 };
+
+const isGameOver = () => {
+    var currentTurn = props.gameInfo.timeline[props.gameInfo.timelineIndex]
+    return (
+        currentTurn === "Victoire Ange" ||
+        currentTurn === "Victoire Loup blanc" ||
+        currentTurn === "Victoire Village" ||
+        currentTurn === "Victoire Pyromane" ||
+        currentTurn === "Victoire Amoureux" ||
+        currentTurn === "Victoire Loups"
+    )
+}
 </script>

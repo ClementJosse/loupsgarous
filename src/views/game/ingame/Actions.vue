@@ -203,6 +203,8 @@ import sauverOffSvg from '../../../assets/actions/sauverOff.svg'
 import volerSvg from '../../../assets/actions/voler.svg'
 import volerOnSvg from '../../../assets/actions/volerOn.svg'
 
+import lobbySvg from '../../../assets/actions/lobby.svg'
+
 import { currentActiveState } from './currentActiveState.js'
 
 import { ref, onMounted, onUnmounted } from 'vue'

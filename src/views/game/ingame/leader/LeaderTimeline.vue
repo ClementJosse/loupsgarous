@@ -32,9 +32,17 @@
         </div>
         <!-- Ligne d'arrière-plan avec deux parties -->
         <div class="absolute top-[clamp(0px,22vw,110px)] w-[clamp(0px,85vw,425px)] flex z-0">
-            <div v-if="props.gameInfo.timeline.length > 0" class="bg-purple-important h-[clamp(0px,0.5vw,2.5px)]"
-                :style="{ width: `${(props.gameInfo.timelineIndex + 1) * 100}%` }"></div>
-            <div v-if="props.gameInfo.timeline.length > 0" class="bg-disabled h-[clamp(0px,0.5vw,2.5px)]"
+            <div v-if="isGameOver()" class="bg-purple-important h-[clamp(0px,0.5vw,2.5px)]"
+                :style="{ width: `${(props.gameInfo.timelineIndex + 1) * 100}%` }">
+            </div>
+            <div v-else class="bg-purple-important h-[clamp(0px,0.5vw,2.5px)]"
+                :style="{ width: `${(props.gameInfo.timelineIndex + 1) * 100}%` }">
+            </div>
+
+            <div v-if="isGameOver()" class="bg-disabled h-[clamp(0px,0.5vw,2.5px)]"
+                :style="{ width: `${(props.gameInfo.timeline.length - props.gameInfo.timelineIndex) * 100}%` }">
+            </div>
+            <div v-else class="bg-disabled h-[clamp(0px,0.5vw,2.5px)]"
                 :style="{ width: `${(props.gameInfo.timeline.length + 1 - props.gameInfo.timelineIndex) * 100}%` }">
             </div>
         </div>
