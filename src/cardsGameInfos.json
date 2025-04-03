@@ -60,7 +60,7 @@
     "Montreur d'ours": {
         "day": 50,
         "color": "#E85660",
-        "description": "C'est un membre du {{camps.village}}. Chaque matin, le meneur indiquera que l'ours a grogné si l'une des personnes directement à droite ou à gauche du Montreur d'ours fait parti du camps des {{camps.loups}}. Si une personne à coté du Montreur d'ours est morte, c'est la personne à côté de celle morte sera vérifié. Si le Montreur d'ours est infecté, l'ours grognera jusqu'a la fin de la partie ou la mort du Montreur d'ours.",
+        "description": "C'est un membre du {{camps.village}}. Chaque matin, le meneur indiquera que l'ours a grogné si au moins l'une des personnes directement à droite ou à gauche du Montreur d'ours est le Loup blanc ou fait parti du camps des {{camps.loups}}. Si une ou plusieurs personnes à coté du Montreur d'ours sont mortes, c'est la personne encore vivante directement après celle(s) morte(s) sera vérifié(s). Si le Montreur d'ours est infecté, l'ours grognera jusqu'a la fin de la partie ou la mort du Montreur d'ours.",
         "winsWith": [
             "village"
         ]
