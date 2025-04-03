@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col h-screen items-center justify-center">
+    <div class="flex flex-col items-center pt-[clamp(0px,40vw,200px)] ">
         <h1 class="text-2xl text-white font-light">Quel est ton prénom ?</h1>
         <input ref="usernameInput" :value="username" @input="onInput"
             @keyup.enter="username.length > 0 && onCreateClick()" type="text" placeholder=". . ."

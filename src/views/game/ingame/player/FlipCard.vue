@@ -1,7 +1,7 @@
 <template>
     <!-- Conteneur principal fixé en bas de la page -->
     <div
-        class="fixed bottom-[clamp(0px,20vw,100px)] left-0 w-full z-5 flex flex-col items-center justify-center">
+        class="fixed bottom-[clamp(0px,10vw,50px)] left-0 w-full z-5 flex flex-col items-center justify-center">
         <!-- Conteneur parent qui gère les événements -->
         <div class="flex flex-col items-center" @mousedown="startFlip" @mouseup="endFlip" @mouseleave="endFlip"
             @touchstart="startFlip" @touchend="endFlip">

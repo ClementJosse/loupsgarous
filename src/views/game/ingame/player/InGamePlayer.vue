@@ -5,7 +5,7 @@
   <div class="fixed bottom-0 left-0 w-full z-0">
     <div class="h-[clamp(0px,15vw,75px)] gradient"></div>
     <div class="h-[clamp(0px,5vw,25px)] bg-blue-background pointer-events-none select-none"></div>
-    <div class="h-[clamp(0px,50vw,250px)] bg-dark-background pointer-events-none select-none"></div>
+    <div class="h-[clamp(0px,40vw,200px)] bg-dark-background pointer-events-none select-none"></div>
   </div>
 </template>
 

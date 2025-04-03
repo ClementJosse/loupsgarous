@@ -1,20 +1,21 @@
 <template>
-  <div class="pb-[clamp(0px,10vw,50px)] mt-[clamp(0px,45vw,225px)] mb-[clamp(0px,30vw,150px)]">
+  <div class="pb-[clamp(0px,10vw,50px)] mt-[clamp(0px,45vw,225px)]' mb-[clamp(0px,30vw,150px)]" :class="'mt-[clamp(0px,45vw,225px)]'">
     <!-- Liste "principale" -->
     <ul class="relative flex z-0 flex-col w-[clamp(0px,96vw,480px)] items-center rounded-xl">
       <!-- Cercle en arrière-plan (on peut le laisser dans un <li> masqué ou utiliser un pseudo-élément) -->
       <li
-        class="absolute z-[-1] top-[clamp(0px,14vw,70px)] bottom-[clamp(0px,7vw,35px)] right-[clamp(0px,10vw,50px)] left-[clamp(0px,10vw,50px)] border-dashed border-disabled border-[clamp(0px,0.8vw,4px)] rounded-full">
+        class="absolute z-[-1] bottom-[clamp(0px,7vw,35px)] right-[clamp(0px,10vw,50px)] left-[clamp(0px,10vw,50px)] border-dashed border-disabled border-[clamp(0px,0.8vw,4px)] rounded-full"
+        :class="props.gameInfo.playerList.length % 2 == 1 ? 'top-[clamp(0px,14vw,70px)]': 'top-[clamp(0px,4vw,20px)]'">
       </li>
 
       <!-- Premier élément s'il y a un nombre impair d'items -->
       <li v-if="middleItem"
-        class="flex z-1 text-base flex-row text-white font-semibold p-[clamp(0px,3vw,15px)] rounded-xl mb-[clamp(0px,2vw,10px)]">
+        class="flex z-1 text-base flex-row text-white font-semibold p-[clamp(0px,3vw,15px)] rounded-xl">
         <PlayerInfo :gameInfo='gameInfo' :isRevealed='isRevealed' :uid='middleItem' :isCardRight=false />
       </li>
       <!-- Placeholder (invisible) si la liste est paire, pour garder un "espace" cohérent -->
       <li v-else
-        class="flex opacity-0 text-base flex-row text-white font-semibold p-[clamp(0px,3vw,15px)] rounded-xl mb-[clamp(0px,10vw,50px)]">
+        class="flex opacity-0 text-base flex-row text-white font-semibold p-[clamp(0px,3vw,15px)] rounded-xl">
         .
       </li>
 
@@ -23,7 +24,7 @@
         <!-- Colonne de gauche -->
         <ul class="justify-items-start">
           <li v-for="(item, index) in leftColumn" :key="index"
-            class="text-white text-base font-semibold p-[clamp(0px,3vw,15px)] mb-[clamp(0px,6vw,30px)] rounded-xl"
+            class="text-white text-base font-semibold p-[clamp(0px,3vw,15px)] mb-[clamp(0px,2vw,10px)] rounded-xl"
             :class="{ 'ml-[clamp(0px,5vw,25px)]': index == leftColumn.length - 1 || index == 0 }">
             <PlayerInfo :gameInfo='gameInfo' :isRevealed='isRevealed' :uid='item' :isCardRight=false />
           </li>
@@ -32,7 +33,7 @@
         <!-- Colonne de droite -->
         <ul class="justify-items-end">
           <li v-for="(item, index) in rightColumn" :key="index"
-            class="text-white text-base font-semibold p-[clamp(0px,3vw,15px)] mb-[clamp(0px,6vw,30px)] rounded-xl"
+            class="text-white text-base font-semibold p-[clamp(0px,3vw,15px)] mb-[clamp(0px,2vw,10px)] rounded-xl"
             :class="{ 'mr-[clamp(0px,5vw,25px)]': index == rightColumn.length - 1 || index == 0 }">
             <PlayerInfo :gameInfo='gameInfo' :isRevealed='isRevealed' :uid='item' :isCardRight=true />
           </li>
