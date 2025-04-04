@@ -15,11 +15,12 @@
                     </div>
                     <div class="absolute w-full h-full" style="transform: rotateY(180deg); backface-visibility: hidden">
                         <div v-if="props.gameInfo?.isInLove && props.gameInfo.isInLove.includes(props.uid)"
-                            class="fixed w-full text-center text-pink-love text-lg font-bold " style="top: clamp(-35px, -7vw, 0px);">
+                            class="fixed w-full text-center text-pink-love text-lg font-bold "
+                            style="top: clamp(-35px, -7vw, 0px);">
                             {{props.gameInfo.uid_to_username[props.gameInfo.isInLove.filter(e => e !==
-                            props.uid).toString()] }}
+                                props.uid).toString()]}}
                         </div>
-                        <img :src="getImageUrl()" class="w-full h-full object-cover pointer-events-none select-none">
+                        <img :src="imageUrl" class="w-full h-full object-cover pointer-events-none select-none">
                         <!-- Status d'infecté-->
                         <div class="fixed justify-items-center content-center top-[clamp(0px,3vw,15px)] left-[clamp(0px,3vw,15px)] h-[clamp(0px,12vw,60px)] w-[clamp(0px,12vw,60px)] bg-dark-background rounded-full"
                             v-if="(props.gameInfo.playerCards[props.uid] === 'Enfant sauvage' && props.gameInfo?.model && props.gameInfo.playerStatus[props.gameInfo.model] !== 'alive')
@@ -33,20 +34,20 @@
                         </div>
                         <!-- Status potion de vie-->
                         <div class="fixed justify-items-center content-center bottom-[clamp(0px,3vw,15px)] left-[clamp(0px,3vw,15px)] h-[clamp(0px,12vw,60px)] w-[clamp(0px,12vw,60px)] bg-dark-background rounded-full"
-                            v-if="props.gameInfo?.hasLifePotion === true && props.gameInfo.playerCards[props.uid] === 'Sorcière' ">
+                            v-if="props.gameInfo?.hasLifePotion === true && props.gameInfo.playerCards[props.uid] === 'Sorcière'">
                             <img class="flex h-[clamp(0px,10vw,50px)]" src="../../../../assets/effets/lifeOn.svg">
                         </div>
                         <div class="fixed justify-items-center content-center bottom-[clamp(0px,3vw,15px)] left-[clamp(0px,3vw,15px)] h-[clamp(0px,12vw,60px)] w-[clamp(0px,12vw,60px)] bg-dark-background rounded-full"
-                            v-else-if="props.gameInfo?.hasLifePotion === false && props.gameInfo.playerCards[props.uid] === 'Sorcière' ">
+                            v-else-if="props.gameInfo?.hasLifePotion === false && props.gameInfo.playerCards[props.uid] === 'Sorcière'">
                             <img class="flex h-[clamp(0px,10vw,50px)]" src="../../../../assets/effets/lifeOff.svg">
                         </div>
                         <!-- Status potion de mort-->
                         <div class="fixed justify-items-center content-center bottom-[clamp(0px,3vw,15px)] right-[clamp(0px,3vw,15px)] h-[clamp(0px,12vw,60px)] w-[clamp(0px,12vw,60px)] bg-dark-background rounded-full"
-                            v-if="props.gameInfo?.hasDeathPotion === true && props.gameInfo.playerCards[props.uid] === 'Sorcière' ">
+                            v-if="props.gameInfo?.hasDeathPotion === true && props.gameInfo.playerCards[props.uid] === 'Sorcière'">
                             <img class="flex h-[clamp(0px,10vw,50px)]" src="../../../../assets/effets/deathOn.svg">
                         </div>
                         <div class="fixed justify-items-center content-center bottom-[clamp(0px,3vw,15px)] right-[clamp(0px,3vw,15px)] h-[clamp(0px,12vw,60px)] w-[clamp(0px,12vw,60px)] bg-dark-background rounded-full"
-                            v-else-if="props.gameInfo?.hasDeathPotion === false && props.gameInfo.playerCards[props.uid] === 'Sorcière' ">
+                            v-else-if="props.gameInfo?.hasDeathPotion === false && props.gameInfo.playerCards[props.uid] === 'Sorcière'">
                             <img class="flex h-[clamp(0px,10vw,50px)]" src="../../../../assets/effets/deathOff.svg">
                         </div>
                     </div>
@@ -65,13 +66,10 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 
 // Définition des props
 const props = defineProps({
-    imgname: {
-        type: String,
-    },
     uid: {
         type: String,
     },
@@ -80,11 +78,10 @@ const props = defineProps({
     }
 });
 
-// Fonction pour récupérer l'URL des images
-const getImageUrl = () => {
-    return new URL(`../../../../assets/roles/${props.imgname}.png`, import.meta.url).href;
-};
-
+// Utiliser computed pour rendre imageUrl réactif aux changements de props.imgname
+const imageUrl = computed(() => {
+    return new URL(`../../../../assets/roles/${props.gameInfo.playerCards[props.uid]}.png`, import.meta.url).href;
+});
 
 // État réactif pour gérer le flip de la carte
 const isFlipped = ref(false);
