@@ -151,7 +151,7 @@ const clickOnPlayer = () => {
             update(partiesRef, { model: props.gameInfo.model })
         }
         else if (currentActiveState.state === 'voler') {
-            var uidVoleur = null
+            let uidVoleur = null
             Object.keys(props.gameInfo.playerCards).forEach(key => {
                 if (props.gameInfo.playerCards[key] == 'Voleur') {
                     uidVoleur = key

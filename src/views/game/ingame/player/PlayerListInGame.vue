@@ -104,7 +104,7 @@ const rotatePlayerList = (players, currentPlayerUID) => {
 
 const isGameOver = () => {
     if (props.gameInfo?.timeline && props.gameInfo?.timelineIndex) {
-        var currentTurn = props.gameInfo.timeline[props.gameInfo.timelineIndex]
+        let currentTurn = props.gameInfo.timeline[props.gameInfo.timelineIndex]
         return (
             currentTurn === "Victoire Ange" ||
             currentTurn === "Victoire Loup blanc" ||

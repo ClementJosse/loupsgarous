@@ -79,7 +79,7 @@ const resetPlayerAction = () => {
         return;
     }
 
-    var playerAction = props.gameInfo.playerAction || {};
+    let playerAction = props.gameInfo.playerAction || {};
 
     props.gameInfo.playerList.forEach((player, index) => {
         playerAction[player] = '';
@@ -97,7 +97,7 @@ const killLovers = () => {
 
 const isGameOver = () => {
     if (props.gameInfo?.timeline && props.gameInfo?.timelineIndex) {
-        var currentTurn = props.gameInfo.timeline[props.gameInfo.timelineIndex]
+        let currentTurn = props.gameInfo.timeline[props.gameInfo.timelineIndex]
         return (
             currentTurn === "Victoire Ange" ||
             currentTurn === "Victoire Loup blanc" ||
@@ -182,11 +182,11 @@ const generateNightTimeline = () => {
     // et si la/les personnes avec le roles remplissent les conditions pour se réveiller
 
     // Array des roles des personnes encore en vie
-    var cardsAlive = Object.keys(props.gameInfo.playerCards)
+    let cardsAlive = Object.keys(props.gameInfo.playerCards)
         .filter(key => props.gameInfo.playerStatus[key] === "alive")
         .map(key => props.gameInfo.playerCards[key]);
 
-    var newTimeline = []
+    let newTimeline = []
 
     if (cardsAlive.includes('Cupidon') && props.gameInfo.isInLove == false) {
         newTimeline.push('Cupidon')
@@ -203,7 +203,13 @@ const generateNightTimeline = () => {
     if (cardsAlive.includes('Renard') && props.gameInfo.canFoxSnif == true) {
         newTimeline.push('Renard')
     }
-    if (cardsAlive.includes('Loup')) {
+    // s'il y a un au moins Loup, ou le Loup blanc, ou l'Infect père des loups, ou un infecté, ou l'Enfant sauvage transformé encore en vie alors rajouter 'Loup' à la timeline 
+    if (cardsAlive.includes('Loup') ||
+        cardsAlive.includes('Loup blanc') ||
+        cardsAlive.includes('Infect père des loups') ||
+        (props.gameInfo?.hasInfected && props.gameInfo.hasInfected !== false && props.gameInfo.playerStatus[props.gameInfo.hasInfected] === 'alive') ||
+        (cardsAlive.includes('Enfant sauvage') && props.gameInfo.model !== false && props.gameInfo.playerStatus[props.gameInfo.model] !== 'alive')
+    ) {
         newTimeline.push('Loup')
     }
     if (cardsAlive.includes('Infect père des loups') && (props.gameInfo.hasInfected == false)) {
@@ -231,9 +237,73 @@ const isChasseurDying = () => {
         .filter(key => props.gameInfo.playerCards[key] === "Chasseur").length > 0
 }
 
+const isBearGrowling = () => {
+
+
+    // récupérer la liste des joueurs vivants
+    let playersAlive = Object.keys(props.gameInfo.playerList)
+        .filter(key => props.gameInfo.playerStatus[props.gameInfo.playerList[key]] === "alive")
+        .map(key => props.gameInfo.playerList[key]);
+    
+
+    // trouver la position du montreur d'ours
+    let montreurIndex = parseInt(Object.keys(props.gameInfo.playerList)
+        .filter(key => props.gameInfo.playerCards[playersAlive[key]] === "Montreur d'ours"))
+    
+
+    // Est ce que le montreur d'ours est infecté ? si oui l'ours grognera toujours
+    if (props.gameInfo?.hasInfected && props.gameInfo?.hasInfected !== false && props.gameInfo.hasInfected === playersAlive[montreurIndex]) {
+        console.log("props.gameInfo.hasInfected " + props.gameInfo.hasInfected)
+        console.log("playersAlive[montreurIndex] " + playersAlive)
+        console.log("le montreur est infecté, l'ours grogne")
+        return true
+    }
+
+    // Vérification pour le joueur vivant avant le montreur
+    let previousPlayerIndex = (montreurIndex - 1) % playersAlive.length
+    let nextPlayerIndex = (montreurIndex + 1) % playersAlive.length
+    let test = (montreurIndex + 1)
+
+    console.log("test ",test)
+    console.log("playersAlive " + playersAlive[3])
+    console.log("(montreurIndex + 1) % playersAlive.length " + (montreurIndex + 1) % playersAlive.length)
+    console.log("montreur " + playersAlive[montreurIndex])
+    console.log("previousPlayer " + playersAlive[previousPlayerIndex])
+    console.log("nextPlayer " + playersAlive[nextPlayerIndex])
+
+    if (props.gameInfo.playerCards[playersAlive[previousPlayerIndex]] === 'Loup' ||
+        props.gameInfo.playerCards[playersAlive[previousPlayerIndex]] === 'Loup blanc' ||
+        props.gameInfo.playerCards[playersAlive[previousPlayerIndex]] === 'Infect père des loups' ||
+        // Si le joueur précédent est infecté
+        (props.gameInfo?.hasInfected && props.gameInfo.hasInfected !== false && props.gameInfo.hasInfected === playersAlive[previousPlayerIndex]) ||
+        // S'il est l'enfant sauvage et que son model est mort
+        (props.gameInfo.playerCards[playersAlive[previousPlayerIndex]] === 'Enfant sauvage' && props.gameInfo.model !== false && !playersAlive.includes(props.gameInfo.model))
+    ) {
+        console.log('le joueur avant le montreur est loup ou du camps des loups')
+        return true
+    }
+
+    // Vérification pour le joueur vivant après le montreur
+    if (props.gameInfo.playerCards[playersAlive[nextPlayerIndex]] === 'Loup' ||
+        props.gameInfo.playerCards[playersAlive[nextPlayerIndex]] === 'Loup blanc' ||
+        props.gameInfo.playerCards[playersAlive[nextPlayerIndex]] === 'Infect père des loups' ||
+        // Si le joueur précédent est infecté
+        (props.gameInfo?.hasInfected && props.gameInfo.hasInfected !== false && props.gameInfo.hasInfected === playersAlive[nextPlayerIndex]) ||
+        // S'il est l'enfant sauvage et que son model est mort
+        (props.gameInfo.playerCards[playersAlive[nextPlayerIndex]] === 'Enfant sauvage' && props.gameInfo.model !== false && !playersAlive.includes(props.gameInfo.model))
+    ) {
+        console.log('le joueur après le montreur est loup ou du camps des loups')
+        return true
+    }
+
+    // Si aucun des deux est un Loup ou du camps des loups, l'ours ne grogne pas
+    console.log("pas de joueur loups ou dans le camps des loups détecté par le montreur d'ours")
+    return false
+}
+
 const generateDayTimeline = () => {
-    const newTimeline = []
-    const cardsAlive = Object.keys(props.gameInfo.playerCards)
+    let newTimeline = []
+    let cardsAlive = Object.keys(props.gameInfo.playerCards)
         .filter(key => props.gameInfo.playerStatus[key] === "alive")
         .map(key => props.gameInfo.playerCards[key]);
 
@@ -242,7 +312,7 @@ const generateDayTimeline = () => {
         newTimeline.push('Victoire Ange')
     }
     else {
-        if (/*Si le montreur d'ours est à coté d'un loup */ cardsAlive.includes("Montreur d'ours")) {
+        if (cardsAlive.includes("Montreur d'ours") && isBearGrowling()) {
             newTimeline.push("Montreur d'ours")
         }
         if (Object.values(props.gameInfo.playerCards).includes('Chasseur') && isChasseurDying()) {

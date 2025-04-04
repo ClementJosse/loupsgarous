@@ -237,7 +237,7 @@ const returnToLobby = () => {
 }
 
 const infecter = () => {
-    var dyingPlayerKey = Object.keys(props.gameInfo.playerStatus)
+    let dyingPlayerKey = Object.keys(props.gameInfo.playerStatus)
         .find(key => props.gameInfo.playerStatus[key] === 'dying');
 
     console.log("infected dyingPlayerKey "+dyingPlayerKey)
@@ -259,7 +259,7 @@ const infecter = () => {
 }
 
 const sauver = () => {
-    var dyingPlayerKey = Object.keys(props.gameInfo.playerStatus)
+    let dyingPlayerKey = Object.keys(props.gameInfo.playerStatus)
         .find(key => props.gameInfo.playerStatus[key] === 'dying');
 
     if (dyingPlayerKey) {

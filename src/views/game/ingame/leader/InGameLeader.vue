@@ -38,7 +38,7 @@ const props = defineProps({
 const isRevealed = ref(false);
 
 const toggleReveal = () => {
-    var tempState = currentActiveState.state
+    let tempState = currentActiveState.state
     isRevealed.value = !isRevealed.value;
     setTimeout(function () {
         currentActiveState.setState(tempState)
@@ -47,7 +47,7 @@ const toggleReveal = () => {
 
 const isGameOver = () => {
     if (props.gameInfo?.timeline && props.gameInfo?.timelineIndex) {
-        var currentTurn = props.gameInfo.timeline[props.gameInfo.timelineIndex]
+        let currentTurn = props.gameInfo.timeline[props.gameInfo.timelineIndex]
         return (
             currentTurn === "Victoire Ange" ||
             currentTurn === "Victoire Loup blanc" ||
