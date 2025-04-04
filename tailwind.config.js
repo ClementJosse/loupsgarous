@@ -48,7 +48,8 @@ export default {
         'blue-protect': '#5A98DF',
         'red-kill': '#E85660',
         'green-save': '#9BE379',
-        'yellow-mayor': '#F4CE7B'
+        'yellow-mayor': '#F4CE7B',
+        'pink-love': "#F18EAC"
       }
     },
   },

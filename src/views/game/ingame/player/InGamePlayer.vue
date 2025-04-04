@@ -1,7 +1,7 @@
 <template>
   <DayNight :gameInfo="gameInfo" class="fixed z-20" />
   <PlayerListInGame :gameInfo='gameInfo' />
-  <FlipCard class="fixed bottom-0 left-0 w-full z-30" v-if="props.gameInfo && props.uid" :imgname="imgname" />
+  <FlipCard class="fixed bottom-0 left-0 w-full z-30" v-if="props.gameInfo && props.uid" :imgname="imgname" :uid="props.uid" :gameInfo="props.gameInfo"/>
   <div class="fixed bottom-0 left-0 w-full z-0">
     <div class="h-[clamp(0px,15vw,75px)] gradient"></div>
     <div class="h-[clamp(0px,5vw,25px)] bg-blue-background pointer-events-none select-none"></div>
