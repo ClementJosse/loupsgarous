@@ -115,7 +115,7 @@ const startGame = () => {
         update(partiesRef, { playerStatus: playerStatus.value })
         update(partiesRef, { playerAction: playerAction.value })
         update(partiesRef, { time: 'Jour' })
-        update(partiesRef, { dayNightNumberIndex: 1 })
+        update(partiesRef, { dayNightNumberIndex: 0 })
         update(partiesRef, { timelineIndex: 0 })
         update(partiesRef, { timeline: ['Distribution initiale'] })
         update(partiesRef, { mayor: false })

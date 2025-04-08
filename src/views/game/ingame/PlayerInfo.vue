@@ -183,7 +183,7 @@ const clickOnPlayer = () => {
                     currentActiveState.setState('amoureux')
                 }, 0)
             }
-            else {
+            else if(!props.gameInfo.isInLove.includes(props.uid)) {
                 props.gameInfo.isInLove.push(props.uid)
                 update(partiesRef, { isInLove: props.gameInfo.isInLove })
             }
@@ -193,7 +193,7 @@ const clickOnPlayer = () => {
                 props.gameInfo.playerStatus[props.uid] = 'died'
                 update(partiesRef, { playerStatus: props.gameInfo.playerStatus })
                 if ((props.gameInfo?.isInLove || props.gameInfo.isInLove !== '') && Array.isArray(props.gameInfo?.isInLove) && props.gameInfo.isInLove.includes(props.uid)) {
-                    killLovers()
+                    killLovers() // Fait gagner l'ange si l'ange est l'un d'entre eux et si dayNightNumberIndex === 1
                 }
                 if (props.gameInfo.playerCards[props.uid] === 'Chasseur') {
                     props.gameInfo.timeline.push('Chasseur')
@@ -206,6 +206,19 @@ const clickOnPlayer = () => {
                         update(partiesRef, { timeline: props.gameInfo.timeline })
                     }
                 }
+                if ((props.gameInfo.playerCards[props.uid] === 'Ange') && props.gameInfo.dayNightNumberIndex === 1) {
+                    props.gameInfo.timeline = props.gameInfo.timeline.slice(0, props.gameInfo.timelineIndex + 1)
+                    props.gameInfo.timeline.push('Victoire Ange')
+                    update(partiesRef, { timeline: props.gameInfo.timeline })
+                }
+                // CHECK DE LA VICTOIRE A CHAQUE MORT LE JOUR, SI VICTOIRE, SUPPRESSION DES ELEMENTS APRES L'INDEX ACTUEL, PUIS PUSH DE LA VICTOIRE
+                // Si on est au dayNightNumberIndex 1 et que props.uid est 'Ange', alors push 'Victoire Ange'
+                // Si les 2 personnes restantes sont les amoureux, alors push 'Victoire Amoureux'
+                // Sinon s'il reste qu'une personne
+                //  et que c'est le Pyromane, push 'Victoire Pyromane'
+                //  et que c'est le Loup blanc, push 'Victoire Loup blanc'
+                // Sinon si toutes les personnes encore en vie sont des Loup, Infect, Enfant sauvage ou hasInfected: push 'Victoire Loup'
+                // Sinon si les seules personnes encore en vie sont 'Ange', 'Chasseur', 'Cupidon', 'Enfant sauvage' et que son model n'est pas mort, 'Montreur d'ours', 'Petite fille', 'Renard', 'Salvateur', 'Sorcière', 'Villageois', 'Voleur', 'Voyante': push 'Victoire Villageois' 
             }
             else {
                 props.gameInfo.playerStatus[props.uid] = 'dying'

@@ -134,6 +134,7 @@ const nextRole = () => {
                 });
                 update(partiesRef, { playerStatus: props.gameInfo.playerStatus })
                 update(partiesRef, { time: 'Nuit' })
+                update(partiesRef, { dayNightNumberIndex: props.gameInfo.dayNightNumberIndex + 1 })
                 generateNightTimeline()
             }
             else {
@@ -144,7 +145,6 @@ const nextRole = () => {
                     }
                 }
                 update(partiesRef, { time: 'Jour' })
-                update(partiesRef, { dayNightNumberIndex: props.gameInfo.dayNightNumberIndex + 1 })
                 generateDayTimeline()
             }
             update(partiesRef, { timelineIndex: 0 })
@@ -244,12 +244,12 @@ const isBearGrowling = () => {
     let playersAlive = Object.keys(props.gameInfo.playerList)
         .filter(key => props.gameInfo.playerStatus[props.gameInfo.playerList[key]] === "alive")
         .map(key => props.gameInfo.playerList[key]);
-    
+
 
     // trouver la position du montreur d'ours
     let montreurIndex = parseInt(Object.keys(props.gameInfo.playerList)
         .filter(key => props.gameInfo.playerCards[playersAlive[key]] === "Montreur d'ours"))
-    
+
 
     // Est ce que le montreur d'ours est infecté ? si oui l'ours grognera toujours
     if (props.gameInfo?.hasInfected && props.gameInfo?.hasInfected !== false && props.gameInfo.hasInfected === playersAlive[montreurIndex]) {
@@ -264,7 +264,7 @@ const isBearGrowling = () => {
     let nextPlayerIndex = (montreurIndex + 1) % playersAlive.length
     let test = (montreurIndex + 1)
 
-    console.log("test ",test)
+    console.log("test ", test)
     console.log("playersAlive " + playersAlive[3])
     console.log("(montreurIndex + 1) % playersAlive.length " + (montreurIndex + 1) % playersAlive.length)
     console.log("montreur " + playersAlive[montreurIndex])
@@ -307,10 +307,41 @@ const generateDayTimeline = () => {
         .filter(key => props.gameInfo.playerStatus[key] === "alive")
         .map(key => props.gameInfo.playerCards[key]);
 
+
+    // CHECK DE LA VICTOIRE A LA GENERATION DE LA TIMELINE DU JOUR
     newTimeline.push('Mort')
-    if (Object.values(props.gameInfo.playerCards).includes('Ange') && !cardsAlive.includes('Ange') && props.gameInfo.dayNightNumberIndex <= 2) {
+
+    let isAngeInLove = false
+    let isPyromaneInLove = false
+    let isLoupBlancInLove = false
+    if (props.gameInfo?.isInLove && props.gameInfo?.isInLove !== false) {
+        Object.keys(props.gameInfo.isInLove).forEach(key => {
+            console.log(key + props.gameInfo.playerCards[props.gameInfo.isInLove[key]])
+            if (props.gameInfo.playerCards[props.gameInfo.isInLove[key]] === 'Ange') {
+                isAngeInLove = true
+            }
+            if (props.gameInfo.playerCards[props.gameInfo.isInLove[key]] === 'Pyromane') {
+                isPyromaneInLove = true
+            }
+            if (props.gameInfo.playerCards[props.gameInfo.isInLove[key]] === 'LoupBlanc') {
+                isLoupBlancInLove = true
+            }
+        });
+    }
+
+
+    if (Object.values(props.gameInfo.playerCards).includes('Ange') && !cardsAlive.includes('Ange') && props.gameInfo.dayNightNumberIndex <= 2 && isAngeInLove === false) {
+        console.log('here' + isAngeInLove)
         newTimeline.push('Victoire Ange')
     }
+    // Si on est au dayNightNumberIndex 1 et que props.uid est 'Ange', alors push 'Victoire Ange'
+    // Si les 2 personnes restantes sont les amoureux, alors push 'Victoire Amoureux'
+    // Sinon s'il reste qu'une personne
+    //  et que c'est le Pyromane, push 'Victoire Pyromane'
+    //  et que c'est le Loup blanc, push 'Victoire Loup blanc'
+    // Sinon si toutes les personnes encore en vie sont des Loup, Infect, Enfant sauvage ou hasInfected: push 'Victoire Loup'
+    // Sinon si les seules personnes encore en vie sont 'Ange', 'Chasseur', 'Cupidon', 'Enfant sauvage' et que son model n'est pas mort, 'Montreur d'ours', 'Petite fille', 'Renard', 'Salvateur', 'Sorcière', 'Villageois', 'Voleur', 'Voyante': push 'Victoire Villageois' 
+
     else {
         if (cardsAlive.includes("Montreur d'ours") && isBearGrowling()) {
             newTimeline.push("Montreur d'ours")

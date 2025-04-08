@@ -2,7 +2,7 @@
     "Ange": {
         "day": 52,
         "color": "#5A98DF",
-        "description": "Pour gagner {{camps.seul}}, l'Ange doit de se faire éliminer pendant la 1ère nuit ou pendant le 1er vote du village. S'il n'est pas mort, il rejoint le {{camps.village}} a partir de la 2ème nuit.",
+        "description": "Pour gagner {{camps.seul}}, l'Ange doit de se faire éliminer pendant la 1ère nuit ou pendant le 1er vote du village. S'il n'est pas mort, il rejoint le {{camps.village}} a partir de la 2ème nuit. Si l'Ange est en couple, il perd la possibilité de gagner en mourrant au premier tour car il doit gagner en étant vivant avec son amoureux.",
         "winsWith": [
             "seul",
             "village"
@@ -19,7 +19,7 @@
     "Cupidon": {
         "night": 51,
         "color": "#F18EAC",
-        "description": "Pendant la première nuit, le Cupidon va {{actions.amoureux}} 2 personnes. Les 2 amoureux doivent ensuite gagner ensemble s'il ne font pas partie du meme camps (ex: {{camps.loups}}/{{camps.seul}}), ou avec leur camps s'il sont dans le même. Quand l'un des deux meurt, le deuxième meurt aussi.",
+        "description": "Pendant la première nuit, le Cupidon va {{actions.amoureux}} 2 personnes. Ces 2 amoureux doivent être les derniers survivants pour gagner et concervent les pouvoirs liés a leurs rôles. Cependant, quand l'un des deux meurt, l'autre meurt aussi.",
         "winsWith": [
             "village"
         ]
