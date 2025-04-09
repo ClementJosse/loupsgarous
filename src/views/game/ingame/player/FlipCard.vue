@@ -1,9 +1,21 @@
 <template>
     <!-- Conteneur principal fixé en bas de la page -->
     <div class="fixed bottom-[clamp(0px,10vw,50px)] left-0 w-full z-5 flex flex-col items-center justify-center">
-
+        <div v-if="props.gameInfo.playerStatus[props.uid] === 'dead'" class="flex flex-col items-center">
+            <div class="flex flex-col items-center">
+                <div style="position: relative;">
+                    <div class="absolute inset-0 bg-blue-background z-0 rounded-xl"></div>
+                    <img :src="imageUrl"
+                        class="object-cover opacity-50 pointer-events-none select-none rounded-xl h-[clamp(0px,200px,40vw)] w-[clamp(0px,200px,40vw)] relative z-10">
+                </div>
+                <div class="visible-icon-container flex justify-center items-center rounded-full">
+                    <img src="../../../../assets/dead.svg"
+                        class="visible-icon pointer-events-none select-none h-[clamp(0px, 30px, 6vw)]">
+                </div>
+            </div>
+        </div>
         <!-- Conteneur parent qui gère les événements -->
-        <div class="flex flex-col items-center" @mousedown="startFlip" @mouseup="endFlip" @mouseleave="endFlip"
+        <div v-else class="flex flex-col items-center" @mousedown="startFlip" @mouseup="endFlip" @mouseleave="endFlip"
             @touchstart="startFlip" @touchend="endFlip">
             <!-- Carte -->
             <div class="flipcard cursor-pointer select-none" style="perspective: clamp(0px, 1000px, 200vw)">
@@ -56,6 +68,7 @@
             <!-- Zone de contrôle en dessous de la carte -->
             <div class="visible-icon-container flex justify-center items-center rounded-full">
                 <!-- Affiche l'icône visible ou notvisible en fonction de l'état -->
+
                 <img v-if="isFlipped" src="../../../../assets/visible.svg"
                     class="visible-icon pointer-events-none select-none">
                 <img v-else src="../../../../assets/notvisible.svg"
