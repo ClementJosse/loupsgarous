@@ -45,7 +45,6 @@
   const getRandomRoleImageUrl = () => {
     const randomIndex = Math.floor(Math.random() * roles.length);
     const role = roles[randomIndex];
-    console.log(role)
     return new URL(`../../assets/roles/${role}.png`, import.meta.url).href;
   };
   
