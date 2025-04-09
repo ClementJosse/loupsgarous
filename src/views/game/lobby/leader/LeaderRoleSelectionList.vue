@@ -27,6 +27,8 @@
 import { ref, computed, onMounted } from 'vue'
 import { getDatabase, ref as dbRef, onValue, set } from 'firebase/database'
 import { useRoute } from 'vue-router'
+import cardsGameInfos from '../../../../cardsGameInfos.json';
+const roles = ref(Object.keys(cardsGameInfos));
 
 const route = useRoute()
 const gameId = route.params.gameId
@@ -67,8 +69,10 @@ const initialize = async () => {
 }
 
 const incrementValue = (card) => {
-    const cardRef = dbRef(database, `/${gameId}/cards/${card.name}`)
-    set(cardRef, card.value + 1)
+    if(cardsGameInfos[card.name].limit > card.value){
+        const cardRef = dbRef(database, `/${gameId}/cards/${card.name}`)
+        set(cardRef, card.value + 1)
+    }
 }
 
 const decrementValue = (card) => {

@@ -76,7 +76,6 @@ const toggleReveal = () => {
 
 const toggleReturnToLobby = () => {
     returnToLobbyState.value = true
-    console.log('return to lobby true')
     console.log(returnToLobbyState.value)
 };
 
