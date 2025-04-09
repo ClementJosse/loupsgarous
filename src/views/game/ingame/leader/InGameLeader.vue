@@ -1,7 +1,7 @@
 <template>
 
     <div v-if="returnToLobbyState"
-        class="fixed h-full w-full bg-[#00000077] z-[10000000] text-white text-2xl flex items-center justify-center"
+        class="fixed h-full w-full bg-[#000000B0] z-[10000000] text-white text-2xl flex items-center justify-center"
         @click="returnToLobbyState = false">
         <div class="bg-dark-background flex flex-col w-[clamp(0px,70vw,350px)] items-center gap-[clamp(0px,12vw,60px)] py-[clamp(0px,8vw,40px)] rounded-xl"
             @click.stop>
