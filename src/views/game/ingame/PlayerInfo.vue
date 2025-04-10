@@ -193,7 +193,7 @@ const clickOnPlayer = () => {
                 props.gameInfo.playerStatus[props.uid] = 'died'
                 update(partiesRef, { playerStatus: props.gameInfo.playerStatus })
                 if ((props.gameInfo?.isInLove || props.gameInfo.isInLove !== '') && Array.isArray(props.gameInfo?.isInLove) && props.gameInfo.isInLove.includes(props.uid)) {
-                    killLovers() // Fait gagner l'ange si l'ange est l'un d'entre eux et si dayNightNumberIndex === 1
+                    killLovers()
                 }
                 if (props.gameInfo.playerCards[props.uid] === 'Chasseur') {
                     props.gameInfo.timeline.push('Chasseur')
@@ -206,7 +206,7 @@ const clickOnPlayer = () => {
                         update(partiesRef, { timeline: props.gameInfo.timeline })
                     }
                 }
-                if ((props.gameInfo.playerCards[props.uid] === 'Ange') && props.gameInfo.dayNightNumberIndex === 1) {
+                if ((props.gameInfo.playerCards[props.uid] === 'Ange') && props.gameInfo.dayNightNumberIndex === 1 && (!props.gameInfo?.isInLove || !props.gameInfo.isInLove.includes(props.uid))) {
                     props.gameInfo.timeline = props.gameInfo.timeline.slice(0, props.gameInfo.timelineIndex + 1)
                     props.gameInfo.timeline.push('Victoire Ange')
                     update(partiesRef, { timeline: props.gameInfo.timeline })
