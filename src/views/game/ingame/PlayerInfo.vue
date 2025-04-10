@@ -183,7 +183,7 @@ const clickOnPlayer = () => {
                     currentActiveState.setState('amoureux')
                 }, 0)
             }
-            else if(!props.gameInfo.isInLove.includes(props.uid)) {
+            else if (!props.gameInfo.isInLove.includes(props.uid)) {
                 props.gameInfo.isInLove.push(props.uid)
                 update(partiesRef, { isInLove: props.gameInfo.isInLove })
             }
@@ -210,6 +210,16 @@ const clickOnPlayer = () => {
                     props.gameInfo.timeline = props.gameInfo.timeline.slice(0, props.gameInfo.timelineIndex + 1)
                     props.gameInfo.timeline.push('Victoire Ange')
                     update(partiesRef, { timeline: props.gameInfo.timeline })
+                }
+
+                let playersAlive = Object.keys(props.gameInfo.playerCards)
+                    .filter(key => props.gameInfo.playerStatus[key] === "alive")
+                if (props.gameInfo?.isInLove && props.gameInfo.isInLove !== false && playersAlive.length === props.gameInfo.isInLove.length) {
+                    if (props.gameInfo.isInLove.every(item => playersAlive.includes(item))) {
+                        props.gameInfo.timeline = props.gameInfo.timeline.slice(0, props.gameInfo.timelineIndex + 1)
+                        props.gameInfo.timeline.push('Victoire Amoureux')
+                        update(partiesRef, { timeline: props.gameInfo.timeline })
+                    }
                 }
                 // CHECK DE LA VICTOIRE A CHAQUE MORT LE JOUR, SI VICTOIRE, SUPPRESSION DES ELEMENTS APRES L'INDEX ACTUEL, PUIS PUSH DE LA VICTOIRE
                 // Si on est au dayNightNumberIndex 1 et que props.uid est 'Ange', alors push 'Victoire Ange'

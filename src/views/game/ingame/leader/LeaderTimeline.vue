@@ -73,21 +73,6 @@ const getImagePath = (role) => {
 };
 
 
-const resetPlayerAction = () => {
-    if (!props.gameInfo || !props.gameInfo.playerList) {
-        console.error('gameInfo or playerList is undefined');
-        return;
-    }
-
-    let playerAction = props.gameInfo.playerAction || {};
-
-    props.gameInfo.playerList.forEach((player, index) => {
-        playerAction[player] = '';
-    });
-    playerAction[props.gameInfo.leader] = '';
-    update(partiesRef, { playerAction: playerAction });
-}
-
 const killLovers = () => {
     props.gameInfo.isInLove.forEach((item) => {
         props.gameInfo.playerStatus[item] = 'died';
@@ -114,7 +99,6 @@ const isGameOver = () => {
 
 const nextRole = () => {
     console.log('next')
-    resetPlayerAction()
     setTimeout(function () {
         // si au bout de la timeline, inverser/nuit et jour et recréer la timeline en fonction des variables, de la nuit/jour, mettre timelineIndex = 0 
         if (props.gameInfo.timeline.length - 1 === props.gameInfo.timelineIndex) {
@@ -227,8 +211,15 @@ const generateNightTimeline = () => {
     if (cardsAlive.includes('Voleur')) {
         newTimeline.push('Voleur')
     }
-
-    update(partiesRef, { timeline: newTimeline })
+    console.log('newTimeline.length === 0'+(newTimeline.length === 0))
+    if(newTimeline.length === 0){
+        update(partiesRef, { time: 'Jour' })
+        update(partiesRef, { dayNightNumberIndex: props.gameInfo.dayNightNumberIndex + 1 })
+        generateDayTimeline()
+    }
+    else{
+        update(partiesRef, { timeline: newTimeline })
+    }
 }
 
 const isChasseurDying = () => {
