@@ -5,8 +5,12 @@
   </div>
 
   <!-- Gestion des erreurs -->
-  <div v-else-if="hasError" class="text-white text-4xl flex flex-col h-screen justify-center text-center">
+  <div v-else-if="hasError"
+    class="text-white text-4xl flex flex-col h-screen justify-center items-center mx-auto w-[clamp(0px,80vw,400px)] text-center gap-[clamp(0px,20vw,100px)]">
     Partie non disponible
+    <button v-wave class="rounded-lg active:scale-105" @click='returnToMainMenu()'>
+      <img class='w-[clamp(0px,90vw,450px)] rounded-lg' :src="MainMenuSvg">
+    </button>
   </div>
 
   <!-- Contenu principal une fois chargé -->
@@ -45,8 +49,12 @@
       @createTheGame="createTheGame" />
 
     <!-- Fallback si partie indisponible -->
-    <div v-else class="text-white text-4xl flex flex-col h-screen justify-center text-center">
+    <div v-else
+      class="text-white text-4xl flex flex-col h-screen justify-center items-center mx-auto w-[clamp(0px,80vw,400px)] text-center gap-[clamp(0px,20vw,100px)]">
       Partie non disponible
+      <button v-wave class="rounded-lg active:scale-105" @click='returnToMainMenu()'>
+        <img class='w-[clamp(0px,90vw,450px)] rounded-lg' :src="MainMenuSvg">
+      </button>
     </div>
   </div>
 </template>
@@ -63,6 +71,8 @@ import LobbyLeader from './lobby/leader/LobbyLeader.vue'
 import LobbyPlayer from './lobby/player/LobbyPlayer.vue'
 import InGameLeader from './ingame/leader/InGameLeader.vue'
 import InGamePlayer from './ingame/player/InGamePlayer.vue'
+import MainMenuSvg from '../../../src/assets/actions/mainmenu.svg'
+import router from '../../router'
 
 const route = useRoute()
 const gameId = route.params.gameId
@@ -143,6 +153,12 @@ const initialize = async () => {
 onMounted(() => {
   initialize()
 })
+
+const returnToMainMenu = () => {
+  setTimeout(function () {
+    router.push(`/`);
+  }, 200);
+}
 
 // Méthode pour créer une partie
 function createTheGame() {
