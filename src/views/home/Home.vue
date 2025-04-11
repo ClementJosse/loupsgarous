@@ -53,7 +53,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import router from '../../router'
-import { getDatabase, ref as dbRef, onValue, set, get, child } from 'firebase/database'
+import { getDatabase, ref as dbRef, onValue, set, get, child, serverTimestamp } from 'firebase/database'
 import { getAuth, signInAnonymously } from 'firebase/auth'
 import Loader from '../game/Loader.vue'
 
@@ -81,8 +81,12 @@ const initialize = async () => {
       for (let code in data) {
         const party = data[code]
 
+        // Si la partie est dans la base de donnée depuis + de 24h, supression automatique
+        if (new Date().getTime() - party.createdAt > 86400000) {
+          set(partiesRef, '')
+        }
         // On ne garde que les parties dont le status == "lobby"
-        if (party.status === 'lobby') {
+        else if (party.status === 'lobby') {
           // On détermine le nombre de joueurs
           const playersCount = party.playerList
             ? party.playerList.length
@@ -140,7 +144,8 @@ function createGame() {
           leader: UID,
           playerList: ['player0', 'player1', 'player2', 'player3', 'player4', 'player5', 'player6'],
           uid_to_username: { 'player0': 'Joueur0', 'player1': 'Joueur1', 'player2': 'Joueur2', 'player3': 'Joueur3', 'player4': 'Joueur4', 'player5': 'Joueur5', 'player6': 'Joueur6' },
-          cards: { 'Villageois': 1, 'Loup': 2, 'Sorcière': 1, 'Voyante': 1, 'Chasseur': 1, 'Cupidon': 0, 'Petite fille': 0, 'Voleur': 0, 'Salvateur': 0, 'Loup blanc': 0, "Montreur d'ours": 0, 'Ange': 0, 'Pyromane': 0, 'Enfant sauvage': 0, 'Infect père des loups': 0, 'Renard': 0 }
+          cards: { 'Villageois': 1, 'Loup': 2, 'Sorcière': 1, 'Voyante': 1, 'Chasseur': 1, 'Cupidon': 0, 'Petite fille': 0, 'Voleur': 0, 'Salvateur': 0, 'Loup blanc': 0, "Montreur d'ours": 0, 'Ange': 0, 'Pyromane': 0, 'Enfant sauvage': 0, 'Infect père des loups': 0, 'Renard': 0 },
+          createdAt: serverTimestamp()
         });
 
         // Rediriger vers la nouvelle partie
