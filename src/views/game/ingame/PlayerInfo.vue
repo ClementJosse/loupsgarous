@@ -238,48 +238,57 @@ const clickOnPlayer = () => {
                         update(partiesRef, { timeline: props.gameInfo.timeline })
                     }
                 }
-                // VictoireLoups = true
-                // Pour chaque personne encore en vie
-                //      ( Si la personne est ni Loup ni l'Infect père
-                //      && que la personne est pas infecté
-                //      && que si la personne est l'enfant sauvage et qu'il n'est transformé )
-                //      || (s'il y a isInLove && il fait parti du couple)
-                //          VictoreLoups = false
+                let campLoups = []
 
-                let victoireLoups = true // Les loups gagnent par défaut
-                let campLoup = []
-
-                // plutot que de faire un giga if, ajouter true ou false dans campLoup si le playerAlive en fait parti,
-                // puis vérifier que campLoup est composé exclusivement de true
-
-                // A MODIFIER vvvv
                 playersAlive.forEach(key => {
-                    if ( 
-                        (
-                            (props.gameInfo.playerCards[key] !== 'Loup' && props.gameInfo.playerCards[key] !== 'Infect père des loups') // Une personne qui n'est ni Loup ni l'Infect
-                            && (props.gameInfo?.hasInfected && props.gameInfo.hasInfected != false && props.gameInfo.hasInfected !== key) // et pas infecté
-                            && (props.gameInfo.playerCards[key] === 'Enfant sauvage' && props.gameInfo?.model && playersAlive.includes(props.gameInfo.model))
-                        ) || (props.gameInfo?.isInLove && props.gameInfo.isInLove.includes(key))
-                    ) {
-                        console.log('victoire des loups false car: '+key)
-                        victoireLoups = false
+                    if (props.gameInfo?.isInLove && props.gameInfo.isInLove.includes(key)) {
+                        campLoups.push(false)
+                    }
+                    else if (props.gameInfo.playerCards[key] === 'Loup' || props.gameInfo.playerCards[key] === 'Infect père des loups') {
+                        campLoups.push(true)
+                    }
+                    else if (props.gameInfo?.hasInfected && props.gameInfo.hasInfected != false && props.gameInfo.hasInfected === key) {
+                        campLoups.push(true)
+                    }
+                    else if (props.gameInfo.playerCards[key] === 'Enfant sauvage' && props.gameInfo?.model && !playersAlive.includes(props.gameInfo.model)) {
+                        campLoups.push(true)
+                    }
+                    else {
+                        campLoups.push(false)
                     }
                 })
-                if (victoireLoups) {
+                if (campLoups.every(valeur => valeur === true)) {
                     props.gameInfo.timeline = props.gameInfo.timeline.slice(0, props.gameInfo.timelineIndex + 1)
                     props.gameInfo.timeline.push('Victoire Loups')
                     update(partiesRef, { timeline: props.gameInfo.timeline })
                 }
-                /// A MODIFIER ^^^
 
-                // CHECK DE LA VICTOIRE A CHAQUE MORT LE JOUR, SI VICTOIRE, SUPPRESSION DES ELEMENTS APRES L'INDEX ACTUEL, PUIS PUSH DE LA VICTOIRE
-                // Si on est au dayNightNumberIndex 1 et que props.uid est 'Ange', alors push 'Victoire Ange'
-                // Si les 2 personnes restantes sont les amoureux, alors push 'Victoire Amoureux'
-                // Sinon s'il reste qu'une personne
-                //  et que c'est le Pyromane, push 'Victoire Pyromane'
-                //  et que c'est le Loup blanc, push 'Victoire Loup blanc'
-                // Sinon si toutes les personnes encore en vie sont des Loup, Infect, Enfant sauvage ou hasInfected: push 'Victoire Loup'
-                // Sinon si les seules personnes encore en vie sont 'Ange', 'Chasseur', 'Cupidon', 'Enfant sauvage' et que son model n'est pas mort, 'Montreur d'ours', 'Petite fille', 'Renard', 'Salvateur', 'Sorcière', 'Villageois', 'Voleur', 'Voyante': push 'Victoire Villageois' 
+                let campVillage = []
+                playersAlive.forEach(key => {
+                    if (props.gameInfo?.isInLove && props.gameInfo.isInLove.includes(key)) {
+                        campVillage.push(false)
+                    }
+                    else if (props.gameInfo.playerCards[key] === 'Loup' || props.gameInfo.playerCards[key] === 'Infect père des loups' || props.gameInfo.playerCards[key] === 'Pyromane' || props.gameInfo.playerCards[key] === 'Loup blanc') {
+                        campVillage.push(false)
+                    }
+                    else if (props.gameInfo?.hasInfected && props.gameInfo.hasInfected != false && props.gameInfo.hasInfected === key) {
+                        campVillage.push(false)
+                    }
+                    else if (props.gameInfo.playerCards[key] === 'Enfant sauvage' && props.gameInfo?.model && !playersAlive.includes(props.gameInfo.model)) {
+                        campVillage.push(false)
+                    }
+                    else if (props.gameInfo.playerCards[key] === 'Ange' && props.gameInfo.dayNightNumberIndex < 2){
+                        campVillage.push(false)
+                    }
+                    else {
+                        campVillage.push(true)
+                    }
+                })
+                if (campVillage.every(valeur => valeur === true)) {
+                    props.gameInfo.timeline = props.gameInfo.timeline.slice(0, props.gameInfo.timelineIndex + 1)
+                    props.gameInfo.timeline.push('Victoire Village')
+                    update(partiesRef, { timeline: props.gameInfo.timeline })
+                }
             }
             else {
                 props.gameInfo.playerStatus[props.uid] = 'dying'

@@ -202,7 +202,7 @@ const generateNightTimeline = () => {
     if (cardsAlive.includes('Sorcière') && (props.gameInfo.hasLifePotion == true || props.gameInfo.hasDeathPotion === true)) {
         newTimeline.push('Sorcière')
     }
-    if (cardsAlive.includes('Loup blanc') && props.gameInfo.dayNightNumberIndex % 2 == 0) {
+    if (cardsAlive.includes('Loup blanc') && props.gameInfo.dayNightNumberIndex % 2 == 1) {
         newTimeline.push('Loup blanc')
     }
     if (cardsAlive.includes('Pyromane') && props.gameInfo.hasUsedLighter == false) {
@@ -211,13 +211,13 @@ const generateNightTimeline = () => {
     if (cardsAlive.includes('Voleur')) {
         newTimeline.push('Voleur')
     }
-    console.log('newTimeline.length === 0'+(newTimeline.length === 0))
-    if(newTimeline.length === 0){
+    console.log('newTimeline.length === 0' + (newTimeline.length === 0))
+    if (newTimeline.length === 0) {
         update(partiesRef, { time: 'Jour' })
         update(partiesRef, { dayNightNumberIndex: props.gameInfo.dayNightNumberIndex + 1 })
         generateDayTimeline()
     }
-    else{
+    else {
         update(partiesRef, { timeline: newTimeline })
     }
 }
@@ -298,32 +298,94 @@ const generateDayTimeline = () => {
         .filter(key => props.gameInfo.playerStatus[key] === "alive")
         .map(key => props.gameInfo.playerCards[key]);
 
+    let playersAlive = Object.keys(props.gameInfo.playerCards)
+        .filter(key => props.gameInfo.playerStatus[key] === "alive")
 
     // CHECK DE LA VICTOIRE A LA GENERATION DE LA TIMELINE DU JOUR
     newTimeline.push('Mort')
 
     let isAngeInLove = false
-    let isPyromaneInLove = false
-    let isLoupBlancInLove = false
     if (props.gameInfo?.isInLove && props.gameInfo?.isInLove !== false) {
         Object.keys(props.gameInfo.isInLove).forEach(key => {
             console.log(key + props.gameInfo.playerCards[props.gameInfo.isInLove[key]])
             if (props.gameInfo.playerCards[props.gameInfo.isInLove[key]] === 'Ange') {
                 isAngeInLove = true
             }
-            if (props.gameInfo.playerCards[props.gameInfo.isInLove[key]] === 'Pyromane') {
-                isPyromaneInLove = true
-            }
-            if (props.gameInfo.playerCards[props.gameInfo.isInLove[key]] === 'LoupBlanc') {
-                isLoupBlancInLove = true
-            }
         });
     }
 
+    var doGenerateFullTimeline = true
 
-    if (Object.values(props.gameInfo.playerCards).includes('Ange') && !cardsAlive.includes('Ange') && props.gameInfo.dayNightNumberIndex <= 2 && isAngeInLove === false) {
+    if (Object.values(props.gameInfo.playerCards).includes('Ange') && !cardsAlive.includes('Ange') && props.gameInfo.dayNightNumberIndex === 1 && isAngeInLove === false) {
         console.log('here' + isAngeInLove)
         newTimeline.push('Victoire Ange')
+        doGenerateFullTimeline = false
+    }
+
+    if (props.gameInfo?.isInLove && props.gameInfo.isInLove !== false && playersAlive.length === props.gameInfo.isInLove.length) {
+        if (props.gameInfo.isInLove.every(item => playersAlive.includes(item))) {
+            newTimeline.push('Victoire Amoureux')
+            doGenerateFullTimeline = false
+        }
+    }
+    if (playersAlive.length === 1) {
+        if (props.gameInfo.playerCards[playersAlive[0]] == 'Pyromane') {
+            newTimeline.push('Victoire Pyromane')
+            doGenerateFullTimeline = false
+        }
+        if (props.gameInfo.playerCards[playersAlive[0]] == 'Loup blanc') {
+            newTimeline.push('Victoire Loup blanc')
+            doGenerateFullTimeline = false
+        }
+    }
+    let campLoups = []
+
+    playersAlive.forEach(key => {
+        if (props.gameInfo?.isInLove && props.gameInfo.isInLove.includes(key)) {
+            campLoups.push(false)
+        }
+        else if (props.gameInfo.playerCards[key] === 'Loup' || props.gameInfo.playerCards[key] === 'Infect père des loups') {
+            campLoups.push(true)
+        }
+        else if (props.gameInfo?.hasInfected && props.gameInfo.hasInfected != false && props.gameInfo.hasInfected === key) {
+            campLoups.push(true)
+        }
+        else if (props.gameInfo.playerCards[key] === 'Enfant sauvage' && props.gameInfo?.model && !playersAlive.includes(props.gameInfo.model)) {
+            campLoups.push(true)
+        }
+        else {
+            campLoups.push(false)
+        }
+    })
+    if (campLoups.every(valeur => valeur === true)) {
+        newTimeline.push('Victoire Loups')
+        doGenerateFullTimeline = false
+    }
+
+    let campVillage = []
+    playersAlive.forEach(key => {
+        if (props.gameInfo?.isInLove && props.gameInfo.isInLove.includes(key)) {
+            campVillage.push(false)
+        }
+        else if (props.gameInfo.playerCards[key] === 'Loup' || props.gameInfo.playerCards[key] === 'Infect père des loups' || props.gameInfo.playerCards[key] === 'Pyromane' || props.gameInfo.playerCards[key] === 'Loup blanc') {
+            campVillage.push(false)
+        }
+        else if (props.gameInfo?.hasInfected && props.gameInfo.hasInfected != false && props.gameInfo.hasInfected === key) {
+            campVillage.push(false)
+        }
+        else if (props.gameInfo.playerCards[key] === 'Enfant sauvage' && props.gameInfo?.model && !playersAlive.includes(props.gameInfo.model)) {
+            campVillage.push(false)
+        }
+        else if (props.gameInfo.playerCards[key] === 'Ange' && props.gameInfo.dayNightNumberIndex < 2) {
+            campVillage.push(false)
+        }
+        else {
+            campVillage.push(true)
+        }
+    })
+    if (campVillage.every(valeur => valeur === true)) {
+        newTimeline.push('Victoire Village')
+        doGenerateFullTimeline = false
     }
     // Si on est au dayNightNumberIndex 1 et que props.uid est 'Ange', alors push 'Victoire Ange'
     // Si les 2 personnes restantes sont les amoureux, alors push 'Victoire Amoureux'
@@ -333,7 +395,7 @@ const generateDayTimeline = () => {
     // Sinon si toutes les personnes encore en vie sont des Loup, Infect, Enfant sauvage ou hasInfected: push 'Victoire Loup'
     // Sinon si les seules personnes encore en vie sont 'Ange', 'Chasseur', 'Cupidon', 'Enfant sauvage' et que son model n'est pas mort, 'Montreur d'ours', 'Petite fille', 'Renard', 'Salvateur', 'Sorcière', 'Villageois', 'Voleur', 'Voyante': push 'Victoire Villageois' 
 
-    else {
+    if (doGenerateFullTimeline) {
         if (cardsAlive.includes("Montreur d'ours") && isBearGrowling()) {
             newTimeline.push("Montreur d'ours")
         }
